@@ -1,8 +1,14 @@
-function Game() {
+(function(){
 
-}
+  function Game() {
 
-Game.prototype = {
+  }
 
-};
+  Game.prototype = {
+
+  };
+
+  window.Game = Game;
+
+}());
 
