@@ -80,7 +80,6 @@
 
     function stepBossAI () {
       var step = bossScript.shift();
-      console.log(step);
       if (step) {
         step[1]();
         setTimeout(stepBossAI, step[0] * 1000); // convert from ms -> seconds
