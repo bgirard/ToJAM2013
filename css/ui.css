@@ -137,10 +137,17 @@ html, body {
   left: 110px;
 }
 
+.hud-element.thruster.left .button:nth-child(2) {
+  top: 80px;
+}
+
 .hud-element.thruster.right .button {
   right: 110px;
 }
 
+.hud-element.thruster.right .button:nth-child(2) {
+  top: 80px;
+}
 
 .hud-element.weapon-1 {
   width: 20%;
