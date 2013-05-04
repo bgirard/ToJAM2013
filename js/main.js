@@ -119,6 +119,13 @@
         var nextLevel = document.getLevel().nextId;
         document.setLevel(Game.levels[nextLevel]());
       });
+      var hasCol = false;
+      collisionDetection("Player", "Bounds", function() {
+        hasCol = true;
+      });
+      if (!hasCol) {
+        document.title = "Out of bounds";
+      }
 
       bossOs.update(playerEntity);
 

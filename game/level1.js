@@ -42,6 +42,13 @@ function level() {
       spriteFrameX: 0,
       spriteMaxFrameX: 4,
     })
+  , new Game.Entity({
+      classes: ['Bounds'],
+      x: -1000,
+      y: -1000,
+      width: 2000,
+      height: 2000,
+    })
   ].forEach(function(entity) {
     div.appendChild(entity);
   });
