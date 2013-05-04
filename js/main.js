@@ -39,7 +39,7 @@
    * invoking the callback with each collision
    */
   function collisionDetection(classOne, classTwo, callback) {
-    var level = document.getElementsByClassName('Level')[0];
+    var level = document.getLevel();
     var entities1 = level.getElementsByClassName(classOne);
     var entities2 = level.getElementsByClassName(classTwo);
     for(var i = 0; i < entities1.length; ++i) {
@@ -82,7 +82,8 @@
     document.addEventListener('keydown', handleKeyEvent.bind(undefined, true));
     document.addEventListener('keyup', handleKeyEvent.bind(undefined, false));
 
-    document.getElementById('gameboard').appendChild(Game.levels['level1']);
+    console.log(Game.levels['level1']());
+    document.getElementById('gameboard').appendChild(Game.levels['level1']());
 
     var frame = 0;
     var cachedTime = Date.now();
@@ -107,7 +108,8 @@
       }
 
       // Collisions
-      collisionDetection("Player", "Pirate", function() {
+      collisionDetection("Player", "Wormhole", function() {
+        document.title = "next level";
       });
 
       bossOs.update();

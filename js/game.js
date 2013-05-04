@@ -54,6 +54,7 @@
     div.drag = 0.0001;
     div.accel = 0.01;
     div.rotation = 0;
+    div.rotationVel = options['rotationVel'] || 0;
 
     // Sprite properties
     div.spriteFrameX = options.spriteFrameX;
@@ -81,6 +82,8 @@
       div.y += dt * div.velY;
 
       div.frameTimeRemaining -= dt;
+
+      div.rotation = (div.rotation + div.rotationVel * dt) % 360;
 
       if (div.frameTimeRemaining < 0) {
         if (div.spriteFrameX != null) {
