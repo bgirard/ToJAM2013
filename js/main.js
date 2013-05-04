@@ -4,9 +4,9 @@
     'D': 'right',
     'W': 'up',
     'S': 'down',
-    'SPACE': 'fire'
+    'SPACE': 'fire',
     'P': 'power',
-    'T': 'shield'
+    'T': 'shield',
   };
   var playerKeyStates = {};
   Object.keys(playerKeyMap).forEach(function(key) {
@@ -132,7 +132,9 @@
       // Update entities
       var entities = level.getElementsByClassName('Entity');
       for(i = 0, l = entities.length; i < l; ++ i) {
-        entities[i].update(dt);
+        var entity = entities[i];
+        if('function' === typeof entity.update)
+          entity.update(dt);
       }
 
       // Collisions

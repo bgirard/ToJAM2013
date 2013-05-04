@@ -17,6 +17,7 @@ function level() {
       height: 128,
       rotationVel: 0.3,
       img: "images/wormhole.png",
+      update: Game.logic.player
     })
   , new Game.Entity({
       classes: ['Player'],

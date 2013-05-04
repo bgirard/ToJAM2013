@@ -65,6 +65,7 @@
     div.rotationVel = options['rotationVel'] || 0;
     div.rotationAccel = options['rotationAccel'] || 0.2;
     div.scaling = options['scaling'];
+    div.update = options['update'] || undefined;
 
     // Sprite properties
     div.spriteFrameX = options.spriteFrameX;
@@ -74,7 +75,33 @@
 
     var degToRad = 0.0174532925;
 
-    div.update = function update(dt) {
+    div.render = function render() {
+      div.style.left = (div.x - window.Game.Camera.x()) + 'px';
+      div.style.top = (div.y - window.Game.Camera.y()) + 'px';
+      var transformStr = "";
+      transformStr += " rotate("+div.rotation+"deg)";
+
+      if (div.spriteFrameX != null || div.spriteFrameY != null) {
+        var frameX = div.spriteFrameX || 0;
+        var frameY = div.spriteFrameY || 0;
+        div.style.backgroundPosition = div.width * frameX + "px " + div.height * frameY + "px";
+      }
+
+      if (div.scaling != null) {
+        transformStr += " scale("+div.scaling+","+div.scaling+")";
+      }
+      if (transformStr != "") {
+        setTransform(div, transformStr);
+      }
+    };
+
+    return div;
+  };
+
+  var tmp = 0;
+
+  var logic = {
+    player: function(dt) {
       if(div.velX > 0) {
         div.velX = Math.max(0, div.velX - Math.max(0, dt * div.drag * Math.sin(div.rotation * degToRad)));
       } else {
@@ -106,32 +133,8 @@
         }
         div.frameTimeRemaining = div.spriteFrameTime;
       }
-    };
-
-    div.render = function render() {
-      div.style.left = (div.x - window.Game.Camera.x()) + 'px';
-      div.style.top = (div.y - window.Game.Camera.y()) + 'px';
-      var transformStr = "";
-      transformStr += " rotate("+div.rotation+"deg)";
-
-      if (div.spriteFrameX != null || div.spriteFrameY != null) {
-        var frameX = div.spriteFrameX || 0;
-        var frameY = div.spriteFrameY || 0;
-        div.style.backgroundPosition = div.width * frameX + "px " + div.height * frameY + "px";
-      }
-
-      if (div.scaling != null) {
-        transformStr += " scale("+div.scaling+","+div.scaling+")";
-      }
-      if (transformStr != "") {
-        setTransform(div, transformStr);
-      }
-    };
-
-    return div;
+    }
   };
-
-  var tmp = 0;
 
   var Game = {
     Entity: Entity,
@@ -146,7 +149,8 @@
         return document.getPlayer().y - offset / 2;
       },
     },
-    levels: {}
+    levels: {},
+    logic: logic
   };
 
   window.Game = Game;
