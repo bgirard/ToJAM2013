@@ -35,15 +35,18 @@
     div.y = 0;
     div.velX = 0;
     div.velY = 0;
+    div.rotation = 0;
 
     div.update = function update(dt) {
       div.x += dt * div.velX;
       div.y += dt * div.velY;
+      div.rotation += 6;
     };
 
     div.render = function render() {
       div.style.left = div.x + 'px';
       div.style.top = div.y + 'px';
+      div.style.transform="rotate("+div.rotation+"deg)"
     };
 
     return div;
