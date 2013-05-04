@@ -16,10 +16,6 @@
     var rightThrusterFront = rightThruster.querySelector('.front');
 
     var buttonMap = {
-      'left': leftThrusterButton,
-      'right': rightThrusterButton,
-      'up': upThrusterButton,
-      'down': downThrusterButton,
       'left': leftThruster.querySelector('.button:nth-child(1)'),
       'right': leftThruster.querySelector('.button:nth-child(2)'),
       'up': rightThruster.querySelector('.button:nth-child(1)'),

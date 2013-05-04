@@ -4,7 +4,7 @@
     'D': 'right',
     'W': 'up',
     'S': 'down',
-    'SPACE': 'fire'
+    'SPACE': 'fire',
     'P': 'power',
     'T': 'shield'
   };
