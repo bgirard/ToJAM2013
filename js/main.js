@@ -61,6 +61,10 @@
   window.onload = function (e) {
     console.log('game start!');
 
+    var bossOs = new BossOs({
+      textContainer: document.querySelector('.hud-element.console > textarea')
+    });
+
     var level = document.getElementById("level");
 
     document.addEventListener('keydown', handleKeyEvent.bind(undefined, true));
