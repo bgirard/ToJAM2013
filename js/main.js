@@ -168,8 +168,8 @@
       var x = (-window.Game.Camera.x()/5);
       var y = (-window.Game.Camera.y()/5);
       window.setTransform(document.getElementById("bg2"), "translate(" + x + "px," + y + "px)");
-      var x = (-window.Game.Camera.x()/5);
-      var y = (-window.Game.Camera.y()/5);
+      var x = (-window.Game.Camera.x()/10);
+      var y = (-window.Game.Camera.y()/10);
       window.setTransform(document.getElementById("bg3"), "translate(" + x + "px," + y + "px)");
 
       cachedTime = t;
