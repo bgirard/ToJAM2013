@@ -112,10 +112,12 @@
         }
         // We don't want rotation innertia so apply the accel directly to the rotation
         if (playerKeyStates.left) {
-          deltaR += -player.rotationAccel;
+          playerEntity.rotationVel -= playerEntity.rotationAccel;
+          deltaR += -playerEntity.rotationAccel;
         }
         if (playerKeyStates.right) {
-          deltaR += player.rotationAccel;
+          playerEntity.rotationVel += playerEntity.rotationAccel;
+          deltaR += playerEntity.rotationAccel;
         }
         var degToRad = 0.0174532925;
         if (deltaV != 0) {
@@ -127,6 +129,8 @@
         if (deltaR != 0) {
           playerEntity.rotation += dt * deltaR;
         }
+
+        playerEntity.rotationVel *= 0.5;
       }
 
       // Update entities
