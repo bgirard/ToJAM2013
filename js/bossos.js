@@ -16,10 +16,6 @@
     var rightThrusterFront = rightThruster.querySelector('.front');
 
     var buttonMap = {
-      'left': leftThrusterButton,
-      'right': rightThrusterButton,
-      'up': upThrusterButton,
-      'down': downThrusterButton,
       'left': leftThruster.querySelector('.button:nth-child(1)'),
       'right': leftThruster.querySelector('.button:nth-child(2)'),
       'up': rightThruster.querySelector('.button:nth-child(1)'),
@@ -50,8 +46,14 @@
     }
 
     this.update = function (playerEntity) {
-      leftThrusterFront.style.height = Math.abs(playerEntity.velX) / playerEntity.maxVel * 100 + '%';
-      rightThrusterFront.style.height = Math.abs(playerEntity.velY) / playerEntity.maxVel * 100 + '%';
+      var x = playerEntity.velX;
+      var y = playerEntity.velY;
+      x *= x;
+      y *= y;
+
+      rightThrusterFront.style.height = Math.min(100, Math.sqrt(x + y) / playerEntity.maxVel * 100) + '%';
+
+      leftThrusterFront.style.height = Math.abs(playerEntity.rotationVel) / playerEntity.maxVel * 100 + '%';
     };
 
     this.playerKeyStateChange = function (key, state) {

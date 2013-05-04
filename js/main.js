@@ -89,8 +89,14 @@
 
     var frame = 0;
     var cachedTime = Date.now();
+    var changeLevelOnNextFrame = null;
     function main() {
       window.requestAnimFrame(main);
+
+      if (changeLevelOnNextFrame) {
+        document.setLevel(changeLevelOnNextFrame);
+        changeLevelOnNextFrame = null;
+      }
       var t = Date.now();
       var dt = t - cachedTime;
       var i;
@@ -112,21 +118,24 @@
         }
         // We don't want rotation innertia so apply the accel directly to the rotation
         if (playerKeyStates.left) {
-          deltaR += -player.rotationAccel;
+          playerEntity.rotationVel -= playerEntity.rotationAccel;
+          deltaR += -playerEntity.rotationAccel;
         }
         if (playerKeyStates.right) {
-          deltaR += player.rotationAccel;
+          playerEntity.rotationVel += playerEntity.rotationAccel;
+          deltaR += playerEntity.rotationAccel;
         }
         var degToRad = 0.0174532925;
         if (deltaV != 0) {
           console.log(Math.sin(playerEntity.rotation * degToRad));
           playerEntity.velX += dt * deltaV * -Math.sin(playerEntity.rotation * degToRad);
           playerEntity.velY += dt * deltaV * Math.cos(playerEntity.rotation * degToRad);
-
         }
         if (deltaR != 0) {
           playerEntity.rotation += dt * deltaR;
         }
+
+        playerEntity.rotationVel *= 0.5;
       }
 
       // Update entities
@@ -140,7 +149,7 @@
       // Collisions
       collisionDetection("Player", "Wormhole", function() {
         var nextLevel = document.getLevel().nextId;
-        document.setLevel(Game.levels[nextLevel]());
+        changeLevelOnNextFrame = Game.levels[nextLevel]();
       });
       var hasCol = false;
       collisionDetection("Player", "Bounds", function() {
