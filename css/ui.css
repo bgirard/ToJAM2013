@@ -4,7 +4,12 @@
   left: 0;
 }
 
-body { margin:0px; padding:0px; }
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
 
 #level {
   position: absolute;
@@ -17,5 +22,73 @@ body { margin:0px; padding:0px; }
   width: 100%;
   height: 100%;
   z-index: -99;
-  background-image: url('../images/farback.gif')
+  background-image: url('../images/farback.gif');
+}
+
+#hud {
+  position: fixed;
+  top: 10px;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  border: 1px solid rgba(0, 100, 0, 0.5);
+  z-index: 100;
+  visibility: hidden;
+}
+
+#hud.on {
+  visibility: visible;
+}
+
+.hud-element {
+  position: absolute;
+  background: rgba(0, 100, 0, 0.5);
+}
+
+.hud-element.left-thruster {
+  left: 0;
+  bottom: 0;
+  width: 10%;
+  height: 40%;
+}
+
+.hud-element.right-thruster {
+  right: 0;
+  bottom: 0;
+  width: 10%;
+  height: 40%;
+}
+
+.hud-element.weapon-1 {
+  width: 20%;
+  height: 15%;
+  right: 55%;
+}
+
+.hud-element.weapon-2 {
+  width: 20%;
+  height: 15%;
+  left: 55%;
+}
+
+.hud-element.power {
+  width: 10%;
+  height: 15%;
+  left: 0;
+  top: 0;
+}
+
+.hud-element.shield {
+  width: 10%;
+  height: 25%;
+  right: 0;
+  top: 0;
+}
+
+.hud-element.console {
+  width: 40%;
+  height: 15%;
+  bottom: 10%;
+  right: 50%;
+  margin-right: -20%;
 }
