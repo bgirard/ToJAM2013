@@ -4,14 +4,6 @@
   left: 0;
 }
 
-.ForceLayer {
-  border: 2px solid red;
-  /*
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-  */
-}
-
 * {
   // Force gecko active layers
   perspective: 15px;
