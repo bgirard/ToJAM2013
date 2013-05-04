@@ -4,7 +4,7 @@
     console.log('game start!');
 
     var entity = new Game.Entity();
-    document.body.appendChild(entity);
+    document.getElementById("level").appendChild(entity);
 
     var frame = 0;
     var cachedTime = Date.now();
