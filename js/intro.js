@@ -2,6 +2,8 @@
   
   var TIME_BETWEEN_SCENES = 1000;
 
+  var audio = document.querySelector('audio');
+
   var scenes = Array.prototype.slice.call(document.querySelectorAll('section'));
   var currentScene;
 
@@ -29,6 +31,12 @@
 
   }
 
-  nextScene();
+  if (audio.readyState === 0) {
+    audio.play();
+    nextScene();
+  }
+  else {
+    audio.addEventListener('canplay', start, false);  
+  }
 
 }());
