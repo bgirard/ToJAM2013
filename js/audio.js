@@ -5,6 +5,8 @@
   window.preloadSound = function(sfx) {
     if (SoundCache[sfx] == null) {
       SoundCache[sfx] = new Audio();
+      SoundCache[sfx].autobuffer = true;
+      SoundCache[sfx].preload = "auto";
       SoundCache[sfx].src = sfx;
     }
   };
