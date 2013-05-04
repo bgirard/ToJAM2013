@@ -98,8 +98,34 @@
       var level = document.getElementsByClassName('Level')[0];
       var playerEntity = level.getElementsByClassName('Player')[0];
       if(playerEntity) {
-        playerEntity.velX += (playerKeyStates.left ? dt * -playerEntity.accel : 0.0) + (playerKeyStates.right ? dt * playerEntity.accel : 0.0);
-        playerEntity.velY += (playerKeyStates.up ? dt * -playerEntity.accel : 0.0) + (playerKeyStates.down ? dt * playerEntity.accel : 0.0);
+        //playerEntity.velX += (playerKeyStates.left ? dt * -playerEntity.accel : 0.0) + (playerKeyStates.right ? dt * playerEntity.accel : 0.0);
+        //playerEntity.velY += (playerKeyStates.up ? dt * -playerEntity.accel : 0.0) + (playerKeyStates.down ? dt * playerEntity.accel : 0.0);
+        var deltaV = 0;
+        var deltaR = 0;
+        if (playerKeyStates.up) {
+          deltaV += -playerEntity.accel;
+        }
+        
+        if (playerKeyStates.down) {
+          deltaV += playerEntity.accel;
+        }
+        // We don't want rotation innertia so apply the accel directly to the rotation
+        if (playerKeyStates.left) {
+          deltaR += -player.rotationAccel;
+        }
+        if (playerKeyStates.right) {
+          deltaR += player.rotationAccel;
+        }
+        var degToRad = 0.0174532925;
+        if (deltaV != 0) {
+          console.log(Math.sin(playerEntity.rotation * degToRad));
+          playerEntity.velX += dt * deltaV * -Math.sin(playerEntity.rotation * degToRad);
+          playerEntity.velY += dt * deltaV * Math.cos(playerEntity.rotation * degToRad);
+        
+        }
+        if (deltaR != 0) {
+          playerEntity.rotation += dt * deltaR;
+        }
       }
 
       // Update entities
