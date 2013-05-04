@@ -59,10 +59,11 @@
     div.velX = 0.0;
     div.velY = 0.0;
     div.maxVel = 0.5;
-    div.drag = 0.0005;
+    div.drag = 0.005;
     div.accel = 0.01;
     div.rotation = 0;
     div.rotationVel = options['rotationVel'] || 0;
+    div.rotationAccel = options['rotationAccel'] || 0.2;
     div.scaling = options['scaling'];
 
     // Sprite properties
@@ -71,17 +72,19 @@
     div.spriteFrameTime = options['spriteFrameTime'] || 100;
     div.frameTimeRemaining = div.spriteFrameTime;
 
+    var degToRad = 0.0174532925;
+
     div.update = function update(dt) {
       if(div.velX > 0) {
-        div.velX = Math.max(0, div.velX - dt * div.drag);
+        div.velX = Math.max(0, div.velX - Math.max(0, dt * div.drag * Math.sin(div.rotation * degToRad)));
       } else {
-        div.velX = Math.min(0, div.velX + dt * div.drag);
+        div.velX = Math.min(0, div.velX + Math.max(0, dt * div.drag * -Math.sin(div.rotation * degToRad)));
       }
 
       if(div.velY > 0) {
-        div.velY = Math.max(0, div.velY - dt * div.drag);
+        div.velY = Math.max(0, div.velY - Math.max(0, dt * div.drag * -Math.cos(div.rotation * degToRad)));
       } else {
-        div.velY = Math.min(0, div.velY + dt * div.drag);
+        div.velY = Math.min(0, div.velY + Math.max(0, dt * div.drag * Math.cos(div.rotation * degToRad)));
       }
 
       div.velX = clamp(div.velX, -div.maxVel, div.maxVel);
