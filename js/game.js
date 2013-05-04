@@ -41,22 +41,36 @@
     div.velY = 0.0;
     div.maxVelX = 1.0;
     div.maxVelY = 1.0;
+    div.rotation = 0;
 
     div.update = function update(dt) {
       div.x += dt * div.velX;
       div.y += dt * div.velY;
+      div.rotation += 6;
     };
 
     div.render = function render() {
-      div.style.left = div.x + 'px';
-      div.style.top = div.y + 'px';
+      div.style.left = (div.x - window.Game.Camera.x()) + 'px';
+      div.style.top = (div.y - window.Game.Camera.y()) + 'px';
+      div.style.transform="rotate("+div.rotation+"deg)"
     };
 
     return div;
   };
 
+  var tmp = 0;
+
   var Game = {
-    Entity: Entity
+    Entity: Entity,
+    Camera: {
+      // Fix to the player
+      x: function() {
+        return tmp-=0.1;
+      },
+      y: function() {
+        return tmp-=0.1;
+      },
+    }
   };
 
   window.Game = Game;

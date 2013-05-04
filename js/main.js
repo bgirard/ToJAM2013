@@ -34,16 +34,43 @@
     'down': false
   };
 
+  /**
+   * Run collision detection between two CSS classes such as 'entity', 'mines',
+   * invoking the callback with each collision
+   */
+  function collisionDetection(classOne, classTwo, callback) {
+    var level = document.getElementById("level");
+    var entities1 = level.getElementsByClassName(classOne);
+    var entities2 = level.getElementsByClassName(classTwo);
+    for(var i = 0; i < entities1.length; ++i) {
+      var entity1 = entities1[i];
+      for(var j = 0; j < entities2.length; ++j) {
+        var entity2 = entities2[i];
+        if (entity1.x < entity2.x + entity2.width &&
+            entity2.x < entity1.x + entity1.width &&
+            entity1.y < entity2.y + entity2.height &&
+            entity2.y < entity1.y + entity2.height) {
+
+            callback(entity1, entity2);
+
+        }
+      }
+    }
+  }
+
   window.onload = function (e) {
     console.log('game start!');
+
+    var level = document.getElementById("level");
 
     document.addEventListener('keydown', handleKeyEvent.bind(undefined, true));
     document.addEventListener('keyup', handleKeyEvent.bind(undefined, false));
 
-    var entity = new Game.Entity({
-      classes: ['Player']
-    });
-    document.body.appendChild(entity);
+    level.appendChild(new Game.Entity({
+      classes: ['Player'],
+      x: 100,
+      y: 100
+    }));
 
     var frame = 0;
     var cachedTime = Date.now();
@@ -52,15 +79,14 @@
       var t = Date.now();
       var dt = t - cachedTime;
       var i;
+      var l;
 
-      var playerEntity = document.getElementsByClassName('Player')[0];
+      var playerEntity = level.getElementsByClassName('Player')[0];
       playerEntity.velX += (playerKeyStates.left ? -0.01 : 0.0) + (playerKeyStates.right ? 0.01 : 0.0);
       playerEntity.velY += (playerKeyStates.up ? -0.01 : 0.0) + (playerKeyStates.down ? 0.01 : 0.0);
-      console.log(playerEntity.velX, playerEntity.velY)
-
-      var entities = document.getElementsByClassName('Entity');
 
       // Update entities
+      var entities = level.getElementsByClassName('Entity');
       for(i = 0, l = entities.length; i < l; ++ i) {
         entities[i].update(dt);
       }
