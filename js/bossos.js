@@ -24,13 +24,14 @@
       'left': leftThrusterButton,
       'right': rightThrusterButton,
       'up': upThrusterButton,
-      'down': downThrusterButton
+      'down': downThrusterButton,
     };
 
     var keys = Object.keys(playerKeyMap);
     keys.forEach(function(key){
       var action = playerKeyMap[key];
-      buttonMap[action].innerHTML = key;
+      if(buttonMap[action])
+        buttonMap[action].innerHTML = key;
     });
 
     function writeConsoleLine (str) {

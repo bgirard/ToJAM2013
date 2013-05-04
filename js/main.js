@@ -3,15 +3,14 @@
     'A': 'left',
     'D': 'right',
     'W': 'up',
-    'S': 'down'
+    'S': 'down',
+    'SPACE': 'fire'
   };
-
-  var playerKeyStates = {
-    'left': false,
-    'right': false,
-    'up': false,
-    'down': false
-  };
+  var playerKeyStates = {};
+  Object.keys(playerKeyMap).forEach(function(key) {
+    var action = playerKeyMap[key];
+    playerKeyStates[action] = false;
+  });
 
   function nullFunction () {}
 
@@ -105,7 +104,7 @@
         if (playerKeyStates.up) {
           deltaV += -playerEntity.accel;
         }
-        
+
         if (playerKeyStates.down) {
           deltaV += playerEntity.accel;
         }
@@ -121,7 +120,7 @@
           console.log(Math.sin(playerEntity.rotation * degToRad));
           playerEntity.velX += dt * deltaV * -Math.sin(playerEntity.rotation * degToRad);
           playerEntity.velY += dt * deltaV * Math.cos(playerEntity.rotation * degToRad);
-        
+
         }
         if (deltaR != 0) {
           playerEntity.rotation += dt * deltaR;
