@@ -39,7 +39,7 @@
    * invoking the callback with each collision
    */
   function collisionDetection(classOne, classTwo, callback) {
-    var level = document.getElementsByClassName('Level')[0];
+    var level = document.getLevel();
     var entities1 = level.getElementsByClassName(classOne);
     var entities2 = level.getElementsByClassName(classTwo);
     for(var i = 0; i < entities1.length; ++i) {
