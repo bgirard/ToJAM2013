@@ -1,8 +1,12 @@
 (function() {
 
+var id = 'level1';
+function level() {
+
   var div = document.createElement('div');
   div.classList.add('Level');
-  div.id = 'level1';
+  div.id = id;
+  div.nextId = 'level1';
 
   [
     new Game.Entity({
@@ -32,6 +36,10 @@
     div.appendChild(entity);
   });
 
-  Game.levels[div.id] = div;
+  return div;
+
+};
+
+Game.levels[id] = level;
 
 })();

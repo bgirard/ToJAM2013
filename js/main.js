@@ -82,7 +82,8 @@
     document.addEventListener('keydown', handleKeyEvent.bind(undefined, true));
     document.addEventListener('keyup', handleKeyEvent.bind(undefined, false));
 
-    document.getElementById('gameboard').appendChild(Game.levels['level1']);
+    console.log(Game.levels['level1']());
+    document.getElementById('gameboard').appendChild(Game.levels['level1']());
 
     var frame = 0;
     var cachedTime = Date.now();
