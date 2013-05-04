@@ -105,7 +105,7 @@
   var tmp = 0;
 
   var logic = {
-    player: function(dt) {
+    motion: function(dt) {
       if(this.velX > 0) {
         this.velX = Math.max(0, this.velX - Math.max(0, dt * this.drag * Math.sin(this.rotation * degToRad)));
       } else {

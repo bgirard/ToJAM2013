@@ -16,7 +16,10 @@ function level() {
       width: 128,
       height: 128,
       rotationVel: 0.3,
-      img: "images/wormhole.png"
+      img: "images/wormhole.png",
+      update: function(dt) {
+        Game.logic.motion.call(this, dt);
+      }
     })
   , new Game.Entity({
       classes: ['Player'],
@@ -29,7 +32,9 @@ function level() {
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
       spriteMaxFrameX: 4,
-      update: Game.logic.player
+      update: function(dt) {
+        Game.logic.motion.call(this, dt);
+      }
     })
   , new Game.Entity({
       classes: ['Pirate'],
@@ -41,6 +46,9 @@ function level() {
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
       spriteMaxFrameX: 4,
+      update: function(dt) {
+        Game.logic.motion.call(this, dt);
+      }
     })
   , new Game.Entity({
       classes: ['Pirate'],
@@ -52,6 +60,9 @@ function level() {
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
       spriteMaxFrameX: 4,
+      update: function(dt) {
+        Game.logic.motion.call(this, dt);
+      }
     })
   , new Game.Entity({
       classes: ['Pirate'],
@@ -63,6 +74,9 @@ function level() {
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
       spriteMaxFrameX: 4,
+      update: function(dt) {
+        Game.logic.motion.call(this, dt);
+      }
     })
   , new Game.Entity({
       classes: ['Bounds'],
