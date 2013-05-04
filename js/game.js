@@ -4,6 +4,11 @@
     return Math.max(min, Math.min(number, max));
   }
 
+  function sign(number) {
+    if(0 === number) return 0;
+    return (number/Math.abs(number) > 0) ? 1 : -1;
+  }
+
   function extend(obj) {
     each(slice.call(arguments, 1), function(source) {
       if (source) {
@@ -46,6 +51,8 @@
     div.velX = 0.0;
     div.velY = 0.0;
     div.maxVel = 0.1;
+    div.drag = 0.0001;
+    div.accel = 0.01;
     div.rotation = 0;
 
     // Sprite properties
@@ -55,10 +62,26 @@
     div.frameTimeRemaining = div.spriteFrameTime;
 
     div.update = function update(dt) {
+      if(div.velX > 0) {
+        div.velX = Math.max(0, div.velX - dt * div.drag);
+      } else {
+        div.velX = Math.min(0, div.velX + dt * div.drag);
+      }
+
+      if(div.velY > 0) {
+        div.velY = Math.max(0, div.velY - dt * div.drag);
+      } else {
+        div.velY = Math.min(0, div.velY + dt * div.drag);
+      }
+
       div.velX = clamp(div.velX, -div.maxVel, div.maxVel);
       div.velY = clamp(div.velY, -div.maxVel, div.maxVel);
+
+      console.log(div.velX, div.velY);
+
       div.x += dt * div.velX;
       div.y += dt * div.velY;
+
       div.frameTimeRemaining -= dt;
 
       if (div.frameTimeRemaining < 0) {
