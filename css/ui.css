@@ -63,6 +63,13 @@ html, body {
   visibility: visible;
 }
 
+.hud-element .button {
+  color: #fff;
+  text-align: center;
+  font-family: 'VT323', cursive;
+  font-size: 2em;
+}
+
 .hud-element .front {
   position: absolute;
   z-index: 2;
@@ -127,10 +134,16 @@ html, body {
   border: 1px solid #080;
   border-radius: 10px;
   top: 20px;
+  line-height: 50px;
+  -webkit-transition: 0.1s background-color;
+     -moz-transition: 0.1s background-color;
+      -ms-transition: 0.1s background-color;
+       -o-transition: 0.1s background-color;
+          transition: 0.1s background-color;
 }
 
 .hud-element.thruster .button.on {
-  background-color: rgba(0, 100, 0, 0.5);
+  background-color: rgba(0, 100, 0, 0.8);
 }
 
 .hud-element.thruster.left .button {

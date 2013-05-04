@@ -4,6 +4,7 @@
     var hudContainer = initOptions.hudContainer;
     var consoleTextArea = hudContainer.querySelector('.hud-element.console > textarea');
 
+    var playerKeyCodes = initOptions.playerKeyCodes;
     var playerKeyStates = initOptions.playerKeyStates;
     var playerKeyMap = initOptions.playerKeyStates;
 
@@ -24,6 +25,10 @@
       'up': upThrusterButton,
       'down': downThrusterButton
     };
+
+    Object.keys(playerKeyMap).forEach(function(mapping, index){
+      buttonMap[mapping].innerHTML = String.fromCharCode(playerKeyCodes[index]);
+    });
 
     function writeConsoleLine (str) {
       consoleTextArea.innerHTML = str + consoleTextArea.innerHTML;

@@ -5,8 +5,7 @@ html, body {
   margin: 0;
   background: #000;
   color: #fff;
-  /*font-family: 'Squada One', cursive;*/
-  font-family: 'VT323', cursive;
+  font-family: 'Squada One', cursive;
   font-size: 36pt;
   overflow: hidden;
   font-weight: normal;

@@ -5,7 +5,8 @@
     83: 'S',
     87: 'W'
   };
-  var keycodes = Object.keys(keymap);
+  
+  var playerKeyCodes = Object.keys(keymap);
 
   function nullFunction () {}
 
@@ -14,8 +15,8 @@
     var code = evt.keyCode;
     callback = callback || nullFunction;
 
-    for(i = 0, l = keycodes.length; i < l; ++ i) {
-      if(code == keycodes[i]) {
+    for(i = 0, l = playerKeyCodes.length; i < l; ++ i) {
+      if(code == playerKeyCodes[i]) {
         var key = keymap[code];
         var playerKey = playerKeyMap[key];
         playerKeyStates[playerKey] = state;
@@ -88,6 +89,7 @@
 
     var bossOs = new BossOs({
       hudContainer: document.querySelector('#hud'),
+      playerKeyCodes: playerKeyCodes,
       playerKeyMap: playerKeyMap,
       playerKeyStates: playerKeyStates
     });
