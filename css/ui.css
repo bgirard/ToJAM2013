@@ -80,6 +80,12 @@ html, body {
   text-align: center;
   font-family: 'VT323', cursive;
   font-size: 2em;
+  background-image: url('../images/hud/keyBox.png');
+  width: 50px;
+  height: 50px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: 0 0;
 }
 
 .hud-element .front {
@@ -110,7 +116,7 @@ html, body {
   height: 400px;
 }
 
-.hud-element.thruster div {
+.hud-element.thruster > div {
   width: 100%;
   height: 100%;
   background-position: 0 100%;
@@ -141,9 +147,6 @@ html, body {
 
 .hud-element.thruster .button {
   position: absolute;
-  width: 50px;
-  height: 50px;
-  border: 1px solid #080;
   border-radius: 10px;
   top: 20px;
   line-height: 50px;
@@ -202,19 +205,25 @@ html, body {
 
 .hud-element.console {
   width: 40%;
-  height: 15%;
-  bottom: 10%;
+  height: 20%;
+  bottom: 5%;
   right: 50%;
   margin-right: -20%;
   overflow: hidden;
+  background-color: rgba(120, 120, 120, 0.8);
 }
 
-.hud-element.console > textarea {
-  width: 100%;
-  height: 100%;
-  border: 0;
+.hud-element.console > .textarea {
+  position: absolute;
+  top: 0px;
+  left: 1px;
+  right: 1px;
+  padding: 3px;
+  bottom: -10px;
   background: transparent;
   color: #bbb;
   overflow: hidden;
   font-family: courier;
+  font-size: 8pt;
+  border: 1px solid #bbb;
 }

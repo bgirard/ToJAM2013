@@ -1,12 +1,13 @@
 (function(){
 
+  var COMPY_PRINT_SPEED = 10;
+
   window.BossOs = function (initOptions) {
     var hudContainer = initOptions.hudContainer;
-    var consoleTextArea = hudContainer.querySelector('.hud-element.console > textarea');
+    var consoleTextArea = hudContainer.querySelector('.hud-element.console > .textarea');
 
-    var playerKeyCodes = initOptions.playerKeyCodes;
     var playerKeyStates = initOptions.playerKeyStates;
-    var playerKeyMap = initOptions.playerKeyStates;
+    var playerKeyMap = initOptions.playerKeyMap;
 
     var leftThruster = hudContainer.querySelector('.left.thruster');
     var rightThruster = hudContainer.querySelector('.right.thruster');
@@ -26,12 +27,24 @@
       'down': downThrusterButton
     };
 
-    Object.keys(playerKeyMap).forEach(function(mapping, index){
-      buttonMap[mapping].innerHTML = String.fromCharCode(playerKeyCodes[index]);
+    var keys = Object.keys(playerKeyMap);
+    keys.forEach(function(key){
+      var action = playerKeyMap[key];
+      buttonMap[action].innerHTML = key;
     });
 
     function writeConsoleLine (str) {
-      consoleTextArea.innerHTML = str + consoleTextArea.innerHTML;
+      var line = document.createElement('div');
+      var strIndex = 0;
+      line.className = 'line';
+      line.innerHTML = '';
+      consoleTextArea.insertBefore(line, consoleTextArea.firstChild);
+      var lineInterval = setInterval(function(){
+        line.innerHTML = line.innerHTML + str[strIndex++];
+        if (strIndex === str.length) {
+          clearInterval(lineInterval);
+        }
+      }, COMPY_PRINT_SPEED);
     }
 
     this.update = function (playerEntity) {
@@ -45,7 +58,7 @@
           buttonMap[key].classList.add('on');
         }
         else {
-          buttonMap[key].classList.remove('on'); 
+          buttonMap[key].classList.remove('on');
         }
       }
     };
@@ -60,8 +73,21 @@
       return false;
     };
 
-    writeConsoleLine("BossOS v0.29 (c) 2184 -- DO NOT DISTRIBUTE");
-    writeConsoleLine("");
+    var bossScript = [
+      [1, function() { writeConsoleLine('BossOS v0.29 (c) 2184 -- DO NOT DISTRIBUTE\n'); }],
+      [2, function() { writeConsoleLine('Loading kernel modules...'); }],
+      [2, function() { writeConsoleLine('Restoring consciousness. DO NOT POWER OFF.'); }]
+    ];
+
+    function stepBossAI () {
+      var step = bossScript.shift();
+      if (step) {
+        step[1]();
+        setTimeout(stepBossAI, step[0] * 1000); // convert from ms -> seconds
+      }
+    }
+
+    stepBossAI();
   };
 
 }());

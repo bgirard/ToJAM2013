@@ -1,31 +1,4 @@
 (function(){
-  var keymap = {
-    65: 'A',
-    68: 'D',
-    83: 'S',
-    87: 'W'
-  };
-  
-  var playerKeyCodes = Object.keys(keymap);
-
-  function nullFunction () {}
-
-  function handleKeyEvent(state, callback, evt) {
-    var i;
-    var code = evt.keyCode;
-    callback = callback || nullFunction;
-
-    for(i = 0, l = playerKeyCodes.length; i < l; ++ i) {
-      if(code == playerKeyCodes[i]) {
-        var key = keymap[code];
-        var playerKey = playerKeyMap[key];
-        playerKeyStates[playerKey] = state;
-        callback(playerKey, state);
-        return;
-      }
-    }
-  };
-
   var playerKeyMap = {
     'A': 'left',
     'D': 'right',
@@ -38,6 +11,20 @@
     'right': false,
     'up': false,
     'down': false
+  };
+
+  function nullFunction () {}
+
+  function handleKeyEvent(state, callback, evt) {
+    var i;
+    var key = String.fromCharCode(evt.keyCode);
+    callback = callback || nullFunction;
+
+    if(playerKeyMap.hasOwnProperty(key)) {
+      var action = playerKeyMap[key];
+      playerKeyStates[action] = state;
+      callback(action, state);
+    }
   };
 
   /**
@@ -89,7 +76,6 @@
 
     var bossOs = new BossOs({
       hudContainer: document.querySelector('#hud'),
-      playerKeyCodes: playerKeyCodes,
       playerKeyMap: playerKeyMap,
       playerKeyStates: playerKeyStates
     });
