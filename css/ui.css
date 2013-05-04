@@ -176,15 +176,16 @@ html, body {
 
 .hud-element.thruster,
 .hud-element.thruster {
-  width: 100px;
-  height: 400px;
+  width: 60px;
+  height: 300px;
 }
 
 .hud-element.thruster .front,
 .hud-element.thruster .back {
   bottom: 0;
-  width: 100px;
-  height: 400px;
+  width: 60px;
+  height: 300px;
+  background-size: 60px 300px;
 }
 
 .hud-element.thruster > div {
@@ -228,7 +229,7 @@ html, body {
 }
 
 .hud-element.thruster.left .button {
-  left: 110px;
+  right: -55px;
 }
 
 .hud-element.thruster.left .button:nth-child(2) {
@@ -236,7 +237,7 @@ html, body {
 }
 
 .hud-element.thruster.right .button {
-  right: 110px;
+  left: -55px;
 }
 
 .hud-element.thruster.right .button:nth-child(2) {
