@@ -7,6 +7,8 @@
     'SPACE': 'fire',
     'P': 'power',
     'T': 'shield',
+    'M': 'missile',
+    'L': 'laser'
   };
   var playerKeyStates = {};
   Object.keys(playerKeyMap).forEach(function(key) {
