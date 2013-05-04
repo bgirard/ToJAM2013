@@ -14,6 +14,9 @@
     playerKeyStates[action] = false;
   });
 
+  Game.playerKeyMap = playerKeyMap;
+  Game.playerKeyStates = playerKeyStates;
+
   function nullFunction () {}
 
   function handleKeyEvent(state, callback, evt) {
@@ -139,6 +142,13 @@
 
       // Update entities
       var entities = level.getElementsByClassName('Entity');
+
+      for(i = 0, l = entities.length; i < l; ++ i) {
+        var entity = entities[i];
+        if('function' === typeof entity.ai)
+          entity.ai(dt);
+      }
+
       for(i = 0, l = entities.length; i < l; ++ i) {
         var entity = entities[i];
         if('function' === typeof entity.update)
