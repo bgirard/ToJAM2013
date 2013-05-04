@@ -15,15 +15,18 @@
     var leftThrusterFront = leftThruster.querySelector('.front');
     var rightThrusterFront = rightThruster.querySelector('.front');
 
-    var speedThrusterFront = hudContainer.querySelector('.speed .front');
+    var speedThruster = hudContainer.querySelector('.speed');
+    var speedThrusterFront = speedThruster.querySelector('.front');
 
     var buttonMap = {
       'left': leftThruster.querySelector('.button:nth-child(1)'),
-      'right': leftThruster.querySelector('.button:nth-child(2)'),
-      'up': rightThruster.querySelector('.button:nth-child(1)'),
-      'down': rightThruster.querySelector('.button:nth-child(2)'),
-      'power': hudContainer.querySelector('.power'),
-      'shield': hudContainer.querySelector('.shield')
+      'right': rightThruster.querySelector('.button:nth-child(1)'),
+      'up': speedThruster.querySelector('.button:nth-child(1)'),
+      'down': speedThruster.querySelector('.button:nth-child(2)'),
+      // 'power': hudContainer.querySelector('.power'),
+      // 'shield': hudContainer.querySelector('.shield'),
+      'laser': hudContainer.querySelector('.weapon-1 .button'),
+      'missile': hudContainer.querySelector('.weapon-2 .button')
     };
 
     var keys = Object.keys(playerKeyMap);
@@ -53,8 +56,8 @@
       x *= x;
       y *= y;
 
-      rightThrusterFront.style.height = Math.min(1, Math.max(0, -playerEntity.rotationVel / playerEntity.maxRotationVel)) * 100 + '%';
-      leftThrusterFront.style.height = Math.min(1, Math.max(0, playerEntity.rotationVel / playerEntity.maxRotationVel)) * 100 + '%';
+      leftThrusterFront.style.height = Math.min(1, Math.max(0, -playerEntity.rotationVel / playerEntity.maxRotationVel)) * 100 + '%';
+      rightThrusterFront.style.height = Math.min(1, Math.max(0, playerEntity.rotationVel / playerEntity.maxRotationVel)) * 100 + '%';
 
       var s = Math.min(1, Math.max(0, Math.abs(playerEntity.velY) / playerEntity.maxVel));
       speedThrusterFront.style.height = s * 100 + '%';

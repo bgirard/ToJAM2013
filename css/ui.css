@@ -88,9 +88,15 @@ html, body {
   background-image: url('../images/hud/keyBox.png');
   width: 50px;
   height: 50px;
+  line-height: 50px;
   background-repeat: no-repeat;
   background-size: contain;
   background-position: 0 0;
+  border-radius: 10px;
+}
+
+.hud-element .button.on {
+  background-color: rgba(0, 100, 0, 0.8);
 }
 
 .hud-element .front {
@@ -111,8 +117,13 @@ html, body {
 .hud-element.speed {
   width: 70px;
   height: 350px;
-  bottom: -150px;
+  bottom: -140px;
   left: 50%;
+}
+
+.hud-element.speed .meter-container {
+  width: 70px;
+  height: 350px;
   margin-left: -35px;
   -webkit-transform: rotate(90deg);
      -moz-transform: rotate(90deg);
@@ -143,6 +154,24 @@ html, body {
   background-position: 0 50%;
   background-repeat: no-repeat;
   background-image: url('../images/hud/boosterBarSmallEmpty.png');
+}
+
+.hud-element.speed .buttons {
+  position: absolute;
+  top: 150px;
+}
+
+.hud-element.speed .button {
+  position: absolute;
+}
+
+
+.hud-element.speed .button:nth-child(1) {
+  left: 180px;
+}
+
+.hud-element.speed .button:nth-child(2) {
+  right: 180px;
 }
 
 .hud-element.thruster,
@@ -189,7 +218,6 @@ html, body {
 
 .hud-element.thruster .button {
   position: absolute;
-  border-radius: 10px;
   top: 20px;
   line-height: 50px;
   -webkit-transition: 0.1s background-color;
@@ -197,10 +225,6 @@ html, body {
       -ms-transition: 0.1s background-color;
        -o-transition: 0.1s background-color;
           transition: 0.1s background-color;
-}
-
-.hud-element.thruster .button.on {
-  background-color: rgba(0, 100, 0, 0.8);
 }
 
 .hud-element.thruster.left .button {
@@ -220,15 +244,72 @@ html, body {
 }
 
 .hud-element.weapon-1 {
-  width: 20%;
-  height: 15%;
-  right: 55%;
+  top: 0;
+  left: 50%;
+}
+
+.hud-element.weapon-1 .button {
+  position: relative;
+  top: 20px;
+}
+
+.hud-element.weapon-1 .front {
+  left: 45px;
+  width: 90px;
+  height: 200px;
+  background-image: url('../images/hud/missleFull.png');
+  background-repeat: no-repeat;
+  background-size: 50% 50%;
+  -webkit-transition: 0.1s height;
+     -moz-transition: 0.1s height;
+      -ms-transition: 0.1s height;
+       -o-transition: 0.1s height;
+          transition: 0.1s height;
+}
+
+.hud-element.weapon-1 .back {
+  left: 45px;
+  width: 90px;
+  height: 200px;
+  background-image: url('../images/hud/missleEmpty.png');
+  background-repeat: no-repeat;
+  background-size: 50% 50%;
 }
 
 .hud-element.weapon-2 {
-  width: 20%;
-  height: 15%;
-  left: 55%;
+  top: 0;
+  right: 50%;
+}
+
+.hud-element.weapon-2 .button {
+  position: relative;
+  top: 20px;
+}
+
+.hud-element.weapon-2 .button {
+}
+
+.hud-element.weapon-2 .front {
+  left: -65px;
+  width: 129px;
+  height: 200px;
+  background-image: url('../images/hud/lasersFull.png');
+  -webkit-transition: 0.1s height;
+     -moz-transition: 0.1s height;
+      -ms-transition: 0.1s height;
+       -o-transition: 0.1s height;
+          transition: 0.1s height;
+  background-repeat: no-repeat;
+  background-size: 50% 50%;
+}
+
+.hud-element.weapon-2 .back {
+  left: -65px;
+  width: 129px;
+  height: 200px;
+  background-image: url('../images/hud/lasersEmpty.png');
+  background-repeat: no-repeat;
+  background-size: 50% 50%;
 }
 
 .hud-element.power {
