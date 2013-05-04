@@ -33,6 +33,10 @@
       id: "player",
       x: 100,
       y: 100,
+      width: 288 / 4,
+      height: 72,
+      img: "images/ship1.png",
+      spriteFrameX: 0,
     });
     level.appendChild(player);
 
