@@ -108,7 +108,8 @@
       }
 
       // Collisions
-      collisionDetection("Player", "Pirate", function() {
+      collisionDetection("Player", "Wormhole", function() {
+        document.title = "next level";
       });
 
       bossOs.update();
