@@ -219,13 +219,13 @@
         // Thrust
         var newVelX = playerEntity.velX;
         var newVelY = playerEntity.velY;
-        
+
         if (thustDirSign) {
           newVelX = playerEntity.velX + thustDirSign * dt * playerEntity.accel * -Math.sin(playerEntity.rotation * degToRad);
           newVelY = playerEntity.velY + thustDirSign * dt * playerEntity.accel * Math.cos(playerEntity.rotation * degToRad);
         }
 
-        // Clamping & Damping 
+        // Clamping & Damping
         var velMag = Math.sqrt(newVelX*newVelX + newVelY*newVelY);
         if (velMag != 0) {
           //console.log("1: " + (newVelX/velMag));
@@ -234,7 +234,7 @@
 
           playerEntity.velX = dampVelX;
           playerEntity.velY = dampVelY;
-          console.log("2: " + dampVelX);
+          // console.log("2: " + dampVelX);
         }
 
       }
