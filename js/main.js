@@ -81,7 +81,9 @@
       width: 288 / 4,
       height: 72,
       img: "images/ship1.png",
+      spriteFrameTime: 100, //ms
       spriteFrameX: 0,
+      spriteMaxFrameX: 4,
     });
     level.appendChild(player);
 

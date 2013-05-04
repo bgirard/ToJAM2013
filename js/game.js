@@ -47,16 +47,28 @@
     div.velY = 0.0;
     div.maxVel = 0.1;
     div.rotation = 0;
+
+    // Sprite properties
     div.spriteFrameX = options.spriteFrameX;
     div.spriteFrameY = options.spriteFrameY;
+    div.spriteFrameTime = options['spriteFrameTime'] || 100;
+    div.frameTimeRemaining = div.spriteFrameTime;
 
     div.update = function update(dt) {
       div.velX = clamp(div.velX, -div.maxVel, div.maxVel);
       div.velY = clamp(div.velY, -div.maxVel, div.maxVel);
       div.x += dt * div.velX;
       div.y += dt * div.velY;
-      if (div.spriteFrameX != null) {
-        div.spriteFrameX++;
+      div.frameTimeRemaining -= dt;
+
+      if (div.frameTimeRemaining < 0) {
+        if (div.spriteFrameX != null) {
+          div.spriteFrameX = (div.spriteFrameX + 1) % options.spriteMaxFrameX;
+        }
+        if (div.spriteFrameY != null) {
+          div.spriteFrameY = (div.spriteFrameY + 1) % options.spriteMaxFrameY;
+        }
+        div.frameTimeRemaining = div.spriteFrameTime;
       }
     };
 
