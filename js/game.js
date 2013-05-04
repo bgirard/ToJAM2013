@@ -5,6 +5,7 @@
   function clamp(number, min, max) {
     return Math.max(min, Math.min(number, max));
   }
+  window.clamp = clamp;
 
   function sign(number) {
     if(0 === number) return 0;
@@ -62,14 +63,16 @@
     div.y = options['y'] || 0;
     div.velX = 0.0;
     div.velY = 0.0;
-    div.maxVel = 0.5;
-    div.drag = 0.005;
+    div.velMax = 0.5;
+    div.drag = 0.000;
     div.accel = 0.01;
     div.rotation = 0;
     div.rotationVel = options['rotationVel'] || 0;
-    div.rotationAccel = options['rotationAccel'] || 0.2;
+    div.rotationAccel = options['rotationAccel'] || 0.002;
     div.rotationDrag = 0.15;
     div.maxRotationVel = .2;
+    div.velDamp = 0.1;
+    div.rotationDamp = 0.1;
     div.scaling = options['scaling'];
     div.update = options['update'] ? options['update'].bind(div) : undefined;
     div.ai = options['ai'] ? options['ai'].bind(div) : undefined;
@@ -79,6 +82,10 @@
     div.spriteFrameY = options.spriteFrameY;
     div.spriteFrameTime = options['spriteFrameTime'] || 100;
     div.frameTimeRemaining = div.spriteFrameTime;
+
+    // Weapon properties
+    div.weaponReloadTime = 1000;
+    div.weaponCooldown = 0;
 
     div.render = function render() {
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
@@ -119,9 +126,6 @@
         this.velY = Math.min(0, this.velY + Math.max(0, dt * this.drag * Math.cos(this.rotation * degToRad)));
       }
 
-      this.velX = clamp(this.velX, -this.maxVel, this.maxVel);
-      this.velY = clamp(this.velY, -this.maxVel, this.maxVel);
-
       this.x += dt * this.velX;
       this.y += dt * this.velY;
 
@@ -138,11 +142,26 @@
         this.frameTimeRemaining = this.spriteFrameTime;
       }
     },
+    weapon: function(dt) {
+      this.weaponCooldown = Math.max(0, this.weaponCooldown - dt);
+      if(Game.playerKeyStates.fire && !this.weaponCooldown) {
+        this.weaponCooldown = this.weaponReloadTime;
+        document.spawn(new Game.Entity({
+          classes: ['Bullet'],
+          x: this.x,
+          y: this.y,
+          img: "images/bullet1.png",
+          width: 16,
+          height: 16
+        }));
+      }
+    },
     default: function(dt) {
       logic.motion.call(this, dt);
     },
     player: function(dt) {
       logic.motion.call(this, dt);
+      logic.weapon.call(this, dt);
     }
   };
 

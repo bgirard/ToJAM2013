@@ -24,8 +24,8 @@ function level() {
       id: 'player',
       x: 100,
       y: 100,
-      width: 80,
-      height: 80,
+      width: 70,
+      height: 60,
       img: "images/ships/ship.png",
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
@@ -36,12 +36,24 @@ function level() {
       classes: ['Pirate'],
       x: 200,
       y: 200,
-      width: 288 / 4,
-      height: 72,
-      img: "images/ship1.png",
+      width: 80,
+      height: 62,
+      img: "images/ships/enemy1.png",
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
-      spriteMaxFrameX: 4,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 300,
+      y: 200,
+      width: 80,
+      height: 62,
+      img: "images/ships/enemy2.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
       update: Game.logic.default,
     })
   , new Game.Entity({
