@@ -127,7 +127,7 @@
         }
         var degToRad = 0.0174532925;
         if (deltaV != 0) {
-          console.log(Math.sin(playerEntity.rotation * degToRad));
+          // console.log(Math.sin(playerEntity.rotation * degToRad));
           playerEntity.velX += dt * deltaV * -Math.sin(playerEntity.rotation * degToRad);
           playerEntity.velY += dt * deltaV * Math.cos(playerEntity.rotation * degToRad);
         }

@@ -1,5 +1,7 @@
 (function(){
 
+  var degToRad = 0.0174532925;
+
   function clamp(number, min, max) {
     return Math.max(min, Math.min(number, max));
   }
@@ -39,6 +41,7 @@
     var extraClasses = options['classes'] || [];
 
     var div = document.createElement('div');
+    div.options = options;
     div.classList.add('Entity');
     extraClasses.forEach(function(className) {
       div.classList.add(className);
@@ -65,15 +68,13 @@
     div.rotationVel = options['rotationVel'] || 0;
     div.rotationAccel = options['rotationAccel'] || 0.2;
     div.scaling = options['scaling'];
-    div.update = options['update'] || undefined;
+    div.update = options['update'] ? options['update'].bind(div) : undefined;
 
     // Sprite properties
     div.spriteFrameX = options.spriteFrameX;
     div.spriteFrameY = options.spriteFrameY;
     div.spriteFrameTime = options['spriteFrameTime'] || 100;
     div.frameTimeRemaining = div.spriteFrameTime;
-
-    var degToRad = 0.0174532925;
 
     div.render = function render() {
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
@@ -102,35 +103,35 @@
 
   var logic = {
     player: function(dt) {
-      if(div.velX > 0) {
-        div.velX = Math.max(0, div.velX - Math.max(0, dt * div.drag * Math.sin(div.rotation * degToRad)));
+      if(this.velX > 0) {
+        this.velX = Math.max(0, this.velX - Math.max(0, dt * this.drag * Math.sin(this.rotation * degToRad)));
       } else {
-        div.velX = Math.min(0, div.velX + Math.max(0, dt * div.drag * -Math.sin(div.rotation * degToRad)));
+        this.velX = Math.min(0, this.velX + Math.max(0, dt * this.drag * -Math.sin(this.rotation * degToRad)));
       }
 
-      if(div.velY > 0) {
-        div.velY = Math.max(0, div.velY - Math.max(0, dt * div.drag * -Math.cos(div.rotation * degToRad)));
+      if(this.velY > 0) {
+        this.velY = Math.max(0, this.velY - Math.max(0, dt * this.drag * -Math.cos(this.rotation * degToRad)));
       } else {
-        div.velY = Math.min(0, div.velY + Math.max(0, dt * div.drag * Math.cos(div.rotation * degToRad)));
+        this.velY = Math.min(0, this.velY + Math.max(0, dt * this.drag * Math.cos(this.rotation * degToRad)));
       }
 
-      div.velX = clamp(div.velX, -div.maxVel, div.maxVel);
-      div.velY = clamp(div.velY, -div.maxVel, div.maxVel);
+      this.velX = clamp(this.velX, -this.maxVel, this.maxVel);
+      this.velY = clamp(this.velY, -this.maxVel, this.maxVel);
 
-      div.x += dt * div.velX;
-      div.y += dt * div.velY;
+      this.x += dt * this.velX;
+      this.y += dt * this.velY;
 
-      div.frameTimeRemaining -= dt;
-      div.rotation = (div.rotation + div.rotationVel * dt) % 360;
+      this.frameTimeRemaining -= dt;
+      this.rotation = (this.rotation + this.rotationVel * dt) % 360;
 
-      if (div.frameTimeRemaining < 0) {
-        if (div.spriteFrameX != null) {
-          div.spriteFrameX = (div.spriteFrameX + 1) % options.spriteMaxFrameX;
+      if (this.frameTimeRemaining < 0) {
+        if (this.spriteFrameX != null) {
+          this.spriteFrameX = (this.spriteFrameX + 1) % this.options.spriteMaxFrameX;
         }
-        if (div.spriteFrameY != null) {
-          div.spriteFrameY = (div.spriteFrameY + 1) % options.spriteMaxFrameY;
+        if (this.spriteFrameY != null) {
+          this.spriteFrameY = (this.spriteFrameY + 1) % this.options.spriteMaxFrameY;
         }
-        div.frameTimeRemaining = div.spriteFrameTime;
+        this.frameTimeRemaining = this.spriteFrameTime;
       }
     }
   };
