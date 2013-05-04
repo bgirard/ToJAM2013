@@ -87,6 +87,29 @@
     div.weaponReloadTime = 1000;
     div.weaponCooldown = 0;
 
+    div.thrust = function thrust(div, dt, dirAngle, thrustDirSign) {
+      // Thrust
+      var newVelX = div.velX;
+      var newVelY = div.velY;
+
+      if (thrustDirSign) {
+        newVelX = div.velX + thrustDirSign * dt * div.accel * -Math.sin(dirAngle * degToRad);
+        newVelY = div.velY + thrustDirSign * dt * div.accel * Math.cos(dirAngle * degToRad);
+      }
+
+      // Clamping & Damping
+      var velMag = Math.sqrt(newVelX*newVelX + newVelY*newVelY);
+
+      if (velMag != 0) {
+        //console.log("1: " + (newVelX/velMag));
+        var dampVelX = window.clamp(velMag * Math.pow(div.velDamp, dt/1000), -div.velMax, div.velMax) * (newVelX/velMag);
+        var dampVelY = window.clamp(velMag * Math.pow(div.velDamp, dt/1000), -div.velMax, div.velMax) * (newVelY/velMag);
+
+        div.velX = dampVelX;
+        div.velY = dampVelY;
+      }
+    }
+
     div.render = function render() {
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
       div.style.top = (div.y - window.Game.Camera.y()) + 'px';
@@ -155,6 +178,12 @@
           height: 16
         }));
       }
+    },
+    ai: function(dt) {
+      if (this.shift == null) {
+        this.shift = Math.random() * 5;
+      }
+      this.rotation = 90 * Math.sin(this.shift + Date.now()/1000);
     },
     default: function(dt) {
       logic.motion.call(this, dt);

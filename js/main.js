@@ -158,6 +158,8 @@
   window.onload = function (e) {
     console.log('game start!');
 
+    window.bgOffsetX = 0;
+    window.bgOffsetY = 0;
     var bossOs = new BossOs({
       hudContainer: document.querySelector('#hud'),
       playerKeyMap: playerKeyMap,
@@ -216,26 +218,7 @@
           thrustDirSign = -1;
         }
 
-        // Thrust
-        var newVelX = playerEntity.velX;
-        var newVelY = playerEntity.velY;
-        
-        if (thrustDirSign) {
-          newVelX = playerEntity.velX + thrustDirSign * dt * playerEntity.accel * -Math.sin(playerEntity.rotation * degToRad);
-          newVelY = playerEntity.velY + thrustDirSign * dt * playerEntity.accel * Math.cos(playerEntity.rotation * degToRad);
-        }
-
-        // Clamping & Damping 
-        var velMag = Math.sqrt(newVelX*newVelX + newVelY*newVelY);
-
-        if (velMag != 0) {
-          //console.log("1: " + (newVelX/velMag));
-          var dampVelX = window.clamp(velMag * Math.pow(playerEntity.velDamp, dt/1000), -playerEntity.velMax, playerEntity.velMax) * (newVelX/velMag);
-          var dampVelY = window.clamp(velMag * Math.pow(playerEntity.velDamp, dt/1000), -playerEntity.velMax, playerEntity.velMax) * (newVelY/velMag);
-
-          playerEntity.velX = dampVelX;
-          playerEntity.velY = dampVelY;
-        }
+        playerEntity.thrust(playerEntity, dt, playerEntity.rotation, thrustDirSign);
 
       }
 
@@ -268,15 +251,19 @@
         // Outside the level
         if (playerEntity.x < bounds.x) {
           playerEntity.x += bounds.width;
+          window.bgOffsetX += bounds.width;
         }
         if (playerEntity.y < bounds.y) {
           playerEntity.y += bounds.height;
+          window.bgOffsetY += bounds.height;
         }
         if (playerEntity.x > bounds.x + bounds.width) {
           playerEntity.x -= bounds.width;
+          window.bgOffsetX -= bounds.width;
         }
         if (playerEntity.y > bounds.y + bounds.height) {
           playerEntity.y -= bounds.height;
+          window.bgOffsetY -= bounds.height;
         }
       }
 
@@ -288,14 +275,14 @@
       }
 
       var x, y;
-      x = -5000 + (-window.Game.Camera.x()/5);
-      y = -5000 + (-window.Game.Camera.y()/5);
+      x = -5000 + (window.bgOffsetX-window.Game.Camera.x())/5;
+      y = -5000 + (window.bgOffsetY-window.Game.Camera.y())/5;
       window.setTransform(document.getElementById("bg3"), "translate(" + x + "px," + y + "px)");
-      x = -5000 + (-window.Game.Camera.x()/10);
-      y = -5000 + (-window.Game.Camera.y()/10);
+      x = -5000 + (window.bgOffsetX-window.Game.Camera.x())/10;
+      y = -5000 + (window.bgOffsetY-window.Game.Camera.y())/10;
       window.setTransform(document.getElementById("bg2"), "translate(" + x + "px," + y + "px)");
-      x = -5000 + (-window.Game.Camera.x()/50);
-      y = -5000 + (-window.Game.Camera.y()/50);
+      x = -5000 + (window.bgOffsetX-window.Game.Camera.x())/50;
+      y = -5000 + (window.bgOffsetY-window.Game.Camera.y())/50;
       window.setTransform(document.getElementById("bg1"), "translate(" + x + "px," + y + "px)");
 
       cachedTime = t;
