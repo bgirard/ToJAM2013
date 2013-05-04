@@ -120,7 +120,8 @@
       y: function() {
         return 0;
       },
-    }
+    },
+    levels: {}
   };
 
   window.Game = Game;
