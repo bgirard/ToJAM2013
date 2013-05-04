@@ -39,7 +39,7 @@
    * invoking the callback with each collision
    */
   function collisionDetection(classOne, classTwo, callback) {
-    var level = document.getElementById("level");
+    var level = document.getElementsByClassName('Level')[0];
     var entities1 = level.getElementsByClassName(classOne);
     var entities2 = level.getElementsByClassName(classTwo);
     for(var i = 0; i < entities1.length; ++i) {
@@ -62,6 +62,14 @@
     return Math.max(min, Math.min(number, max));
   }
 
+  document.getLevel = function getLevel() {
+    return document.getElementsByClassName('Level')[0];
+  };
+
+  document.getPlayer = function getPlayer() {
+    return document.getElementById('player');
+  };
+
   window.onload = function (e) {
     console.log('game start!');
 
@@ -71,49 +79,26 @@
       playerKeyStates: playerKeyStates
     });
 
-    var level = document.getElementById("level");
-
     document.addEventListener('keydown', handleKeyEvent.bind(undefined, true));
     document.addEventListener('keyup', handleKeyEvent.bind(undefined, false));
 
-    var player = new Game.Entity({
-      classes: ['Player'],
-      id: "player",
-      x: 100,
-      y: 100,
-      width: 288 / 4,
-      height: 72,
-      img: "images/ship1.png",
-      spriteFrameTime: 100, //ms
-      spriteFrameX: 0,
-      spriteMaxFrameX: 4,
-    });
-    var pirate = new Game.Entity({
-      classes: ['Pirate'],
-      x: 200,
-      y: 200,
-      width: 288 / 4,
-      height: 72,
-      img: "images/ship1.png",
-      spriteFrameTime: 100, //ms
-      spriteFrameX: 0,
-      spriteMaxFrameX: 4,
-    });
-    level.appendChild(pirate);
-    level.appendChild(player);
+    document.getElementById('gameboard').appendChild(Game.levels['level1']);
 
     var frame = 0;
     var cachedTime = Date.now();
     function main() {
-      window.requestAnimationFrame(main);
+      window.requestAnimFrame(main);
       var t = Date.now();
       var dt = t - cachedTime;
       var i;
       var l;
 
+      var level = document.getElementsByClassName('Level')[0];
       var playerEntity = level.getElementsByClassName('Player')[0];
-      playerEntity.velX += (playerKeyStates.left ? dt * -playerEntity.accel : 0.0) + (playerKeyStates.right ? dt * playerEntity.accel : 0.0);
-      playerEntity.velY += (playerKeyStates.up ? dt * -playerEntity.accel : 0.0) + (playerKeyStates.down ? dt * playerEntity.accel : 0.0);
+      if(playerEntity) {
+        playerEntity.velX += (playerKeyStates.left ? dt * -playerEntity.accel : 0.0) + (playerKeyStates.right ? dt * playerEntity.accel : 0.0);
+        playerEntity.velY += (playerKeyStates.up ? dt * -playerEntity.accel : 0.0) + (playerKeyStates.down ? dt * playerEntity.accel : 0.0);
+      }
 
       // Update entities
       var entities = level.getElementsByClassName('Entity');
@@ -132,9 +117,12 @@
         entities[i].render();
       }
 
+      document.getElementById("bg2").style.backgroundPosition = (-window.Game.Camera.x()/5) + "px " + (-window.Game.Camera.y()/5) + "px";
+      document.getElementById("bg3").style.backgroundPosition = (-window.Game.Camera.x()/2) + "px " + (-window.Game.Camera.y()/2) + "px";
+
       cachedTime = t;
     };
-    window.requestAnimationFrame(main);
+    window.requestAnimFrame(main);
   };
 
 }());
