@@ -62,6 +62,14 @@
     return Math.max(min, Math.min(number, max));
   }
 
+  document.getLevel = function getLevel() {
+    return document.getElementsByClassName('Level')[0];
+  };
+
+  document.getPlayer = function getPlayer() {
+    return document.getElementById('player');
+  };
+
   window.onload = function (e) {
     console.log('game start!');
 
@@ -79,7 +87,7 @@
     var frame = 0;
     var cachedTime = Date.now();
     function main() {
-      window.requestAnimationFrame(main);
+      window.requestAnimFrame(main);
       var t = Date.now();
       var dt = t - cachedTime;
       var i;
@@ -111,7 +119,7 @@
 
       cachedTime = t;
     };
-    window.requestAnimationFrame(main);
+    window.requestAnimFrame(main);
   };
 
 }());
