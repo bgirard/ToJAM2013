@@ -147,6 +147,7 @@ html, body {
 
 .hud-element.thruster .button {
   position: absolute;
+  border-radius: 10px;
   top: 20px;
   line-height: 50px;
   -webkit-transition: 0.1s background-color;

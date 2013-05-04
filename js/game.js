@@ -117,7 +117,7 @@
       }
 
       if (div.scaling != null) {
-        div.style.transform = "scale("+div.scaling+","+div.scaling+")";
+        setTransform(div, "scale("+div.scaling+","+div.scaling+")");
       }
     };
 
