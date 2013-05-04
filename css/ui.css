@@ -11,6 +11,10 @@ html, body {
   padding: 0px;
 }
 
+#player {
+  border: 5px solid black;
+}
+
 #level {
   position: absolute;
   width: 100%;
