@@ -63,7 +63,6 @@
       if (div.spriteFrameX != null || div.spriteFrameY != null) {
         var frameX = div.spriteFrameX || 0;
         var frameY = div.spriteFrameY || 0;
-        console.log(frameX);
         div.style.backgroundPosition = div.width * frameX + "px " + div.height * frameY + "px";
       }
     };
