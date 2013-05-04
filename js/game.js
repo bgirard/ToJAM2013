@@ -58,6 +58,7 @@
     div.y = options['y'] || 0;
     div.velX = 0.0;
     div.velY = 0.0;
+    div.speed = 0;
     div.maxVel = 0.5;
     div.drag = 0.005;
     div.accel = 0.01;

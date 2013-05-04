@@ -45,8 +45,8 @@
     }
 
     this.update = function (playerEntity) {
-      leftThrusterFront.style.height = Math.abs(playerEntity.velX) / playerEntity.maxVel * 100 + '%';
-      rightThrusterFront.style.height = Math.abs(playerEntity.velY) / playerEntity.maxVel * 100 + '%';
+      //leftThrusterFront.style.height = Math.abs(playerEntity.velX) / playerEntity.maxVel * 100 + '%';
+      rightThrusterFront.style.height = playerEntity.speed / playerEntity.maxVel * 100 + '%';
     };
 
     this.playerKeyStateChange = function (key, state) {
