@@ -20,6 +20,16 @@
       rightThruster.querySelector('.front').style.height = Math.abs(playerEntity.velY) / playerEntity.maxVel * 100 + '%';
     };
 
+    consoleTextArea.onmousedown = function (e) {
+      e.preventDefault();
+      return false;
+    };
+
+    consoleTextArea.onselectstart = function (e) {
+      e.preventDefault();
+      return false;
+    };
+
     writeConsoleLine("BossOS v0.29 (c) 2184 -- DO NOT DISTRIBUTE");
     writeConsoleLine("");
   };
