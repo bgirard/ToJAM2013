@@ -63,6 +63,7 @@
     div.accel = 0.01;
     div.rotation = 0;
     div.rotationVel = options['rotationVel'] || 0;
+    div.scaling = options['scaling'];
 
     // Sprite properties
     div.spriteFrameX = options.spriteFrameX;
@@ -113,6 +114,10 @@
         var frameX = div.spriteFrameX || 0;
         var frameY = div.spriteFrameY || 0;
         div.style.backgroundPosition = div.width * frameX + "px " + div.height * frameY + "px";
+      }
+
+      if (div.scaling != null) {
+        div.style.transform = "scale("+div.scaling+","+div.scaling+")";
       }
     };
 
