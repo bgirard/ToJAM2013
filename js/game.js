@@ -87,6 +87,22 @@
     div.weaponReloadTime = 1000;
     div.weaponCooldown = 0;
 
+    div.centerX = function() {
+      return this.x+this.width/2;
+    }
+
+    div.centerY = function() {
+      return this.y+this.height/2;
+    }
+
+    div.faceAngle = function (player) {
+      return Math.atan2(player.y - this.y, player.x - this.x)/degToRad + 90;
+    }
+
+    div.distanceTo = function distanceTo(player) {
+      return Math.sqrt((this.centerX() - player.centerX())*(this.centerX() - player.centerX()) + (this.centerY() - player.centerY())*(this.centerY() - player.centerY()));
+    }
+
     div.thrust = function thrust(div, dt, dirAngle, thrustDirSign) {
       // Thrust
       var newVelX = div.velX;
@@ -180,10 +196,31 @@
       }
     },
     ai: function(dt) {
+      // Seek player
+      var player = document.getElementById("player"); 
+      if (this.distanceTo(player) < 500) {
+        // Aquire player
+        var changeToAngle = this.rotation - this.faceAngle(player);
+        if (changeToAngle > 180) {
+          changeToAngle = 360 - changeToAngle;
+        }
+        if (changeToAngle < -180) {
+          changeToAngle = changeToAngle + 360;
+        }
+        document.title = "Aquire: " + changeToAngle;
+        if (Math.abs(changeToAngle) > 0.1 * dt) {
+          changeToAngle = sign(changeToAngle) * 0.1 * dt;
+        }
+        this.rotation -= changeToAngle % 360;
+      } else {
+        document.title = "not Aquire";
+      }
+      return;
       if (this.shift == null) {
         this.shift = Math.random() * 5;
       }
-      this.rotation = 90 * Math.sin(this.shift + Date.now()/1000);
+      this.rotation = 90 * Math.sin(this.shift + Date.now()/100);
+      this.thrust(this, dt, this.rotation, 1);
     },
     default: function(dt) {
       logic.motion.call(this, dt);
