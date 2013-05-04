@@ -20,6 +20,7 @@
     var key = String.fromCharCode(evt.keyCode);
     callback = callback || nullFunction;
 
+    evt.preventDefault();
     if(playerKeyMap.hasOwnProperty(key)) {
       var action = playerKeyMap[key];
       playerKeyStates[action] = state;
