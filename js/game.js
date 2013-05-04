@@ -61,8 +61,8 @@
 
     div.x = options['x'] || 0;
     div.y = options['y'] || 0;
-    div.velX = 0.0;
-    div.velY = 0.0;
+    div.velX = options['velX'] || 0.0;
+    div.velY = options['velY'] || 0.0;
     div.velMax = 0.5;
     div.drag = 0.000;
     div.accel = 0.01;
@@ -169,13 +169,21 @@
       this.weaponCooldown = Math.max(0, this.weaponCooldown - dt);
       if(Game.playerKeyStates.fire && !this.weaponCooldown) {
         this.weaponCooldown = this.weaponReloadTime;
+        var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
+        var vDirX = Math.sin(degToRad * this.rotation);
+        var vDirY = -Math.cos(degToRad * this.rotation);
         document.spawn(new Game.Entity({
           classes: ['Bullet'],
-          x: this.x,
-          y: this.y,
+          x: this.x + this.width/2 - 8,
+          y: this.y - 16,
+          velX: 2 * this.velMax * vDirX,
+          velY: 2 * this.velMax * vDirY,
           img: "images/bullet1.png",
           width: 16,
-          height: 16
+          height: 16,
+          update: function(dt) {
+            logic.motion.call(this, dt);
+          }
         }));
       }
     },
