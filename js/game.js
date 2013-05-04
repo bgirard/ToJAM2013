@@ -31,6 +31,8 @@
       div.classList.add(className);
     });
     div.id = id;
+    div.width = width;
+    div.height = height;
     if(img) {
       div.style.backgroundImage = "url(" + img + ")";
     } else {
@@ -45,19 +47,29 @@
     div.velY = 0.0;
     div.maxVel = 0.1;
     div.rotation = 0;
+    div.spriteFrameX = options.spriteFrameX;
+    div.spriteFrameY = options.spriteFrameY;
 
     div.update = function update(dt) {
       div.velX = clamp(div.velX, -div.maxVel, div.maxVel);
       div.velY = clamp(div.velY, -div.maxVel, div.maxVel);
       div.x += dt * div.velX;
       div.y += dt * div.velY;
-      div.rotation += 6;
+      if (div.spriteFrameX != null) {
+        div.spriteFrameX++;
+      }
     };
 
     div.render = function render() {
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
       div.style.top = (div.y - window.Game.Camera.y()) + 'px';
       div.style.transform="rotate("+div.rotation+"deg)"
+
+      if (div.spriteFrameX != null || div.spriteFrameY != null) {
+        var frameX = div.spriteFrameX || 0;
+        var frameY = div.spriteFrameY || 0;
+        div.style.backgroundPosition = div.width * frameX + "px " + div.height * frameY + "px";
+      }
     };
 
     return div;
@@ -70,10 +82,10 @@
     Camera: {
       // Fix to the player
       x: function() {
-        return tmp-=0.1;
+        return 0;
       },
       y: function() {
-        return tmp-=0.1;
+        return 0;
       },
     }
   };
