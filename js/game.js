@@ -156,6 +156,12 @@
         }));
       }
     },
+    ai: function(dt) {
+      if (this.shift == null) {
+        this.shift = Math.random() * 5;
+      }
+      this.rotation = 90 * Math.sin(this.shift + Date.now()/1000);
+    },
     default: function(dt) {
       logic.motion.call(this, dt);
     },
