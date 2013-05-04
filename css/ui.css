@@ -18,6 +18,7 @@ html, body {
   margin: 0px;
   padding: 0px;
   overflow: hidden;
+  color: #fff;
 }
 
 .Bounds {
@@ -76,7 +77,6 @@ html, body {
 }
 
 .hud-element .button {
-  color: #fff;
   text-align: center;
   font-family: 'VT323', cursive;
   font-size: 2em;
@@ -190,10 +190,17 @@ html, body {
 }
 
 .hud-element.power {
-  width: 10%;
-  height: 15%;
+  width: 100px;
+  height: 100px;
   left: 0;
   top: 0;
+  background-image: url('../images/hud/power.png');
+  background-position: 0 0;
+  background-size: 100% 100%;
+  line-height: 100px;
+  text-align: center;
+  font-family: 'VT323', cursive;
+  font-size: 2em;
 }
 
 .hud-element.shield {
