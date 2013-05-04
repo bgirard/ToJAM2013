@@ -58,6 +58,10 @@
     }
   }
 
+  function clamp(number, min, max) {
+    return Math.max(min, Math.min(number, max));
+  }
+
   window.onload = function (e) {
     console.log('game start!');
 

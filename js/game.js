@@ -1,5 +1,9 @@
 (function(){
 
+  function clamp(number, min, max) {
+    return Math.max(min, Math.min(number, max));
+  }
+
   function extend(obj) {
     each(slice.call(arguments, 1), function(source) {
       if (source) {
@@ -39,11 +43,12 @@
     div.y = 0;
     div.velX = 0.0;
     div.velY = 0.0;
-    div.maxVelX = 1.0;
-    div.maxVelY = 1.0;
+    div.maxVel = 0.1;
     div.rotation = 0;
 
     div.update = function update(dt) {
+      div.velX = clamp(div.velX, -div.maxVel, div.maxVel);
+      div.velY = clamp(div.velY, -div.maxVel, div.maxVel);
       div.x += dt * div.velX;
       div.y += dt * div.velY;
       div.rotation += 6;
