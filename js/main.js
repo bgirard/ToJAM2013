@@ -212,10 +212,13 @@
 
       var x = -5000 + (-window.Game.Camera.x()/5);
       var y = -5000 + (-window.Game.Camera.y()/5);
-      window.setTransform(document.getElementById("bg2"), "translate(" + x + "px," + y + "px)");
+      window.setTransform(document.getElementById("bg3"), "translate(" + x + "px," + y + "px)");
       var x = -5000 + (-window.Game.Camera.x()/10);
       var y = -5000 + (-window.Game.Camera.y()/10);
-      window.setTransform(document.getElementById("bg3"), "translate(" + x + "px," + y + "px)");
+      window.setTransform(document.getElementById("bg2"), "translate(" + x + "px," + y + "px)");
+      var x = -5000 + (-window.Game.Camera.x()/50);
+      var y = -5000 + (-window.Game.Camera.y()/50);
+      window.setTransform(document.getElementById("bg1"), "translate(" + x + "px," + y + "px)");
 
       cachedTime = t;
     };
