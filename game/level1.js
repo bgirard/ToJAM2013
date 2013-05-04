@@ -23,12 +23,11 @@ function level() {
       id: 'player',
       x: 100,
       y: 100,
-      width: 256,
-      height: 256,
+      width: 80,
+      height: 80,
       img: "images/ships/ship.png",
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
-      scaling: 0.4,
       //spriteMaxFrameX: 4,
     })
   , new Game.Entity({
