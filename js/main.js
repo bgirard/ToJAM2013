@@ -4,18 +4,15 @@
     'D': 'right',
     'W': 'up',
     'S': 'down',
+    'SPACE': 'fire'
     'P': 'power',
     'T': 'shield'
   };
-
-  var playerKeyStates = {
-    'left': false,
-    'right': false,
-    'up': false,
-    'down': false,
-    'power': false,
-    'shield': false
-  };
+  var playerKeyStates = {};
+  Object.keys(playerKeyMap).forEach(function(key) {
+    var action = playerKeyMap[key];
+    playerKeyStates[action] = false;
+  });
 
   function nullFunction () {}
 
@@ -24,6 +21,7 @@
     var key = String.fromCharCode(evt.keyCode);
     callback = callback || nullFunction;
 
+    evt.preventDefault();
     if(playerKeyMap.hasOwnProperty(key)) {
       var action = playerKeyMap[key];
       playerKeyStates[action] = state;
@@ -108,7 +106,7 @@
         if (playerKeyStates.up) {
           deltaV += -playerEntity.accel;
         }
-        
+
         if (playerKeyStates.down) {
           deltaV += playerEntity.accel;
         }
@@ -124,7 +122,7 @@
           console.log(Math.sin(playerEntity.rotation * degToRad));
           playerEntity.velX += dt * deltaV * -Math.sin(playerEntity.rotation * degToRad);
           playerEntity.velY += dt * deltaV * Math.cos(playerEntity.rotation * degToRad);
-        
+
         }
         if (deltaR != 0) {
           playerEntity.rotation += dt * deltaR;
