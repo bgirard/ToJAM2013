@@ -7,11 +7,27 @@
     var playerKeyStates = initOptions.playerKeyStates;
     var playerKeyMap = initOptions.playerKeyStates;
 
+
+    var leftThruster = hudContainer.querySelector('.left.thruster');
+    var rightThruster = hudContainer.querySelector('.right.thruster');
+
     function writeConsoleLine (str) {
       consoleTextArea.innerHTML = str + consoleTextArea.innerHTML;
     }
 
-    this.update = function () {
+    this.update = function (playerEntity) {
+      leftThruster.querySelector('.front').style.height = Math.abs(playerEntity.velX) / playerEntity.maxVel * 100 + '%';
+      rightThruster.querySelector('.front').style.height = Math.abs(playerEntity.velY) / playerEntity.maxVel * 100 + '%';
+    };
+
+    consoleTextArea.onmousedown = function (e) {
+      e.preventDefault();
+      return false;
+    };
+
+    consoleTextArea.onselectstart = function (e) {
+      e.preventDefault();
+      return false;
     };
 
     writeConsoleLine("BossOS v0.29 (c) 2184 -- DO NOT DISTRIBUTE");

@@ -6,7 +6,7 @@ function level() {
   var div = document.createElement('div');
   div.classList.add('Level');
   div.id = id;
-  div.nextId = 'level2';
+  div.nextId = 'level1';
 
   [
     new Game.Entity({
@@ -34,6 +34,28 @@ function level() {
       classes: ['Pirate'],
       x: 200,
       y: 200,
+      width: 288 / 4,
+      height: 72,
+      img: "images/ship1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      spriteMaxFrameX: 4,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 210,
+      y: 210,
+      width: 288 / 4,
+      height: 72,
+      img: "images/ship1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      spriteMaxFrameX: 4,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 230,
+      y: 211,
       width: 288 / 4,
       height: 72,
       img: "images/ship1.png",
