@@ -19,9 +19,13 @@
     var img = options['img'];
     var width = options['width'] || 10;
     var height = options['height'] || 10;
+    var extraClasses = options['classes'] || [];
 
     var div = document.createElement('div');
     div.classList.add('Entity');
+    extraClasses.forEach(function(className) {
+      div.classList.add(className);
+    });
     div.id = id;
     if(img) {
       div.style.backgroundImage = "url(" + img + ")";
@@ -33,8 +37,10 @@
 
     div.x = 0;
     div.y = 0;
-    div.velX = 0;
-    div.velY = 0;
+    div.velX = 0.0;
+    div.velY = 0.0;
+    div.maxVelX = 1.0;
+    div.maxVelY = 1.0;
 
     div.update = function update(dt) {
       div.x += dt * div.velX;
