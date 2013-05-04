@@ -5,6 +5,8 @@
     'W': 'up',
     'S': 'down',
     'SPACE': 'fire'
+    'P': 'power',
+    'T': 'shield'
   };
   var playerKeyStates = {};
   Object.keys(playerKeyMap).forEach(function(key) {
