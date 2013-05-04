@@ -111,8 +111,8 @@
       var l;
 
       var playerEntity = level.getElementsByClassName('Player')[0];
-      playerEntity.velX += (playerKeyStates.left ? -0.01 : 0.0) + (playerKeyStates.right ? 0.01 : 0.0);
-      playerEntity.velY += (playerKeyStates.up ? -0.01 : 0.0) + (playerKeyStates.down ? 0.01 : 0.0);
+      playerEntity.velX += (playerKeyStates.left ? dt * -playerEntity.accel : 0.0) + (playerKeyStates.right ? dt * playerEntity.accel : 0.0);
+      playerEntity.velY += (playerKeyStates.up ? dt * -playerEntity.accel : 0.0) + (playerKeyStates.down ? dt * playerEntity.accel : 0.0);
 
       // Update entities
       var entities = level.getElementsByClassName('Entity');
