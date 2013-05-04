@@ -15,16 +15,13 @@
     var leftThrusterFront = leftThruster.querySelector('.front');
     var rightThrusterFront = rightThruster.querySelector('.front');
 
-    var leftThrusterButton = leftThruster.querySelector('.button:nth-child(1)');
-    var rightThrusterButton = leftThruster.querySelector('.button:nth-child(2)');
-    var upThrusterButton = rightThruster.querySelector('.button:nth-child(1)');
-    var downThrusterButton = rightThruster.querySelector('.button:nth-child(2)');
-
     var buttonMap = {
-      'left': leftThrusterButton,
-      'right': rightThrusterButton,
-      'up': upThrusterButton,
-      'down': downThrusterButton
+      'left': leftThruster.querySelector('.button:nth-child(1)'),
+      'right': leftThruster.querySelector('.button:nth-child(2)'),
+      'up': rightThruster.querySelector('.button:nth-child(1)'),
+      'down': rightThruster.querySelector('.button:nth-child(2)'),
+      'power': hudContainer.querySelector('.power'),
+      'shield': hudContainer.querySelector('.shield')
     };
 
     var keys = Object.keys(playerKeyMap);

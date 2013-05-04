@@ -3,14 +3,18 @@
     'A': 'left',
     'D': 'right',
     'W': 'up',
-    'S': 'down'
+    'S': 'down',
+    'P': 'power',
+    'T': 'shield'
   };
 
   var playerKeyStates = {
     'left': false,
     'right': false,
     'up': false,
-    'down': false
+    'down': false,
+    'power': false,
+    'shield': false
   };
 
   function nullFunction () {}
