@@ -10,6 +10,15 @@ function level() {
 
   [
     new Game.Entity({
+      classes: ['Wormhole'],
+      x: 200,
+      y: -200,
+      width: 128,
+      height: 128,
+      rotationVel: 0.3,
+      img: "images/wormhole.png",
+    })
+  , new Game.Entity({
       classes: ['Player'],
       id: 'player',
       x: 100,
@@ -31,15 +40,6 @@ function level() {
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
       spriteMaxFrameX: 4,
-    })
-  , new Game.Entity({
-      classes: ['Wormhole'],
-      x: 200,
-      y: -200,
-      width: 128,
-      height: 128,
-      rotationVel: 0.3,
-      img: "images/wormhole.png",
     })
   ].forEach(function(entity) {
     div.appendChild(entity);
