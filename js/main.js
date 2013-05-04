@@ -7,14 +7,18 @@
   };
   var keycodes = Object.keys(keymap);
 
-  function handleKeyEvent(state, evt) {
+  function nullFunction () {}
+
+  function handleKeyEvent(state, evt, callback) {
     var i;
     var code = evt.keyCode;
+    callback = callback || nullFunction;
     for(i = 0, l = keycodes.length; i < l; ++ i) {
       if(code == keycodes[i]) {
         var key = keymap[code];
         var playerKey = playerKeyMap[key];
         playerKeyStates[playerKey] = state;
+        callback(playerKey, state);
         return;
       }
     }
