@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>sprite test</title>
+    <style>
+      html {
+        background: #000;
+      }
+    </style>
+    <link rel="stylesheet" href="../css/sprites.css">
+    <script src="../js/game.js"></script>
+    <script src="../js/sprites.js"></script>
+  </head>
+  <body>
+    <div id="test-object-1"></div>
+    <div id="test-object-2"></div>
+    <div id="test-object-3"></div>
+    <script>
+      Game.Sprite.urlPrefix = '../';
+      var s1 = new Game.Sprite(Game.spriteDefinitions.explosion, document.querySelector('#test-object-1'));
+      var s2 = new Game.Sprite(Game.spriteDefinitions.missile, document.querySelector('#test-object-2'));
+      var s3 = new Game.Sprite(Game.spriteDefinitions.laser, document.querySelector('#test-object-3'));
+      setInterval(function(){
+        s1.updateSprite();
+        s2.updateSprite();
+        s3.updateSprite();
+      }, 50);
+    </script>
+  </body>
+</html>
