@@ -89,8 +89,14 @@
 
     var frame = 0;
     var cachedTime = Date.now();
+    var changeLevelOnNextFrame = null;
     function main() {
       window.requestAnimFrame(main);
+
+      if (changeLevelOnNextFrame) {
+        document.setLevel(changeLevelOnNextFrame);
+        changeLevelOnNextFrame = null;
+      }
       var t = Date.now();
       var dt = t - cachedTime;
       var i;
@@ -122,7 +128,6 @@
           console.log(Math.sin(playerEntity.rotation * degToRad));
           playerEntity.velX += dt * deltaV * -Math.sin(playerEntity.rotation * degToRad);
           playerEntity.velY += dt * deltaV * Math.cos(playerEntity.rotation * degToRad);
-
         }
         if (deltaR != 0) {
           playerEntity.rotation += dt * deltaR;
@@ -138,7 +143,7 @@
       // Collisions
       collisionDetection("Player", "Wormhole", function() {
         var nextLevel = document.getLevel().nextId;
-        document.setLevel(Game.levels[nextLevel]());
+        changeLevelOnNextFrame = Game.levels[nextLevel]();
       });
       var hasCol = false;
       collisionDetection("Player", "Bounds", function() {
