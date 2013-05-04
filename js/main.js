@@ -1,4 +1,76 @@
 (function(){
+  /**
+   * @param {Object} obj The Object to iterate through.
+   * @param {function(*, string)} iterator The function to call for each
+   * property.
+   */
+  function forEach(obj, iterator) {
+    var prop;
+    for (prop in obj) {
+      if (obj.hasOwnProperty([prop])) {
+        iterator(obj[prop], prop);
+      }
+    }
+  };
+
+  /**
+   * Create a transposed copy of an Object.
+   *
+   * @param {Object} obj
+   * @return {Object}
+   */
+  function getTranspose(obj) {
+    var transpose = {};
+
+    forEach(obj, function (val, key) {
+      transpose[val] = key;
+    });
+
+    return transpose;
+  };
+
+  var KEY_MAP = {
+     'A': 65
+    ,'B': 66
+    ,'C': 67
+    ,'D': 68
+    ,'E': 69
+    ,'F': 70
+    ,'G': 71
+    ,'H': 72
+    ,'I': 73
+    ,'J': 74
+    ,'K': 75
+    ,'L': 76
+    ,'M': 77
+    ,'N': 78
+    ,'O': 79
+    ,'P': 80
+    ,'Q': 81
+    ,'R': 82
+    ,'S': 83
+    ,'T': 84
+    ,'U': 85
+    ,'V': 86
+    ,'W': 87
+    ,'X': 88
+    ,'Y': 89
+    ,'Z': 90
+    ,'ESC': 27
+    ,'SPACE': 32
+    ,'LEFT': 37
+    ,'UP': 38
+    ,'RIGHT': 39
+    ,'DOWN': 40
+  };
+
+  /**
+   * The transposed version of KEY_MAP.
+   *
+   * @type {Object.<string>}
+   */
+  var TRANSPOSED_KEY_MAP = getTranspose(KEY_MAP);
+
   var playerKeyMap = {
     'A': 'left',
     'D': 'right',
@@ -23,7 +95,8 @@
 
   function handleKeyEvent(state, callback, evt) {
     var i;
-    var key = String.fromCharCode(evt.keyCode);
+    var key = TRANSPOSED_KEY_MAP[evt.keyCode];
+    if(!key) return;
     callback = callback || nullFunction;
 
     evt.preventDefault();
@@ -76,6 +149,10 @@
 
   document.getPlayer = function getPlayer() {
     return document.getElementById('player');
+  };
+
+  document.spawn = function spawn(entity) {
+    document.getLevel().appendChild(entity);
   };
 
   window.onload = function (e) {
@@ -132,24 +209,25 @@
         }
 
         // Note: We're computing the thust on the old rotation, this will lag by a frame for simplicity
-        var thustDirSign = 0;
+        var thrustDirSign = 0;
         if (playerKeyStates.down) {
-          thustDirSign = 1;
+          thrustDirSign = 1;
         } else if (playerKeyStates.up) {
-          thustDirSign = -1;
+          thrustDirSign = -1;
         }
 
         // Thrust
         var newVelX = playerEntity.velX;
         var newVelY = playerEntity.velY;
         
-        if (thustDirSign) {
-          newVelX = playerEntity.velX + thustDirSign * dt * playerEntity.accel * -Math.sin(playerEntity.rotation * degToRad);
-          newVelY = playerEntity.velY + thustDirSign * dt * playerEntity.accel * Math.cos(playerEntity.rotation * degToRad);
+        if (thrustDirSign) {
+          newVelX = playerEntity.velX + thrustDirSign * dt * playerEntity.accel * -Math.sin(playerEntity.rotation * degToRad);
+          newVelY = playerEntity.velY + thrustDirSign * dt * playerEntity.accel * Math.cos(playerEntity.rotation * degToRad);
         }
 
         // Clamping & Damping 
         var velMag = Math.sqrt(newVelX*newVelX + newVelY*newVelY);
+
         if (velMag != 0) {
           //console.log("1: " + (newVelX/velMag));
           var dampVelX = window.clamp(velMag * Math.pow(playerEntity.velDamp, dt/1000), -playerEntity.velMax, playerEntity.velMax) * (newVelX/velMag);
@@ -157,7 +235,6 @@
 
           playerEntity.velX = dampVelX;
           playerEntity.velY = dampVelY;
-          console.log("2: " + dampVelX);
         }
 
       }
@@ -210,14 +287,15 @@
         entities[i].render();
       }
 
-      var x = -5000 + (-window.Game.Camera.x()/5);
-      var y = -5000 + (-window.Game.Camera.y()/5);
+      var x, y;
+      x = -5000 + (-window.Game.Camera.x()/5);
+      y = -5000 + (-window.Game.Camera.y()/5);
       window.setTransform(document.getElementById("bg3"), "translate(" + x + "px," + y + "px)");
-      var x = -5000 + (-window.Game.Camera.x()/10);
-      var y = -5000 + (-window.Game.Camera.y()/10);
+      x = -5000 + (-window.Game.Camera.x()/10);
+      y = -5000 + (-window.Game.Camera.y()/10);
       window.setTransform(document.getElementById("bg2"), "translate(" + x + "px," + y + "px)");
-      var x = -5000 + (-window.Game.Camera.x()/50);
-      var y = -5000 + (-window.Game.Camera.y()/50);
+      x = -5000 + (-window.Game.Camera.x()/50);
+      y = -5000 + (-window.Game.Camera.y()/50);
       window.setTransform(document.getElementById("bg1"), "translate(" + x + "px," + y + "px)");
 
       cachedTime = t;

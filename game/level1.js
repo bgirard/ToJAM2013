@@ -45,6 +45,18 @@ function level() {
       update: Game.logic.default,
     })
   , new Game.Entity({
+      classes: ['Pirate'],
+      x: 300,
+      y: 200,
+      width: 80,
+      height: 62,
+      img: "images/ships/enemy2.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+    })
+  , new Game.Entity({
       classes: ['Bounds'],
       x: -1000,
       y: -1000,
