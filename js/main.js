@@ -66,7 +66,7 @@
     document.addEventListener('keydown', handleKeyEvent.bind(undefined, true));
     document.addEventListener('keyup', handleKeyEvent.bind(undefined, false));
 
-    level.appendChild(new Game.Entity({
+    var player = new Game.Entity({
       classes: ['Player'],
       x: 100,
       y: 100,
