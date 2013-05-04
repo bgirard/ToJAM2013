@@ -108,7 +108,8 @@
     div.render = function render() {
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
       div.style.top = (div.y - window.Game.Camera.y()) + 'px';
-      setTransform(div, "rotate("+div.rotation+"deg)");
+      var transformStr = "";
+      transformStr += " rotate("+div.rotation+"deg)";
 
       if (div.spriteFrameX != null || div.spriteFrameY != null) {
         var frameX = div.spriteFrameX || 0;
@@ -117,7 +118,10 @@
       }
 
       if (div.scaling != null) {
-        div.style.transform = "scale("+div.scaling+","+div.scaling+")";
+        transformStr += " scale("+div.scaling+","+div.scaling+")";
+      }
+      if (transformStr != "") {
+        setTransform(div, transformStr);
       }
     };
 
