@@ -209,24 +209,25 @@
         }
 
         // Note: We're computing the thust on the old rotation, this will lag by a frame for simplicity
-        var thustDirSign = 0;
+        var thrustDirSign = 0;
         if (playerKeyStates.down) {
-          thustDirSign = 1;
+          thrustDirSign = 1;
         } else if (playerKeyStates.up) {
-          thustDirSign = -1;
+          thrustDirSign = -1;
         }
 
         // Thrust
         var newVelX = playerEntity.velX;
         var newVelY = playerEntity.velY;
         
-        if (thustDirSign) {
-          newVelX = playerEntity.velX + thustDirSign * dt * playerEntity.accel * -Math.sin(playerEntity.rotation * degToRad);
-          newVelY = playerEntity.velY + thustDirSign * dt * playerEntity.accel * Math.cos(playerEntity.rotation * degToRad);
+        if (thrustDirSign) {
+          newVelX = playerEntity.velX + thrustDirSign * dt * playerEntity.accel * -Math.sin(playerEntity.rotation * degToRad);
+          newVelY = playerEntity.velY + thrustDirSign * dt * playerEntity.accel * Math.cos(playerEntity.rotation * degToRad);
         }
 
         // Clamping & Damping 
         var velMag = Math.sqrt(newVelX*newVelX + newVelY*newVelY);
+
         if (velMag != 0) {
           //console.log("1: " + (newVelX/velMag));
           var dampVelX = window.clamp(velMag * Math.pow(playerEntity.velDamp, dt/1000), -playerEntity.velMax, playerEntity.velMax) * (newVelX/velMag);
@@ -234,7 +235,6 @@
 
           playerEntity.velX = dampVelX;
           playerEntity.velY = dampVelY;
-          console.log("2: " + dampVelX);
         }
 
       }
