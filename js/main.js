@@ -29,8 +29,12 @@
 
     var level = document.getElementById("level");
 
-    var entity = new Game.Entity();
-    level.appendChild(entity);
+    var player = new Game.Entity({
+      id: "player",
+      x: 100,
+      y: 100,
+    });
+    level.appendChild(player);
 
     var frame = 0;
     var cachedTime = Date.now();
