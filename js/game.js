@@ -27,6 +27,7 @@
     element.style.msTransform = transform;
     element.style.oTransform = transform;
   }
+  window.setTransform = setTransform;
 
   var nextEntityId = 0;
   function Entity(options) {
