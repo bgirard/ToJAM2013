@@ -77,8 +77,6 @@
       div.velX = clamp(div.velX, -div.maxVel, div.maxVel);
       div.velY = clamp(div.velY, -div.maxVel, div.maxVel);
 
-      console.log(div.velX, div.velY);
-
       div.x += dt * div.velX;
       div.y += dt * div.velY;
 
