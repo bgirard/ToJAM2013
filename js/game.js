@@ -80,6 +80,10 @@
     div.spriteFrameTime = options['spriteFrameTime'] || 100;
     div.frameTimeRemaining = div.spriteFrameTime;
 
+    // Weapon properties
+    div.weaponReloadTime = 1000;
+    div.weaponCooldown = 0;
+
     div.render = function render() {
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
       div.style.top = (div.y - window.Game.Camera.y()) + 'px';
@@ -138,11 +142,26 @@
         this.frameTimeRemaining = this.spriteFrameTime;
       }
     },
+    weapon: function(dt) {
+      this.weaponCooldown = Math.max(0, this.weaponCooldown - dt);
+      if(Game.playerKeyStates.fire && !this.weaponCooldown) {
+        this.weaponCooldown = this.weaponReloadTime;
+        document.spawn(new Game.Entity({
+          classes: ['Bullet'],
+          x: this.x,
+          y: this.y,
+          img: "images/bullet1.png",
+          width: 16,
+          height: 16
+        }));
+      }
+    },
     default: function(dt) {
       logic.motion.call(this, dt);
     },
     player: function(dt) {
       logic.motion.call(this, dt);
+      logic.weapon.call(this, dt);
     }
   };
 
