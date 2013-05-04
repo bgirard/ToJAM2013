@@ -6,9 +6,8 @@
     var hudContainer = initOptions.hudContainer;
     var consoleTextArea = hudContainer.querySelector('.hud-element.console > .textarea');
 
-    var playerKeyCodes = initOptions.playerKeyCodes;
     var playerKeyStates = initOptions.playerKeyStates;
-    var playerKeyMap = initOptions.playerKeyStates;
+    var playerKeyMap = initOptions.playerKeyMap;
 
     var leftThruster = hudContainer.querySelector('.left.thruster');
     var rightThruster = hudContainer.querySelector('.right.thruster');
@@ -28,8 +27,10 @@
       'down': downThrusterButton
     };
 
-    Object.keys(playerKeyMap).forEach(function(mapping, index){
-      buttonMap[mapping].innerHTML = String.fromCharCode(playerKeyCodes[index]);
+    var keys = Object.keys(playerKeyMap);
+    keys.forEach(function(key){
+      var action = playerKeyMap[key];
+      buttonMap[action].innerHTML = key;
     });
 
     function writeConsoleLine (str) {
@@ -57,7 +58,7 @@
           buttonMap[key].classList.add('on');
         }
         else {
-          buttonMap[key].classList.remove('on'); 
+          buttonMap[key].classList.remove('on');
         }
       }
     };
