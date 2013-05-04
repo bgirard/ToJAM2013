@@ -118,7 +118,7 @@
         document.title = "next level";
       });
 
-      bossOs.update();
+      bossOs.update(playerEntity);
 
       // Flush render state to DOM
       for(i = 0, l = entities.length; i < l; ++ i) {

@@ -20,6 +20,14 @@
     return obj;
   };
 
+  function setTransform(element, transform) {
+    element.style.transform = transform;
+    element.style.webkitTransform = transform;
+    element.style.mozTransform = transform;
+    element.style.msTransform = transform;
+    element.style.oTransform = transform;
+  }
+
   var nextEntityId = 0;
   function Entity(options) {
     options = options || {};
@@ -99,7 +107,7 @@
     div.render = function render() {
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
       div.style.top = (div.y - window.Game.Camera.y()) + 'px';
-      div.style.transform="rotate("+div.rotation+"deg)"
+      setTransform(div, "rotate("+div.rotation+"deg)");
 
       if (div.spriteFrameX != null || div.spriteFrameY != null) {
         var frameX = div.spriteFrameX || 0;

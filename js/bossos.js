@@ -15,13 +15,10 @@
       consoleTextArea.innerHTML = str + consoleTextArea.innerHTML;
     }
 
-    this.update = function () {
+    this.update = function (playerEntity) {
+      leftThruster.querySelector('.front').style.height = Math.abs(playerEntity.velX) / playerEntity.maxVel * 100 + '%';
+      rightThruster.querySelector('.front').style.height = Math.abs(playerEntity.velY) / playerEntity.maxVel * 100 + '%';
     };
-
-    setInterval(function(){
-      leftThruster.querySelector('.front').style.height = Math.random() * 100 + '%';
-      rightThruster.querySelector('.front').style.height = Math.random() * 100 + '%';
-    }, 2000);
 
     writeConsoleLine("BossOS v0.29 (c) 2184 -- DO NOT DISTRIBUTE");
     writeConsoleLine("");
