@@ -67,6 +67,7 @@
     if(currentLevel)
       currentLevel.parentNode.removeChild(currentLevel);
     document.getElementById('gameboard').appendChild(level);
+    document.title = "current level: " + level.id;
   };
 
   document.getLevel = function getLevel() {
@@ -115,7 +116,8 @@
 
       // Collisions
       collisionDetection("Player", "Wormhole", function() {
-        document.title = "next level";
+        var nextLevel = document.getLevel().nextId;
+        document.setLevel(Game.levels[nextLevel]());
       });
 
       bossOs.update(playerEntity);
