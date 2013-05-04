@@ -4,18 +4,18 @@
     'D': 'right',
     'W': 'up',
     'S': 'down',
+    'SPACE': 'fire',
     'P': 'power',
-    'T': 'shield'
+    'T': 'shield',
   };
+  var playerKeyStates = {};
+  Object.keys(playerKeyMap).forEach(function(key) {
+    var action = playerKeyMap[key];
+    playerKeyStates[action] = false;
+  });
 
-  var playerKeyStates = {
-    'left': false,
-    'right': false,
-    'up': false,
-    'down': false,
-    'power': false,
-    'shield': false
-  };
+  Game.playerKeyMap = playerKeyMap;
+  Game.playerKeyStates = playerKeyStates;
 
   function nullFunction () {}
 
@@ -24,6 +24,7 @@
     var key = String.fromCharCode(evt.keyCode);
     callback = callback || nullFunction;
 
+    evt.preventDefault();
     if(playerKeyMap.hasOwnProperty(key)) {
       var action = playerKeyMap[key];
       playerKeyStates[action] = state;
@@ -91,8 +92,14 @@
 
     var frame = 0;
     var cachedTime = Date.now();
+    var changeLevelOnNextFrame = null;
     function main() {
       window.requestAnimFrame(main);
+
+      if (changeLevelOnNextFrame) {
+        document.setLevel(changeLevelOnNextFrame);
+        changeLevelOnNextFrame = null;
+      }
       var t = Date.now();
       var dt = t - cachedTime;
       var i;
@@ -108,46 +115,70 @@
         if (playerKeyStates.up) {
           deltaV += -playerEntity.accel;
         }
-        
+
         if (playerKeyStates.down) {
           deltaV += playerEntity.accel;
         }
         // We don't want rotation innertia so apply the accel directly to the rotation
         if (playerKeyStates.left) {
-          deltaR += -player.rotationAccel;
+          playerEntity.rotationVel = Math.max(-playerEntity.maxRotationVel, playerEntity.rotationVel - playerEntity.rotationAccel * dt);
+          // deltaR += -playerEntity.rotationAccel;
         }
         if (playerKeyStates.right) {
-          deltaR += player.rotationAccel;
+          playerEntity.rotationVel = Math.min(playerEntity.maxRotationVel, playerEntity.rotationVel + playerEntity.rotationAccel * dt);
+          // deltaR += playerEntity.rotationAccel;
         }
         var degToRad = 0.0174532925;
         if (deltaV != 0) {
-          console.log(Math.sin(playerEntity.rotation * degToRad));
           playerEntity.velX += dt * deltaV * -Math.sin(playerEntity.rotation * degToRad);
           playerEntity.velY += dt * deltaV * Math.cos(playerEntity.rotation * degToRad);
-        
         }
         if (deltaR != 0) {
-          playerEntity.rotation += dt * deltaR;
+          playerEntity.rotation += playerEntity.rotationVel;
         }
+
+        playerEntity.rotationVel -= playerEntity.rotationVel * playerEntity.rotationDrag;
       }
 
       // Update entities
       var entities = level.getElementsByClassName('Entity');
+
       for(i = 0, l = entities.length; i < l; ++ i) {
-        entities[i].update(dt);
+        var entity = entities[i];
+        if('function' === typeof entity.ai)
+          entity.ai(dt);
+      }
+
+      for(i = 0, l = entities.length; i < l; ++ i) {
+        var entity = entities[i];
+        if('function' === typeof entity.update)
+          entity.update(dt);
       }
 
       // Collisions
       collisionDetection("Player", "Wormhole", function() {
         var nextLevel = document.getLevel().nextId;
-        document.setLevel(Game.levels[nextLevel]());
+        changeLevelOnNextFrame = Game.levels[nextLevel]();
       });
       var hasCol = false;
       collisionDetection("Player", "Bounds", function() {
         hasCol = true;
       });
       if (!hasCol) {
-        document.title = "Out of bounds";
+        var bounds = document.getElementsByClassName("Bounds")[0];
+        // Outside the level
+        if (playerEntity.x < bounds.x) {
+          playerEntity.x += bounds.width;
+        }
+        if (playerEntity.y < bounds.y) {
+          playerEntity.y += bounds.height;
+        }
+        if (playerEntity.x > bounds.x + bounds.width) {
+          playerEntity.x -= bounds.width;
+        }
+        if (playerEntity.y > bounds.y + bounds.height) {
+          playerEntity.y -= bounds.height;
+        }
       }
 
       bossOs.update(playerEntity);
@@ -157,8 +188,12 @@
         entities[i].render();
       }
 
-      //document.getElementById("bg2").style.backgroundPosition = (-window.Game.Camera.x()/5) + "px " + (-window.Game.Camera.y()/5) + "px";
-      //document.getElementById("bg3").style.backgroundPosition = (-window.Game.Camera.x()/2) + "px " + (-window.Game.Camera.y()/2) + "px";
+      var x = -5000 + (-window.Game.Camera.x()/5);
+      var y = -5000 + (-window.Game.Camera.y()/5);
+      window.setTransform(document.getElementById("bg2"), "translate(" + x + "px," + y + "px)");
+      var x = -5000 + (-window.Game.Camera.x()/10);
+      var y = -5000 + (-window.Game.Camera.y()/10);
+      window.setTransform(document.getElementById("bg3"), "translate(" + x + "px," + y + "px)");
 
       cachedTime = t;
     };

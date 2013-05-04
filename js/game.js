@@ -1,5 +1,7 @@
 (function(){
 
+  var degToRad = 0.0174532925;
+
   function clamp(number, min, max) {
     return Math.max(min, Math.min(number, max));
   }
@@ -27,6 +29,7 @@
     element.style.msTransform = transform;
     element.style.oTransform = transform;
   }
+  window.setTransform = setTransform;
 
   var nextEntityId = 0;
   function Entity(options) {
@@ -39,6 +42,7 @@
     var extraClasses = options['classes'] || [];
 
     var div = document.createElement('div');
+    div.options = options;
     div.classList.add('Entity');
     extraClasses.forEach(function(className) {
       div.classList.add(className);
@@ -64,49 +68,17 @@
     div.rotation = 0;
     div.rotationVel = options['rotationVel'] || 0;
     div.rotationAccel = options['rotationAccel'] || 0.2;
+    div.rotationDrag = 0.15;
+    div.maxRotationVel = .2;
     div.scaling = options['scaling'];
+    div.update = options['update'] ? options['update'].bind(div) : undefined;
+    div.ai = options['ai'] ? options['ai'].bind(div) : undefined;
 
     // Sprite properties
     div.spriteFrameX = options.spriteFrameX;
     div.spriteFrameY = options.spriteFrameY;
     div.spriteFrameTime = options['spriteFrameTime'] || 100;
     div.frameTimeRemaining = div.spriteFrameTime;
-
-    var degToRad = 0.0174532925;
-
-    div.update = function update(dt) {
-      if(div.velX > 0) {
-        div.velX = Math.max(0, div.velX - Math.max(0, dt * div.drag * Math.sin(div.rotation * degToRad)));
-      } else {
-        div.velX = Math.min(0, div.velX + Math.max(0, dt * div.drag * -Math.sin(div.rotation * degToRad)));
-      }
-
-      if(div.velY > 0) {
-        div.velY = Math.max(0, div.velY - Math.max(0, dt * div.drag * -Math.cos(div.rotation * degToRad)));
-      } else {
-        div.velY = Math.min(0, div.velY + Math.max(0, dt * div.drag * Math.cos(div.rotation * degToRad)));
-      }
-
-      div.velX = clamp(div.velX, -div.maxVel, div.maxVel);
-      div.velY = clamp(div.velY, -div.maxVel, div.maxVel);
-
-      div.x += dt * div.velX;
-      div.y += dt * div.velY;
-
-      div.frameTimeRemaining -= dt;
-
-      div.rotation = (div.rotation + div.rotationVel * dt) % 360;
-
-      if (div.frameTimeRemaining < 0) {
-        if (div.spriteFrameX != null) {
-          div.spriteFrameX = (div.spriteFrameX + 1) % options.spriteMaxFrameX;
-        }
-        if (div.spriteFrameY != null) {
-          div.spriteFrameY = (div.spriteFrameY + 1) % options.spriteMaxFrameY;
-        }
-        div.frameTimeRemaining = div.spriteFrameTime;
-      }
-    };
 
     div.render = function render() {
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
@@ -133,6 +105,47 @@
 
   var tmp = 0;
 
+  var logic = {
+    motion: function(dt) {
+      if(this.velX > 0) {
+        this.velX = Math.max(0, this.velX - Math.max(0, dt * this.drag * Math.sin(this.rotation * degToRad)));
+      } else {
+        this.velX = Math.min(0, this.velX + Math.max(0, dt * this.drag * -Math.sin(this.rotation * degToRad)));
+      }
+
+      if(this.velY > 0) {
+        this.velY = Math.max(0, this.velY - Math.max(0, dt * this.drag * -Math.cos(this.rotation * degToRad)));
+      } else {
+        this.velY = Math.min(0, this.velY + Math.max(0, dt * this.drag * Math.cos(this.rotation * degToRad)));
+      }
+
+      this.velX = clamp(this.velX, -this.maxVel, this.maxVel);
+      this.velY = clamp(this.velY, -this.maxVel, this.maxVel);
+
+      this.x += dt * this.velX;
+      this.y += dt * this.velY;
+
+      this.frameTimeRemaining -= dt;
+      this.rotation = (this.rotation + this.rotationVel * dt) % 360;
+
+      if (this.frameTimeRemaining < 0) {
+        if (this.spriteFrameX != null) {
+          this.spriteFrameX = (this.spriteFrameX + 1) % this.options.spriteMaxFrameX;
+        }
+        if (this.spriteFrameY != null) {
+          this.spriteFrameY = (this.spriteFrameY + 1) % this.options.spriteMaxFrameY;
+        }
+        this.frameTimeRemaining = this.spriteFrameTime;
+      }
+    },
+    default: function(dt) {
+      logic.motion.call(this, dt);
+    },
+    player: function(dt) {
+      logic.motion.call(this, dt);
+    }
+  };
+
   var Game = {
     Entity: Entity,
     Camera: {
@@ -146,7 +159,8 @@
         return document.getPlayer().y - offset / 2;
       },
     },
-    levels: {}
+    levels: {},
+    logic: logic
   };
 
   window.Game = Game;
