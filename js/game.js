@@ -41,8 +41,8 @@
     div.style.width = width + 'px';
     div.style.height = height + 'px';
 
-    div.x = 0;
-    div.y = 0;
+    div.x = options['x'] || 0;
+    div.y = options['y'] || 0;
     div.velX = 0.0;
     div.velY = 0.0;
     div.maxVel = 0.1;

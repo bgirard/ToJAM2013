@@ -85,6 +85,18 @@
       spriteFrameX: 0,
       spriteMaxFrameX: 4,
     });
+    var pirate = new Game.Entity({
+      classes: ['Pirate'],
+      x: 200,
+      y: 200,
+      width: 288 / 4,
+      height: 72,
+      img: "images/ship1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      spriteMaxFrameX: 4,
+    });
+    level.appendChild(pirate);
     level.appendChild(player);
 
     var frame = 0;
@@ -105,6 +117,10 @@
       for(i = 0, l = entities.length; i < l; ++ i) {
         entities[i].update(dt);
       }
+
+      // Collisions
+      collisionDetection("Player", "Pirate", function() {
+      });
 
       // Flush render state to DOM
       for(i = 0, l = entities.length; i < l; ++ i) {
