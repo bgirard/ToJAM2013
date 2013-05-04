@@ -49,7 +49,7 @@
     if(img) {
       div.style.backgroundImage = "url(" + img + ")";
     } else {
-      div.style.backgroundColor = "red";
+      //div.style.backgroundColor = "red";
     }
     div.style.width = width + 'px';
     div.style.height = height + 'px';
@@ -58,11 +58,13 @@
     div.y = options['y'] || 0;
     div.velX = 0.0;
     div.velY = 0.0;
-    div.maxVel = 0.1;
-    div.drag = 0.0001;
+    div.maxVel = 0.5;
+    div.drag = 0.005;
     div.accel = 0.01;
     div.rotation = 0;
     div.rotationVel = options['rotationVel'] || 0;
+    div.rotationAccel = options['rotationAccel'] || 0.2;
+    div.scaling = options['scaling'];
 
     // Sprite properties
     div.spriteFrameX = options.spriteFrameX;
@@ -70,17 +72,19 @@
     div.spriteFrameTime = options['spriteFrameTime'] || 100;
     div.frameTimeRemaining = div.spriteFrameTime;
 
+    var degToRad = 0.0174532925;
+
     div.update = function update(dt) {
       if(div.velX > 0) {
-        div.velX = Math.max(0, div.velX - dt * div.drag);
+        div.velX = Math.max(0, div.velX - Math.max(0, dt * div.drag * Math.sin(div.rotation * degToRad)));
       } else {
-        div.velX = Math.min(0, div.velX + dt * div.drag);
+        div.velX = Math.min(0, div.velX + Math.max(0, dt * div.drag * -Math.sin(div.rotation * degToRad)));
       }
 
       if(div.velY > 0) {
-        div.velY = Math.max(0, div.velY - dt * div.drag);
+        div.velY = Math.max(0, div.velY - Math.max(0, dt * div.drag * -Math.cos(div.rotation * degToRad)));
       } else {
-        div.velY = Math.min(0, div.velY + dt * div.drag);
+        div.velY = Math.min(0, div.velY + Math.max(0, dt * div.drag * Math.cos(div.rotation * degToRad)));
       }
 
       div.velX = clamp(div.velX, -div.maxVel, div.maxVel);
@@ -107,12 +111,20 @@
     div.render = function render() {
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
       div.style.top = (div.y - window.Game.Camera.y()) + 'px';
-      setTransform(div, "rotate("+div.rotation+"deg)");
+      var transformStr = "";
+      transformStr += " rotate("+div.rotation+"deg)";
 
       if (div.spriteFrameX != null || div.spriteFrameY != null) {
         var frameX = div.spriteFrameX || 0;
         var frameY = div.spriteFrameY || 0;
         div.style.backgroundPosition = div.width * frameX + "px " + div.height * frameY + "px";
+      }
+
+      if (div.scaling != null) {
+        transformStr += " scale("+div.scaling+","+div.scaling+")";
+      }
+      if (transformStr != "") {
+        setTransform(div, transformStr);
       }
     };
 

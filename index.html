@@ -3,6 +3,7 @@
   <head>
     <title>ToJAM2013</title>
     <meta charset="utf-8">
+    <link href="http://fonts.googleapis.com/css?family=VT323" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="css/ui.css">
     <script>
       window.requestAnimFrame = (function(){
@@ -20,6 +21,14 @@
     <script src="js/audio.js"></script>
 
     <script src="game/level1.js"></script>
+    <script src="game/level2.js"></script>
+    <style>
+      /* THIS MUST STAY HERE */
+      .hud-element.console {
+        -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), color-stop(0.3, rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+        mask: url(#fade_right_svg_mask);
+      }
+    </style>
   </head>
   <body>
     <div id="gameboard">
@@ -35,18 +44,35 @@
         <div class="hud-element thruster left">
           <div class="front"></div>
           <div class="back"></div>
+          <div class="buttons">
+            <div class="button"></div>
+            <div class="button"></div>
+          </div>
         </div>
         <div class="hud-element thruster right">
           <div class="front"></div>
           <div class="back"></div>
+          <div class="buttons">
+            <div class="button"></div>
+            <div class="button"></div>
+          </div>
         </div>
-        <div class="hud-element power"></div>
+        <div class="hud-element power button"></div>
         <div class="hud-element weapon-1"></div>
         <div class="hud-element weapon-2"></div>
-        <div class="hud-element shield"></div>
-        <div class="hud-element console">
-          <textarea readonly></textarea>
+        <div class="hud-element shield button"></div>
+        <div id="mask_demo" class="hud-element console fade-right">
+          <div class="textarea"></textarea>
         </div>
+        <svg height="0">
+          <mask id="fade_right_svg_mask" maskUnits="objectBoundingBox" maskContentUnits="objectBoundingBox">
+            <linearGradient id="fade_right_svg_gradient" gradientUnits="objectBoundingBox" x2="0" y2="1">
+              <stop stop-color="white" stop-opacity="1" offset="0.3"></stop>
+              <stop stop-color="white" stop-opacity="0" offset="1"></stop>
+            </linearGradient>
+            <rect x="0" y="0" width="1" height="1" fill="url(#fade_right_svg_gradient)"></rect>
+          </mask>
+        </svg>
       </div>
     </div>
   </body>

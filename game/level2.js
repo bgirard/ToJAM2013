@@ -1,6 +1,6 @@
 (function() {
 
-var id = 'level1';
+var id = 'level2';
 function level() {
 
   var div = document.createElement('div');
@@ -21,8 +21,8 @@ function level() {
   , new Game.Entity({
       classes: ['Player'],
       id: 'player',
-      x: 100,
-      y: 100,
+      x: 300,
+      y: 300,
       width: 288 / 4,
       height: 72,
       img: "images/ship1.png",
@@ -62,6 +62,13 @@ function level() {
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
       spriteMaxFrameX: 4,
+    })
+  , new Game.Entity({
+      classes: ['Bounds'],
+      x: -1000,
+      y: -1000,
+      width: 2000,
+      height: 2000,
     })
   ].forEach(function(entity) {
     div.appendChild(entity);

@@ -31,9 +31,13 @@
 
   }
 
-  if (audio.readyState === 0) {
+  function start () {
     audio.play();
-    nextScene();
+    nextScene();    
+  }
+
+  if (audio.readyState > 0) {
+    start();
   }
   else {
     audio.addEventListener('canplay', start, false);  

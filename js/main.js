@@ -1,37 +1,34 @@
 (function(){
-  var keymap = {
-    65: 'A',
-    68: 'D',
-    83: 'S',
-    87: 'W'
-  };
-  var keycodes = Object.keys(keymap);
-
-  function handleKeyEvent(state, evt) {
-    var i;
-    var code = evt.keyCode;
-    for(i = 0, l = keycodes.length; i < l; ++ i) {
-      if(code == keycodes[i]) {
-        var key = keymap[code];
-        var playerKey = playerKeyMap[key];
-        playerKeyStates[playerKey] = state;
-        return;
-      }
-    }
-  };
-
   var playerKeyMap = {
     'A': 'left',
     'D': 'right',
     'W': 'up',
-    'S': 'down'
+    'S': 'down',
+    'P': 'power',
+    'T': 'shield'
   };
 
   var playerKeyStates = {
     'left': false,
     'right': false,
     'up': false,
-    'down': false
+    'down': false,
+    'power': false,
+    'shield': false
+  };
+
+  function nullFunction () {}
+
+  function handleKeyEvent(state, callback, evt) {
+    var i;
+    var key = String.fromCharCode(evt.keyCode);
+    callback = callback || nullFunction;
+
+    if(playerKeyMap.hasOwnProperty(key)) {
+      var action = playerKeyMap[key];
+      playerKeyStates[action] = state;
+      callback(action, state);
+    }
   };
 
   /**
@@ -49,7 +46,7 @@
         if (entity1.x < entity2.x + entity2.width &&
             entity2.x < entity1.x + entity1.width &&
             entity1.y < entity2.y + entity2.height &&
-            entity2.y < entity1.y + entity2.height) {
+            entity2.y < entity1.y + entity1.height) {
 
             callback(entity1, entity2);
 
@@ -67,6 +64,7 @@
     if(currentLevel)
       currentLevel.parentNode.removeChild(currentLevel);
     document.getElementById('gameboard').appendChild(level);
+    document.title = "current level: " + level.id;
   };
 
   document.getLevel = function getLevel() {
@@ -86,8 +84,8 @@
       playerKeyStates: playerKeyStates
     });
 
-    document.addEventListener('keydown', handleKeyEvent.bind(undefined, true));
-    document.addEventListener('keyup', handleKeyEvent.bind(undefined, false));
+    document.addEventListener('keydown', handleKeyEvent.bind(undefined, true, bossOs.playerKeyStateChange));
+    document.addEventListener('keyup', handleKeyEvent.bind(undefined, false, bossOs.playerKeyStateChange));
 
     document.setLevel(Game.levels['level1']());
 
@@ -103,8 +101,34 @@
       var level = document.getElementsByClassName('Level')[0];
       var playerEntity = level.getElementsByClassName('Player')[0];
       if(playerEntity) {
-        playerEntity.velX += (playerKeyStates.left ? dt * -playerEntity.accel : 0.0) + (playerKeyStates.right ? dt * playerEntity.accel : 0.0);
-        playerEntity.velY += (playerKeyStates.up ? dt * -playerEntity.accel : 0.0) + (playerKeyStates.down ? dt * playerEntity.accel : 0.0);
+        //playerEntity.velX += (playerKeyStates.left ? dt * -playerEntity.accel : 0.0) + (playerKeyStates.right ? dt * playerEntity.accel : 0.0);
+        //playerEntity.velY += (playerKeyStates.up ? dt * -playerEntity.accel : 0.0) + (playerKeyStates.down ? dt * playerEntity.accel : 0.0);
+        var deltaV = 0;
+        var deltaR = 0;
+        if (playerKeyStates.up) {
+          deltaV += -playerEntity.accel;
+        }
+        
+        if (playerKeyStates.down) {
+          deltaV += playerEntity.accel;
+        }
+        // We don't want rotation innertia so apply the accel directly to the rotation
+        if (playerKeyStates.left) {
+          deltaR += -player.rotationAccel;
+        }
+        if (playerKeyStates.right) {
+          deltaR += player.rotationAccel;
+        }
+        var degToRad = 0.0174532925;
+        if (deltaV != 0) {
+          console.log(Math.sin(playerEntity.rotation * degToRad));
+          playerEntity.velX += dt * deltaV * -Math.sin(playerEntity.rotation * degToRad);
+          playerEntity.velY += dt * deltaV * Math.cos(playerEntity.rotation * degToRad);
+        
+        }
+        if (deltaR != 0) {
+          playerEntity.rotation += dt * deltaR;
+        }
       }
 
       // Update entities
@@ -115,8 +139,16 @@
 
       // Collisions
       collisionDetection("Player", "Wormhole", function() {
-        document.title = "next level";
+        var nextLevel = document.getLevel().nextId;
+        document.setLevel(Game.levels[nextLevel]());
       });
+      var hasCol = false;
+      collisionDetection("Player", "Bounds", function() {
+        hasCol = true;
+      });
+      if (!hasCol) {
+        document.title = "Out of bounds";
+      }
 
       bossOs.update(playerEntity);
 
@@ -125,8 +157,8 @@
         entities[i].render();
       }
 
-      document.getElementById("bg2").style.backgroundPosition = (-window.Game.Camera.x()/5) + "px " + (-window.Game.Camera.y()/5) + "px";
-      document.getElementById("bg3").style.backgroundPosition = (-window.Game.Camera.x()/2) + "px " + (-window.Game.Camera.y()/2) + "px";
+      //document.getElementById("bg2").style.backgroundPosition = (-window.Game.Camera.x()/5) + "px " + (-window.Game.Camera.y()/5) + "px";
+      //document.getElementById("bg3").style.backgroundPosition = (-window.Game.Camera.x()/2) + "px " + (-window.Game.Camera.y()/2) + "px";
 
       cachedTime = t;
     };

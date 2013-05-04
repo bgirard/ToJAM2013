@@ -4,12 +4,25 @@
   left: 0;
 }
 
+* {
+  // Force gecko active layers
+  perspective: 15px;
+  -moz-perspective: 15px;
+  // Force webkit active layers
+  -webkit-backface-visibility: hidden;
+}
+
 html, body {
   width: 100%;
   height: 100%;
   margin: 0px;
   padding: 0px;
   overflow: hidden;
+  color: #fff;
+}
+
+.Bounds {
+  border: 10px solid red;
 }
 
 #bg1 {
@@ -63,6 +76,24 @@ html, body {
   visibility: visible;
 }
 
+.hud-element.button {
+  text-align: center;
+  font-family: 'VT323', cursive;
+  font-size: 2em;
+}
+
+.hud-element .button {
+  text-align: center;
+  font-family: 'VT323', cursive;
+  font-size: 2em;
+  background-image: url('../images/hud/keyBox.png');
+  width: 50px;
+  height: 50px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: 0 0;
+}
+
 .hud-element .front {
   position: absolute;
   z-index: 2;
@@ -91,7 +122,7 @@ html, body {
   height: 400px;
 }
 
-.hud-element.thruster div {
+.hud-element.thruster > div {
   width: 100%;
   height: 100%;
   background-position: 0 100%;
@@ -120,6 +151,38 @@ html, body {
   bottom: 0;
 }
 
+.hud-element.thruster .button {
+  position: absolute;
+  border-radius: 10px;
+  top: 20px;
+  line-height: 50px;
+  -webkit-transition: 0.1s background-color;
+     -moz-transition: 0.1s background-color;
+      -ms-transition: 0.1s background-color;
+       -o-transition: 0.1s background-color;
+          transition: 0.1s background-color;
+}
+
+.hud-element.thruster .button.on {
+  background-color: rgba(0, 100, 0, 0.8);
+}
+
+.hud-element.thruster.left .button {
+  left: 110px;
+}
+
+.hud-element.thruster.left .button:nth-child(2) {
+  top: 80px;
+}
+
+.hud-element.thruster.right .button {
+  right: 110px;
+}
+
+.hud-element.thruster.right .button:nth-child(2) {
+  top: 80px;
+}
+
 .hud-element.weapon-1 {
   width: 20%;
   height: 15%;
@@ -133,34 +196,48 @@ html, body {
 }
 
 .hud-element.power {
-  width: 10%;
-  height: 15%;
   left: 0;
   top: 0;
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+  background-image: url('../images/hud/power.png');
+  background-position: 0 0;
+  background-size: 100% 100%;
 }
 
 .hud-element.shield {
-  width: 10%;
-  height: 25%;
-  right: 0;
-  top: 0;
+  right: -5px;
+  top: -5px;
+  width: 120px;
+  height: 120px;
+  line-height: 120px;
+  background-image: url('../images/hud/shields.png');
+  background-position: 0 0;
+  background-size: 100% 100%;
 }
 
 .hud-element.console {
   width: 40%;
-  height: 15%;
-  bottom: 10%;
+  height: 20%;
+  bottom: 5%;
   right: 50%;
   margin-right: -20%;
   overflow: hidden;
+  background-color: rgba(120, 120, 120, 0.8);
 }
 
-.hud-element.console > textarea {
-  width: 100%;
-  height: 100%;
-  border: 0;
+.hud-element.console > .textarea {
+  position: absolute;
+  top: 0px;
+  left: 1px;
+  right: 1px;
+  padding: 3px;
+  bottom: -10px;
   background: transparent;
   color: #bbb;
   overflow: hidden;
   font-family: courier;
+  font-size: 8pt;
+  border: 1px solid #bbb;
 }
