@@ -155,7 +155,20 @@
         hasCol = true;
       });
       if (!hasCol) {
-        document.title = "Out of bounds";
+        var bounds = document.getElementsByClassName("Bounds")[0];
+        // Outside the level
+        if (playerEntity.x < bounds.x) {
+          playerEntity.x += bounds.width;
+        }
+        if (playerEntity.y < bounds.y) {
+          playerEntity.y += bounds.height;
+        }
+        if (playerEntity.x > bounds.x + bounds.width) {
+          playerEntity.x -= bounds.width;
+        }
+        if (playerEntity.y > bounds.y + bounds.height) {
+          playerEntity.y -= bounds.height;
+        }
       }
 
       bossOs.update(playerEntity);
