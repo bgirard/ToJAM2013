@@ -26,8 +26,8 @@ html, body {
 
 #bg1 {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 10000px;
+  height: 10000px;
   background-image: url('../images/bg/layer1.png');
 }
 
@@ -115,16 +115,16 @@ html, body {
 }
 
 .hud-element.speed {
-  width: 70px;
-  height: 350px;
-  bottom: -140px;
+  width: 55px;
+  height: 300px;
+  bottom: -125px;
   left: 50%;
 }
 
 .hud-element.speed .meter-container {
-  width: 70px;
-  height: 350px;
-  margin-left: -35px;
+  width: 55px;
+  height: 300px;
+  margin-left: -25px;
   -webkit-transform: rotate(90deg);
      -moz-transform: rotate(90deg);
       -ms-transform: rotate(90deg);
@@ -140,7 +140,7 @@ html, body {
       -ms-transition: 0.1s height, 0.1s top;
        -o-transition: 0.1s height, 0.1s top;
           transition: 0.1s height, 0.1s top;
-  background-size: 70px 350px;
+  background-size: 55px 300px;
   background-position: 0 50%;
   background-repeat: no-repeat;
   top: 10%;
@@ -163,6 +163,7 @@ html, body {
 
 .hud-element.speed .button {
   position: absolute;
+  top: -25px;
 }
 
 
