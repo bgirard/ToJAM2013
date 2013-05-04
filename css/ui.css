@@ -12,6 +12,10 @@ html, body {
   overflow: hidden;
 }
 
+.Bounds {
+  border: 10px solid red;
+}
+
 #bg1 {
   position: absolute;
   width: 100%;

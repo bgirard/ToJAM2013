@@ -49,7 +49,7 @@
     if(img) {
       div.style.backgroundImage = "url(" + img + ")";
     } else {
-      div.style.backgroundColor = "red";
+      //div.style.backgroundColor = "red";
     }
     div.style.width = width + 'px';
     div.style.height = height + 'px';
@@ -58,8 +58,8 @@
     div.y = options['y'] || 0;
     div.velX = 0.0;
     div.velY = 0.0;
-    div.maxVel = 0.1;
-    div.drag = 0.0001;
+    div.maxVel = 0.5;
+    div.drag = 0.0005;
     div.accel = 0.01;
     div.rotation = 0;
     div.rotationVel = options['rotationVel'] || 0;

@@ -55,7 +55,7 @@
         if (entity1.x < entity2.x + entity2.width &&
             entity2.x < entity1.x + entity1.width &&
             entity1.y < entity2.y + entity2.height &&
-            entity2.y < entity1.y + entity2.height) {
+            entity2.y < entity1.y + entity1.height) {
 
             callback(entity1, entity2);
 
@@ -126,6 +126,13 @@
         var nextLevel = document.getLevel().nextId;
         document.setLevel(Game.levels[nextLevel]());
       });
+      var hasCol = false;
+      collisionDetection("Player", "Bounds", function() {
+        hasCol = true;
+      });
+      if (!hasCol) {
+        document.title = "Out of bounds";
+      }
 
       bossOs.update(playerEntity);
 
