@@ -108,6 +108,43 @@ html, body {
   opacity: 0.8;
 }
 
+.hud-element.speed {
+  width: 70px;
+  height: 350px;
+  bottom: -150px;
+  left: 50%;
+  margin-left: -35px;
+  -webkit-transform: rotate(90deg);
+     -moz-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+       -o-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+
+.hud-element.speed .front {
+  width: 100%;
+  background-image: url('../images/hud/boosterBarSmallFull.png');
+  -webkit-transition: 0.1s height, 0.1s top;
+     -moz-transition: 0.1s height, 0.1s top;
+      -ms-transition: 0.1s height, 0.1s top;
+       -o-transition: 0.1s height, 0.1s top;
+          transition: 0.1s height, 0.1s top;
+  background-size: 70px 350px;
+  background-position: 0 50%;
+  background-repeat: no-repeat;
+  top: 10%;
+  height: 80%;
+}
+
+.hud-element.speed .back {
+  width: 100%;
+  height: 100%;
+  background-size: 100% 100%;
+  background-position: 0 50%;
+  background-repeat: no-repeat;
+  background-image: url('../images/hud/boosterBarSmallEmpty.png');
+}
+
 .hud-element.thruster,
 .hud-element.thruster {
   width: 100px;
