@@ -172,6 +172,8 @@
     var frame = 0;
     var cachedTime = Date.now();
     var changeLevelOnNextFrame = null;
+    var degToRad = 0.0174532925;
+    function sign(x) { return x ? x < 0 ? -1 : 1 : 0; }
     function main() {
       window.requestAnimFrame(main);
 
@@ -187,36 +189,54 @@
       var level = document.getElementsByClassName('Level')[0];
       var playerEntity = level.getElementsByClassName('Player')[0];
       if(playerEntity) {
-        //playerEntity.velX += (playerKeyStates.left ? dt * -playerEntity.accel : 0.0) + (playerKeyStates.right ? dt * playerEntity.accel : 0.0);
-        //playerEntity.velY += (playerKeyStates.up ? dt * -playerEntity.accel : 0.0) + (playerKeyStates.down ? dt * playerEntity.accel : 0.0);
-        var deltaV = 0;
-        var deltaR = 0;
-        if (playerKeyStates.up) {
-          deltaV += -playerEntity.accel;
-        }
 
-        if (playerKeyStates.down) {
-          deltaV += playerEntity.accel;
-        }
-        // We don't want rotation innertia so apply the accel directly to the rotation
+        // Apply rotation
+        var rotationDirSign = 0;
         if (playerKeyStates.left) {
-          playerEntity.rotationVel = Math.max(-playerEntity.maxRotationVel, playerEntity.rotationVel - playerEntity.rotationAccel * dt);
-          // deltaR += -playerEntity.rotationAccel;
-        }
-        if (playerKeyStates.right) {
-          playerEntity.rotationVel = Math.min(playerEntity.maxRotationVel, playerEntity.rotationVel + playerEntity.rotationAccel * dt);
-          // deltaR += playerEntity.rotationAccel;
-        }
-        var degToRad = 0.0174532925;
-        if (deltaV != 0) {
-          playerEntity.velX += dt * deltaV * -Math.sin(playerEntity.rotation * degToRad);
-          playerEntity.velY += dt * deltaV * Math.cos(playerEntity.rotation * degToRad);
-        }
-        if (deltaR != 0) {
-          playerEntity.rotation += playerEntity.rotationVel;
+          rotationDirSign = -1;
+        } else if (playerKeyStates.right) {
+          rotationDirSign = 1;
         }
 
-        playerEntity.rotationVel -= playerEntity.rotationVel * playerEntity.rotationDrag;
+        // d/ms                  += ms * scalar * d/ms^2
+        playerEntity.rotationVel += dt * rotationDirSign * playerEntity.rotationAccel;
+
+        // d/ms                  *= ms * scalar/ms
+        playerEntity.rotationVel *= Math.pow(playerEntity.rotationDamp, dt/1000);
+
+        if (Math.abs(playerEntity.rotationVel) > playerEntity.maxRotationVel) {
+          playerEntity.rotationVel = playerEntity.maxRotationVel * sign(playerEntity.rotationVel);
+        }
+
+        // Note: We're computing the thust on the old rotation, this will lag by a frame for simplicity
+        var thustDirSign = 0;
+        if (playerKeyStates.down) {
+          thustDirSign = 1;
+        } else if (playerKeyStates.up) {
+          thustDirSign = -1;
+        }
+
+        // Thrust
+        var newVelX = playerEntity.velX;
+        var newVelY = playerEntity.velY;
+        
+        if (thustDirSign) {
+          newVelX = playerEntity.velX + thustDirSign * dt * playerEntity.accel * -Math.sin(playerEntity.rotation * degToRad);
+          newVelY = playerEntity.velY + thustDirSign * dt * playerEntity.accel * Math.cos(playerEntity.rotation * degToRad);
+        }
+
+        // Clamping & Damping 
+        var velMag = Math.sqrt(newVelX*newVelX + newVelY*newVelY);
+        if (velMag != 0) {
+          //console.log("1: " + (newVelX/velMag));
+          var dampVelX = window.clamp(velMag * Math.pow(playerEntity.velDamp, dt/1000), -playerEntity.velMax, playerEntity.velMax) * (newVelX/velMag);
+          var dampVelY = window.clamp(velMag * Math.pow(playerEntity.velDamp, dt/1000), -playerEntity.velMax, playerEntity.velMax) * (newVelY/velMag);
+
+          playerEntity.velX = dampVelX;
+          playerEntity.velY = dampVelY;
+          console.log("2: " + dampVelX);
+        }
+
       }
 
       // Update entities
