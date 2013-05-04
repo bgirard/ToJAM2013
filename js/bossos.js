@@ -1,15 +1,21 @@
 (function(){
 
-  window.BossOs = function (options) {
+  window.BossOs = function (initOptions) {
+    var hudContainer = initOptions.hudContainer;
+    var consoleTextArea = hudContainer.querySelector('.hud-element.console > textarea');
 
-    var textContainer = options.textContainer;
+    var playerKeyStates = initOptions.playerKeyStates;
+    var playerKeyMap = initOptions.playerKeyStates;
 
-    function writeLine (str) {
-      textContainer.innerHTML = str + textContainer.innerHTML;
+    function writeConsoleLine (str) {
+      consoleTextArea.innerHTML = str + consoleTextArea.innerHTML;
     }
 
-    writeLine("BossOS v0.29 (c) 2184 -- DO NOT DISTRIBUTE");
-    writeLine("");
+    this.update = function () {
+    };
+
+    writeConsoleLine("BossOS v0.29 (c) 2184 -- DO NOT DISTRIBUTE");
+    writeConsoleLine("");
   };
 
 }());

@@ -66,7 +66,9 @@
     console.log('game start!');
 
     var bossOs = new BossOs({
-      textContainer: document.querySelector('.hud-element.console > textarea')
+      hudContainer: document.querySelector('#hud'),
+      playerKeyMap: playerKeyMap,
+      playerKeyStates: playerKeyStates
     });
 
     var level = document.getElementById("level");
@@ -121,6 +123,8 @@
       // Collisions
       collisionDetection("Player", "Pirate", function() {
       });
+
+      bossOs.update();
 
       // Flush render state to DOM
       for(i = 0, l = entities.length; i < l; ++ i) {
