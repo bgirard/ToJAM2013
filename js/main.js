@@ -127,7 +127,6 @@
         }
         var degToRad = 0.0174532925;
         if (deltaV != 0) {
-          // console.log(Math.sin(playerEntity.rotation * degToRad));
           playerEntity.velX += dt * deltaV * -Math.sin(playerEntity.rotation * degToRad);
           playerEntity.velY += dt * deltaV * Math.cos(playerEntity.rotation * degToRad);
         }
@@ -166,8 +165,12 @@
         entities[i].render();
       }
 
-      //document.getElementById("bg2").style.backgroundPosition = (-window.Game.Camera.x()/5) + "px " + (-window.Game.Camera.y()/5) + "px";
-      //document.getElementById("bg3").style.backgroundPosition = (-window.Game.Camera.x()/2) + "px " + (-window.Game.Camera.y()/2) + "px";
+      var x = (-window.Game.Camera.x()/5);
+      var y = (-window.Game.Camera.y()/5);
+      window.setTransform(document.getElementById("bg2"), "translate(" + x + "px," + y + "px)");
+      var x = (-window.Game.Camera.x()/5);
+      var y = (-window.Game.Camera.y()/5);
+      window.setTransform(document.getElementById("bg3"), "translate(" + x + "px," + y + "px)");
 
       cachedTime = t;
     };
