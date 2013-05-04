@@ -124,6 +124,35 @@ html, body {
   bottom: 0;
 }
 
+.hud-element.thruster .button {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border: 1px solid #080;
+  border-radius: 10px;
+  top: 20px;
+}
+
+.hud-element.thruster .button.on {
+  background-color: rgba(0, 100, 0, 0.5);
+}
+
+.hud-element.thruster.left .button {
+  left: 110px;
+}
+
+.hud-element.thruster.left .button:nth-child(2) {
+  top: 80px;
+}
+
+.hud-element.thruster.right .button {
+  right: 110px;
+}
+
+.hud-element.thruster.right .button:nth-child(2) {
+  top: 80px;
+}
+
 .hud-element.weapon-1 {
   width: 20%;
   height: 15%;

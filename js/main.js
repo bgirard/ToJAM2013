@@ -7,14 +7,19 @@
   };
   var keycodes = Object.keys(keymap);
 
-  function handleKeyEvent(state, evt) {
+  function nullFunction () {}
+
+  function handleKeyEvent(state, callback, evt) {
     var i;
     var code = evt.keyCode;
+    callback = callback || nullFunction;
+
     for(i = 0, l = keycodes.length; i < l; ++ i) {
       if(code == keycodes[i]) {
         var key = keymap[code];
         var playerKey = playerKeyMap[key];
         playerKeyStates[playerKey] = state;
+        callback(playerKey, state);
         return;
       }
     }
@@ -87,8 +92,8 @@
       playerKeyStates: playerKeyStates
     });
 
-    document.addEventListener('keydown', handleKeyEvent.bind(undefined, true));
-    document.addEventListener('keyup', handleKeyEvent.bind(undefined, false));
+    document.addEventListener('keydown', handleKeyEvent.bind(undefined, true, bossOs.playerKeyStateChange));
+    document.addEventListener('keyup', handleKeyEvent.bind(undefined, false, bossOs.playerKeyStateChange));
 
     document.setLevel(Game.levels['level1']());
 
