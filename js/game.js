@@ -115,10 +115,12 @@
     Camera: {
       // Fix to the player
       x: function() {
-        return 0;
+        var offset = document.getElementById("level").offsetWidth;
+        return document.getElementById("player").x - offset / 2;
       },
       y: function() {
-        return 0;
+        var offset = document.getElementById("level").offsetHeight;
+        return document.getElementById("player").y - offset / 2;
       },
     }
   };

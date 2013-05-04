@@ -78,6 +78,7 @@
 
     var player = new Game.Entity({
       classes: ['Player'],
+      id: "player",
       x: 100,
       y: 100,
       width: 288 / 4,
