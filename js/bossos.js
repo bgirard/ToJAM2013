@@ -51,8 +51,8 @@
       x *= x;
       y *= y;
 
-      rightThrusterFront.style.height = Math.max(0, -playerEntity.rotationVel / playerEntity.maxVel) * 100 + '%';
-      leftThrusterFront.style.height = Math.max(0, playerEntity.rotationVel / playerEntity.maxVel) * 100 + '%';
+      rightThrusterFront.style.height = Math.min(1, Math.max(0, -playerEntity.rotationVel / playerEntity.maxRotationVel)) * 100 + '%';
+      leftThrusterFront.style.height = Math.min(1, Math.max(0, playerEntity.rotationVel / playerEntity.maxRotationVel)) * 100 + '%';
     };
 
     this.playerKeyStateChange = function (key, state) {

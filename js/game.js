@@ -68,8 +68,11 @@
     div.rotation = 0;
     div.rotationVel = options['rotationVel'] || 0;
     div.rotationAccel = options['rotationAccel'] || 0.2;
+    div.rotationDrag = 0.15;
+    div.maxRotationVel = .2;
     div.scaling = options['scaling'];
     div.update = options['update'] ? options['update'].bind(div) : undefined;
+    div.ai = options['ai'] ? options['ai'].bind(div) : undefined;
 
     // Sprite properties
     div.spriteFrameX = options.spriteFrameX;
@@ -134,6 +137,12 @@
         }
         this.frameTimeRemaining = this.spriteFrameTime;
       }
+    },
+    default: function(dt) {
+      logic.motion.call(this, dt);
+    },
+    player: function(dt) {
+      logic.motion.call(this, dt);
     }
   };
 

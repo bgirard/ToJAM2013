@@ -14,6 +14,9 @@
     playerKeyStates[action] = false;
   });
 
+  Game.playerKeyMap = playerKeyMap;
+  Game.playerKeyStates = playerKeyStates;
+
   function nullFunction () {}
 
   function handleKeyEvent(state, callback, evt) {
@@ -118,12 +121,12 @@
         }
         // We don't want rotation innertia so apply the accel directly to the rotation
         if (playerKeyStates.left) {
-          playerEntity.rotationVel -= playerEntity.rotationAccel;
-          deltaR += -playerEntity.rotationAccel;
+          playerEntity.rotationVel = Math.max(-playerEntity.maxRotationVel, playerEntity.rotationVel - playerEntity.rotationAccel * dt);
+          // deltaR += -playerEntity.rotationAccel;
         }
         if (playerKeyStates.right) {
-          playerEntity.rotationVel += playerEntity.rotationAccel;
-          deltaR += playerEntity.rotationAccel;
+          playerEntity.rotationVel = Math.min(playerEntity.maxRotationVel, playerEntity.rotationVel + playerEntity.rotationAccel * dt);
+          // deltaR += playerEntity.rotationAccel;
         }
         var degToRad = 0.0174532925;
         if (deltaV != 0) {
@@ -131,14 +134,21 @@
           playerEntity.velY += dt * deltaV * Math.cos(playerEntity.rotation * degToRad);
         }
         if (deltaR != 0) {
-          playerEntity.rotation += dt * deltaR;
+          playerEntity.rotation += playerEntity.rotationVel;
         }
 
-        playerEntity.rotationVel *= 0.5;
+        playerEntity.rotationVel -= playerEntity.rotationVel * playerEntity.rotationDrag;
       }
 
       // Update entities
       var entities = level.getElementsByClassName('Entity');
+
+      for(i = 0, l = entities.length; i < l; ++ i) {
+        var entity = entities[i];
+        if('function' === typeof entity.ai)
+          entity.ai(dt);
+      }
+
       for(i = 0, l = entities.length; i < l; ++ i) {
         var entity = entities[i];
         if('function' === typeof entity.update)
