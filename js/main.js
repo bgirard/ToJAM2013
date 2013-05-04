@@ -115,7 +115,9 @@
 
       // Collisions
       collisionDetection("Player", "Wormhole", function() {
-        document.title = "next level";
+        var nextLevel = document.getLevel().nextId;
+        document.title = "next level: " + nextLevel;
+        document.setLevel(Game.levels[nextLevel]());
       });
 
       bossOs.update(playerEntity);

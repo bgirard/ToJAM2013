@@ -1,6 +1,6 @@
 (function() {
 
-var id = 'level1';
+var id = 'level2';
 function level() {
 
   var div = document.createElement('div');
@@ -21,8 +21,8 @@ function level() {
   , new Game.Entity({
       classes: ['Player'],
       id: 'player',
-      x: 100,
-      y: 100,
+      x: 300,
+      y: 300,
       width: 288 / 4,
       height: 72,
       img: "images/ship1.png",
