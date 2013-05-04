@@ -62,6 +62,13 @@
     return Math.max(min, Math.min(number, max));
   }
 
+  document.setLevel = function setLevel(level) {
+    var currentLevel = document.getLevel();
+    if(currentLevel)
+      currentLevel.parentNode.removeChild(currentLevel);
+    document.getElementById('gameboard').appendChild(level);
+  };
+
   document.getLevel = function getLevel() {
     return document.getElementsByClassName('Level')[0];
   };
@@ -82,8 +89,7 @@
     document.addEventListener('keydown', handleKeyEvent.bind(undefined, true));
     document.addEventListener('keyup', handleKeyEvent.bind(undefined, false));
 
-    console.log(Game.levels['level1']());
-    document.getElementById('gameboard').appendChild(Game.levels['level1']());
+    document.setLevel(Game.levels['level1']());
 
     var frame = 0;
     var cachedTime = Date.now();
