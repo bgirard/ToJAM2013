@@ -16,13 +16,16 @@
     <div id="test-object-3"></div>
     <script>
       Game.Sprite.urlPrefix = '../';
-      var s1 = new Game.Sprite(Game.spriteDefinitions.explosion, document.querySelector('#test-object-1'));
-      var s2 = new Game.Sprite(Game.spriteDefinitions.missile, document.querySelector('#test-object-2'));
-      var s3 = new Game.Sprite(Game.spriteDefinitions.laser, document.querySelector('#test-object-3'));
+
+      ['explosion', 'missile', 'laser', 'fireBigBlue'].forEach(function(item){
+        var s = new Game.Sprite(Game.spriteDefinitions[item]);
+        document.body.appendChild(s);
+      });
+
       setInterval(function(){
-        s1.updateSprite();
-        s2.updateSprite();
-        s3.updateSprite();
+        Array.prototype.forEach.call(document.querySelectorAll('.sprite'), function(item){
+          item.updateSprite();
+        });
       }, 50);
     </script>
   </body>
