@@ -207,7 +207,9 @@
     entity.parentNode.removeChild(entity);
   };
 
-  window.preloadSound('audio/07 Seven.mp3');
+  if (window.location.search.indexOf('nosound') === -1) {
+    window.preloadSound('audio/07 Seven.mp3');
+  }
 
   window.onload = function (e) {
     window.bgOffsetX = 0;
@@ -223,7 +225,9 @@
 
     document.setLevel(Game.levels['level1']());
 
-    window.playSound('audio/07 Seven.mp3');
+    if (window.location.search.indexOf('nosound') === -1) {
+      window.playSound('audio/07 Seven.mp3');
+    }
 
     var frame = 0;
     var cachedTime = Date.now();
