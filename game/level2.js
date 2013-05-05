@@ -22,7 +22,6 @@ function level() {
       type: 'player',
       classes: ['Player'],
       id: 'player',
-      bulletType: "Missle",
       x: 100,
       y: 100,
       life: 1000,
