@@ -200,6 +200,57 @@
       currentLevel.parentNode.removeChild(currentLevel);
     document.getElementById('gameboard').appendChild(level);
     document.getElementById('minimap').innerHTML = "";
+
+    // Prepare bounds
+    var bounds = document.getElementsByClassName("Bounds")[0];
+    // Top
+    for (var x = bounds.topLeftX() + 50; x < bounds.bottomRightX(); x+=300) {
+      document.spawn(new Game.Entity({
+        x: x,
+        y: bounds.topLeftY() + 50,
+        type: 'spaceBuoy',
+        spriteFrameTime: 100, //ms
+        width: 84,
+        height: 84,
+        img: "images/environment/spaceBuoy.png",
+      }));
+    }
+    // Bottom
+    for (var x = bounds.topLeftX() + 50; x < bounds.bottomRightX(); x+=300) {
+      document.spawn(new Game.Entity({
+        x: x,
+        y: bounds.topLeftY() + bounds.height - 50,
+        type: 'spaceBuoy',
+        spriteFrameTime: 100, //ms
+        width: 84,
+        height: 84,
+        img: "images/environment/spaceBuoy.png",
+      }));
+    }
+    // Left 
+    for (var y = bounds.topLeftY() + 300; y < bounds.bottomRightY() - 300 - 100; y+=300) {
+      document.spawn(new Game.Entity({
+        x: bounds.topLeftX() + 50,
+        y: y,
+        type: 'spaceBuoy',
+        spriteFrameTime: 100, //ms
+        width: 84,
+        height: 84,
+        img: "images/environment/spaceBuoy.png",
+      }));
+    }
+    // Right
+    for (var y = bounds.topLeftY() + 300; y < bounds.bottomRightY() - 300 - 100; y+=300) {
+      document.spawn(new Game.Entity({
+        x: bounds.topLeftX() + bounds.width - 50,
+        y: y,
+        type: 'spaceBuoy',
+        spriteFrameTime: 100, //ms
+        width: 84,
+        height: 84,
+        img: "images/environment/spaceBuoy.png",
+      }));
+    }
   };
 
   document.getLevel = function getLevel() {
@@ -373,7 +424,7 @@
 
         entityKillList.push(bullet);
         document.spawn(new Game.Entity({
-          type: 'laserHit',
+          type: bullet.hitType || 'laserHit',
           x: bullet.x,
           y: bullet.y,
         }));
@@ -431,8 +482,8 @@
         entities[i].render();
       }
 
-      /*
       var x, y;
+      /*
       x = -5000 + (window.bgOffsetX-window.Game.Camera.x())/5;
       y = -5000 + (window.bgOffsetY-window.Game.Camera.y())/5;
       window.setTransform(document.getElementById("bg3"), "translate(" + x + "px," + y + "px)");
@@ -443,6 +494,9 @@
       y = -5000 + (window.bgOffsetY-window.Game.Camera.y())/50;
       window.setTransform(document.getElementById("bg1"), "translate(" + x + "px," + y + "px)");
       */
+      x = (window.bgOffsetX-window.Game.Camera.x())/50;
+      y = (window.bgOffsetY-window.Game.Camera.y())/50;
+      window.setTransform(document.getElementById("bgShip"), "translate(" + x + "px," + y + "px)");
 
       cachedTime = t;
     };

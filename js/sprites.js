@@ -137,6 +137,12 @@
       width: 304,
       height: 44
     },
+    'spaceBuoy': {
+      image: 'images/environment/spaceBuoy.png',
+      numFrames: 15,
+      width: 1290,
+      height: 84
+    },
     'laser': {
       image: 'images/explosions/laserHit.png',
       numFrames: 5,
@@ -155,6 +161,13 @@
       numFrames: 5,
       width: 110,
       height: 27,
+      loop: false
+    },
+    'missileHit': {
+      image: 'images/explosions/missileHit.png',
+      numFrames: 8,
+      width: 304,
+      height: 44,
       loop: false
     },
     'ship': {
