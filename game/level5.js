@@ -1,7 +1,13 @@
 (function() {
 
 function drop_special() {
-
+  document.spawn(new Game.Entity({
+    x: 2000,
+    y: 650,
+    type: 'powerup',
+    spriteFrameTime: 100, //ms
+    img: "images/environment/powerup.png",
+  }));
 }
 
 function spawnWave(div, dt) {
@@ -91,7 +97,7 @@ function level() {
       x: 7000,
       y: 1000,
       showOnMinimap: true,
-      minimapColor: "black",      
+      minimapColor: "black",
       update: Game.logic.wormhole
     })
   , new Game.Entity({

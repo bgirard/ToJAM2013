@@ -1,5 +1,5 @@
 (function(){
-  
+
   var FRAME_DURATION = 40;
 
   function Sprite (definition, element) {
@@ -40,7 +40,7 @@
           spriteElement.style.visibility = 'visible';
           rewound = false;
         }
-        
+
         animationIndex++;
 
         if (definition.lock && animationIndex > definition.lock[0]) {
@@ -147,7 +147,7 @@
       image: 'images/environment/spaceBuoyEnergy.png',
       numFrames: 12,
       width: 720,
-      height:230 
+      height:230
     },
     'laser': {
       image: 'images/explosions/laserHit.png',
@@ -187,6 +187,12 @@
       numFrames: 7,
       width: 1960,
       height: 280
+    },
+    'powerup': {
+      image: 'images/powerup.png',
+      numFrames: 12,
+      width: 1080,
+      height: 84
     }
   };
 
