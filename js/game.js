@@ -142,7 +142,7 @@
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
       div.style.top = (div.y - window.Game.Camera.y()) + 'px';
       var transformStr = "";
-      transformStr += " rotate("+div.rotation+"deg)";
+      transformStr += " rotate("+div.rotation.toFixed(1)+"deg)";
 
       if (div.spriteFrameX != null || div.spriteFrameY != null) {
         var frameX = div.spriteFrameX || 0;
