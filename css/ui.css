@@ -377,7 +377,7 @@ html, body {
   background: transparent;
   color: #bbb;
   overflow: hidden;
-  font-family: courier;
+  font-family: courier, monospace;
   font-size: 8pt;
   border: 1px solid #bbb;
 }
@@ -443,12 +443,16 @@ hr {
   100% { visibility: hidden; }
 }
 
+.line {
+  width: 100%;
+}
+
 .line.alert {
   color: #f80;
   font-weight: bold;
 }
 
-.line.alert .blink {
+.blink {
   -webkit-animation: blink .75s steps(2, start) infinite;
      -moz-animation: blink .75s steps(2, start) infinite;
        -o-animation: blink .75s steps(2, start) infinite;

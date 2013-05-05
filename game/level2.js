@@ -6,7 +6,8 @@ function level() {
   var div = document.createElement('div');
   div.classList.add('Level');
   div.id = id;
-  div.nextId = 'level1';
+  div.levelNo = 2;
+  div.nextId = 'level3';
 
   [
     new Game.Entity({
@@ -33,7 +34,7 @@ function level() {
   // Row 1 Group 1
   , new Game.Entity({
       classes: ['Pirate'],
-      x: 1000,
+      x: 2000,
       y: 500,
       width: 80,
       height: 62,
@@ -47,7 +48,7 @@ function level() {
     })
   , new Game.Entity({
       classes: ['Pirate'],
-      x: 1040,
+      x: 2040,
       y: 550,
       width: 80,
       height: 62,
@@ -65,7 +66,7 @@ function level() {
   // Row 1 Group 2
   , new Game.Entity({
       classes: ['Pirate'],
-      x: 1000,
+      x: 2000,
       y: 1500,
       width: 80,
       height: 62,
@@ -79,7 +80,259 @@ function level() {
     })
   , new Game.Entity({
       classes: ['Pirate'],
-      x: 1040,
+      x: 2040,
+      y: 1550,
+      width: 80,
+      height: 62,
+      life: 300,
+      bulletType: "BulletStrong",
+      img: "images/ships/enemy2.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+
+  // Row 2 Group 1
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3000,
+      y: 250,
+      width: 80,
+      height: 62,
+      life: 100,
+      img: "images/ships/enemy1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3040,
+      y: 300,
+      width: 80,
+      height: 62,
+      life: 300,
+      bulletType: "BulletStrong",
+      img: "images/ships/enemy2.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+
+
+  // Row 2 Group 2
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3000,
+      y: 2000-250,
+      width: 80,
+      height: 62,
+      life: 100,
+      img: "images/ships/enemy1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3040,
+      y: 2000-300,
+      width: 80,
+      height: 62,
+      life: 300,
+      bulletType: "BulletStrong",
+      img: "images/ships/enemy2.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+
+  // Row 3 Group 1
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3000 + 1000,
+      y: 500,
+      width: 80,
+      height: 62,
+      life: 100,
+      img: "images/ships/enemy1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3000 + 1040,
+      y: 550,
+      width: 80,
+      height: 62,
+      life: 300,
+      bulletType: "BulletStrong",
+      img: "images/ships/enemy2.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+
+
+  // Row 3 Group 2
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3000 + 1000,
+      y: 1500,
+      width: 80,
+      height: 62,
+      life: 100,
+      img: "images/ships/enemy1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3000 + 1040,
+      y: 1550,
+      width: 80,
+      height: 62,
+      life: 300,
+      bulletType: "BulletStrong",
+      img: "images/ships/enemy2.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+
+  // Row 4 Group 1
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3000 + 2000,
+      y: 250,
+      width: 80,
+      height: 62,
+      life: 100,
+      img: "images/ships/enemy1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3000 + 2040,
+      y: 300,
+      width: 80,
+      height: 62,
+      life: 300,
+      bulletType: "BulletStrong",
+      img: "images/ships/enemy2.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+
+
+  // Row 4 Group 2
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3000 + 2000,
+      y: 2000-250,
+      width: 80,
+      height: 62,
+      life: 100,
+      img: "images/ships/enemy1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3000 + 2040,
+      y: 2000-300,
+      width: 80,
+      height: 62,
+      life: 300,
+      bulletType: "BulletStrong",
+      img: "images/ships/enemy2.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+
+  // Row 3 Group 1
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 5000 + 1000,
+      y: 500,
+      width: 80,
+      height: 62,
+      life: 100,
+      img: "images/ships/enemy1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 5000 + 1040,
+      y: 550,
+      width: 80,
+      height: 62,
+      life: 300,
+      bulletType: "BulletStrong",
+      img: "images/ships/enemy2.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+
+
+  // Row 3 Group 2
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 5000 + 1000,
+      y: 1500,
+      width: 80,
+      height: 62,
+      life: 100,
+      img: "images/ships/enemy1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 5000 + 1040,
       y: 1550,
       width: 80,
       height: 62,

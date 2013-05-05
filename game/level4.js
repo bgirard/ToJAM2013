@@ -1,13 +1,13 @@
 (function() {
 
-var id = 'level1';
+var id = 'level4';
 function level() {
 
   var div = document.createElement('div');
   div.classList.add('Level');
   div.id = id;
-  div.levelNo = 1;
-  div.nextId = 'level2';
+  div.levelNo = 4;
+  div.nextId = 'level1';
 
   [
     new Game.Entity({
@@ -32,20 +32,6 @@ function level() {
     })
   , new Game.Entity({
       classes: ['Pirate'],
-      x: 3200,
-      y: 500,
-      width: 80,
-      height: 62,
-      life: 100,
-      img: "images/ships/enemy1.png",
-      spriteFrameTime: 100, //ms
-      spriteFrameX: 0,
-      //spriteMaxFrameX: 4,
-      update: Game.logic.default,
-      ai: Game.logic.ai,
-    })
-  , new Game.Entity({
-      classes: ['Pirate'],
       x: 3400,
       y: 750,
       width: 80,
@@ -64,7 +50,8 @@ function level() {
       y: 1000,
       width: 80,
       height: 62,
-      life: 300,
+      life: 800,
+      scaling: 2,
       bulletType: "BulletStrong",
       img: "images/ships/enemy2.png",
       spriteFrameTime: 100, //ms
@@ -87,35 +74,7 @@ function level() {
       update: Game.logic.default,
       ai: Game.logic.ai,
     })
-  , new Game.Entity({
-      classes: ['Pirate'],
-      x: 3200,
-      y: 1500,
-      width: 80,
-      height: 62,
-      life: 100,
-      img: "images/ships/enemy1.png",
-      spriteFrameTime: 100, //ms
-      spriteFrameX: 0,
-      //spriteMaxFrameX: 4,
-      update: Game.logic.default,
-      ai: Game.logic.ai,
-    })
    //    ROW 2
-  , new Game.Entity({
-      classes: ['Pirate'],
-      x: 3200 + 2000,
-      y: 500,
-      width: 80,
-      height: 62,
-      life: 100,
-      img: "images/ships/enemy1.png",
-      spriteFrameTime: 100, //ms
-      spriteFrameX: 0,
-      //spriteMaxFrameX: 4,
-      update: Game.logic.default,
-      ai: Game.logic.ai,
-    })
   , new Game.Entity({
       classes: ['Pirate'],
       x: 3400 + 2000,
@@ -136,7 +95,8 @@ function level() {
       y: 1000,
       width: 80,
       height: 62,
-      life: 300,
+      life: 900,
+      scaling: 2,
       bulletType: "BulletStrong",
       img: "images/ships/enemy2.png",
       spriteFrameTime: 100, //ms
@@ -149,20 +109,6 @@ function level() {
       classes: ['Pirate'],
       x: 3400 + 2000,
       y: 1250,
-      width: 80,
-      height: 62,
-      life: 100,
-      img: "images/ships/enemy1.png",
-      spriteFrameTime: 100, //ms
-      spriteFrameX: 0,
-      //spriteMaxFrameX: 4,
-      update: Game.logic.default,
-      ai: Game.logic.ai,
-    })
-  , new Game.Entity({
-      classes: ['Pirate'],
-      x: 3200 + 2000,
-      y: 1500,
       width: 80,
       height: 62,
       life: 100,

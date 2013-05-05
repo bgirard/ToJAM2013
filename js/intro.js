@@ -87,6 +87,9 @@
         exitCurrentScene();
       }, duration);      
     }
+    else {
+      window.location = 'game.html';
+    }
   }
 
   var loadingScreen = document.querySelector('.loading-screen');
@@ -121,7 +124,16 @@
   function start () {
     music.play();
     nextScene();
+    setTimeout(function(){
+      document.querySelector('.skip-notification').classList.add('on');
+    }, 1000);
   }
+
+  window.onkeypress = function (e) {
+    if (e.which === 32) {
+      window.location = 'game.html';
+    }
+  };
 
   load();
 }());

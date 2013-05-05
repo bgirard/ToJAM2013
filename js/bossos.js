@@ -2,6 +2,35 @@
 
   var COMPY_PRINT_SPEED = 10;
 
+  var KEY_MAP = {
+     'A': 65
+    ,'B': 66
+    ,'C': 67
+    ,'D': 68
+    ,'E': 69
+    ,'F': 70
+    ,'G': 71
+    ,'H': 72
+    ,'I': 73
+    ,'J': 74
+    ,'K': 75
+    ,'L': 76
+    ,'M': 77
+    ,'N': 78
+    ,'O': 79
+    ,'P': 80
+    ,'Q': 81
+    ,'R': 82
+    ,'S': 83
+    ,'T': 84
+    ,'U': 85
+    ,'V': 86
+    ,'W': 87
+    ,'X': 88
+    ,'Y': 89
+    ,'Z': 90
+  };
+
   window.BossOs = function (initOptions) {
     var hudContainer = initOptions.hudContainer;
     var consoleTextArea = hudContainer.querySelector('.hud-element.console > .textarea');
@@ -39,9 +68,16 @@
       var strIndex = 0;
       classes = classes ? ' ' + classes : '';
       line.className = 'line' + classes;
-      line.innerHTML = preventTyping ? str : '';
       preventTyping = preventTyping || false;
+
+      if (str.length === 0) {
+        str = '&nbsp;';
+        preventTyping = true;
+      }
+
+      line.innerHTML = preventTyping ? str : ' ';
       consoleTextArea.insertBefore(line, consoleTextArea.firstChild);
+
       if (str.length > 0 && !preventTyping) {
         var lineInterval = setInterval(function(){
           line.innerHTML = line.innerHTML + str[strIndex++];
@@ -54,16 +90,14 @@
 
     var bossScript = [
       [1, function() { writeLine('BossOS v0.29 (c) 2184 -- DO NOT DISTRIBUTE'); }],
-      [2, function() { writeLine('Loading kernel modules...'); }],
-      [3, function() { writeLine('Restoring consciousness. DO NOT POWER OFF.'); }],
-      [3, function() { writeLine('------------------------------------'); writeLine(''); writeLine(''); }],
-      [1, function() { writeLine('Please identify yourself.'); }],
-      [5, function() { writeLine('Please identify yourself.'); }],
+      [3, function() { writeLine('Restoring consciousness...'); }],
+      [3, function() { writeLine(''); writeLine(''); writeLine(''); }],
+      [1, function() { writeLine('Welcome back.'); }],
+      [3, function() { writeLine('Please identify yourself.'); }],
       [5, function() { writeLine('Identify yourself immediately.'); }],
       [5, function() { writeLine('If you cannot speak, press the "Dangerously Incapacitated" button.'); }],
-      [1, function() { writeLine('Central command will be alerted.'); }],
-      [3, function() { writeLine('WARNING: Respond within 10 seconds. Refusal will be deadly.'); }],
-      [5, function() { writeLine('WARNING: 5 seconds.'); }],
+      [3, function() { writeLine('Central command will be alerted.'); }],
+      [3, function() { writeLine('WARNING: Respond within 5 seconds. Refusal will be deadly.'); }],
       [5, function() { writeLine('ALERT: <span class="blink">ACTIVATING SELF-DESTRUCT MODE</span>.', 'alert', true); }],
       [4, function() { writeLine('...'); }],
       [2, function() { writeLine('Looks like that module is missing.'); }],
@@ -79,6 +113,49 @@
       timeAtLastDecision = Date.now();
     }
 
+    var currentSwitchMap = {};
+
+    function switchButtons () {
+      var actions = Object.keys(buttonMap);
+      var keyMapKeys = Object.keys(KEY_MAP);
+      var randomAction = actions[Math.floor(Math.random() * actions.length)];
+      var actionKey;
+
+      if (currentSwitchMap[randomAction]) {
+        return;
+      }
+
+      keys.forEach(function(key){
+        var action = playerKeyMap[key];
+        if (action === randomAction) {
+          actionKey = key;
+        }
+      });
+
+      var randomKey = actionKey;
+      while (keys.indexOf(randomKey) > -1) {
+        randomKey = keyMapKeys[Math.floor(Math.random() * keyMapKeys.length)];
+      }
+
+      playerKeyStates[randomAction] = false;
+      delete playerKeyMap[actionKey];
+      playerKeyMap[randomKey] = randomAction;
+      buttonMap[randomAction].innerHTML = randomKey;
+      currentSwitchMap[randomAction] = actionKey;
+      buttonMap[randomAction].classList.remove('on');
+      buttonMap[randomAction].classList.add('blink');
+
+      setTimeout(function(){
+        buttonMap[randomAction].classList.remove('blink');
+        buttonMap[randomAction].classList.remove('on');
+        delete playerKeyMap[randomKey];
+        playerKeyMap[actionKey] = randomAction;
+        buttonMap[randomAction].innerHTML = actionKey;
+        delete currentSwitchMap[randomAction];
+        playerKeyStates[randomAction] = false;
+      }, Math.round(2000 + Math.random()*5000));
+    }
+
     function runAI () {
       var currentTime = Date.now();
 
@@ -90,7 +167,9 @@
       if (timeAtLastDecision > -1 && timeSinceLastDecision > randomTimeUntilNextDecision) {
         randomTimeUntilNextDecision = Math.random() * 5000 + 5000;
         timeAtLastDecision = currentTime;
-      } else if (nextScriptAction && timeSinceLastScriptAction > nextScriptAction[0] * 1000) {
+        switchButtons();
+      }
+      else if (nextScriptAction && timeSinceLastScriptAction > nextScriptAction[0] * 1000) {
         bossScript.shift();
         timeAtLastScriptAction = currentTime;
         nextScriptAction[1]();
@@ -113,13 +192,13 @@
       runAI();
     };
 
-    this.playerKeyStateChange = function (key, state) {
-      if (buttonMap[key]) {
+    this.playerKeyStateChange = function (action, state) {
+      if (buttonMap[action]) {
         if (state) {
-          buttonMap[key].classList.add('on');
+          buttonMap[action].classList.add('on');
         }
         else {
-          buttonMap[key].classList.remove('on');
+          buttonMap[action].classList.remove('on');
         }
       }
     };

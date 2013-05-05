@@ -20,14 +20,13 @@ section {
   bottom: 0;
   opacity: 0;
   visibility: hidden;
-
   vertical-align: middle;
-
   text-align: center;
 }
 
-section h1 {
+section h1, section h2 {
   font-weight: normal;
+  white-space: nowrap;
 }
 
 .vertical-center-container {
@@ -135,4 +134,29 @@ section img {
   -moz-animation:    mothership-animation .1s steps(2, start) infinite;
   -o-animation:      mothership-animation .1s steps(2, start) infinite;
   animation:         mothership-animation .1s steps(2, start) infinite;
+}
+
+.skip-notification {
+  z-index: 4000;
+  width: 100%;
+  text-align: center;
+  position: fixed;
+  bottom: .5em;
+  font-size: 14pt;
+  font-family: 'VT323', courier, futura, sans, verdana, tahoma, arial;
+  opacity: 0;
+  -webkit-transition: 1s opacity;
+     -moz-transition: 1s opacity;
+      -ms-transition: 1s opacity;
+       -o-transition: 1s opacity;
+          transition: 1s opacity;
+  -webkit-transition-delay: 3s;
+     -moz-transition-delay: 3s;
+      -ms-transition-delay: 3s;
+       -o-transition-delay: 3s;
+          transition-delay: 3s;
+}
+
+.skip-notification.on {
+  opacity: 1;
 }

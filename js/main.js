@@ -76,7 +76,6 @@
     'D': 'right',
     'W': 'up',
     'S': 'down',
-    'SPACE': 'fire',
     'P': 'power',
     'T': 'shield',
     'M': 'missile',
@@ -265,8 +264,14 @@
     var pirates = level.getElementsByClassName('Pirate');
     for (var i = 0; i < pirates.length; i++) {
       var pirate = pirates[i];
+      if (pirate.img.indexOf("asteroid") != -1) {
+        // Use their initial rotation
+        continue;
+      }
       var playerEntity = document.getPlayer();
-      pirate.rotation = pirate.faceAngle(playerEntity.centerX(), playerEntity.centerY());
+      if (playerEntity) { 
+        pirate.rotation = pirate.faceAngle(playerEntity.centerX(), playerEntity.centerY());
+      }
     }
   };
 
@@ -345,6 +350,9 @@
     window.changeLevelOnNextFrame = function(level) {
       changeLevelOnNextFrame = level;
     }
+    window.restartLevel = function() {
+      window.changeLevelOnNextFrame(Game.levels[document.getLevel().id]());
+    }
 
     document.getPlayer().childSprites.rocket1.reverseSpriteToStart();
     document.getPlayer().childSprites.rocket2.reverseSpriteToStart();
@@ -402,8 +410,10 @@
         // d/ms                  += ms * scalar * d/ms^2
         playerEntity.rotationVel += dt * rotationDirSign * playerEntity.rotationAccel;
 
-        // d/ms                  *= ms * scalar/ms
-        playerEntity.rotationVel *= Math.pow(playerEntity.rotationDamp, dt/1000);
+        if (playerEntity.rotationAccel != 0) {
+          // d/ms                  *= ms * scalar/ms
+          playerEntity.rotationVel *= Math.pow(playerEntity.rotationDamp, dt/1000);
+        }
 
         if (Math.abs(playerEntity.rotationVel) > playerEntity.maxRotationVel) {
           playerEntity.rotationVel = playerEntity.maxRotationVel * sign(playerEntity.rotationVel);
@@ -419,6 +429,12 @@
 
         playerEntity.thrust(playerEntity, dt, playerEntity.rotation, thrustDirSign);
 
+      }
+
+      // Update level
+      var level = document.getLevel();
+      if (level && level.update) {
+        level.update(dt);
       }
 
       // Update entities
@@ -437,9 +453,11 @@
       }
 
       // Collisions
-      window.inDistance(300000, playerEntity, "Entity", function(player, entity) {
-        entity.scouted = true;
-      });
+      if (playerEntity) {
+        window.inDistance(300000, playerEntity, "Entity", function(player, entity) {
+          entity.scouted = true;
+        });
+      }
 
       window.collisionDetection("Damagable", "Bullet", function(target, bullet) {
         // Don't let the player hit himself
@@ -454,7 +472,9 @@
         Sound.play('laserHit');
 
         target.life -= bullet.damage;
-        target.thrust(target, 10, target.faceAngle(bullet.lastX || bullet.x, bullet.lastY || bullet.y), 1);
+        if (target.id != "Mothership") {
+          target.thrust(target, 10, target.faceAngle(bullet.lastX || bullet.x, bullet.lastY || bullet.y), 1);
+        }
         if(target.life <= 0) {
           document.spawn(new Game.Entity({
             type: 'explosion',
@@ -466,28 +486,31 @@
         }
       });
 
-      window.noCollisionDetection(playerEntity, "Bounds", function() {
-        var bounds = document.getElementsByClassName("Bounds")[0];
-        // Outside the level
-        if (playerEntity.x < bounds.x) {
-          playerEntity.x += bounds.width;
-          window.bgOffsetX += bounds.width;
-        }
-        if (playerEntity.y < bounds.y) {
-          playerEntity.y += bounds.height;
-          window.bgOffsetY += bounds.height;
-        }
-        if (playerEntity.x > bounds.x + bounds.width/2) {
-          playerEntity.x -= bounds.width;
-          window.bgOffsetX -= bounds.width;
-        }
-        if (playerEntity.y > bounds.y + bounds.height/2) {
-          playerEntity.y -= bounds.height;
-          window.bgOffsetY -= bounds.height;
-        }
-      });
+      if (playerEntity) {
+        window.noCollisionDetection(playerEntity, "Bounds", function() {
+          var bounds = document.getElementsByClassName("Bounds")[0];
+          // Outside the level
+          if (playerEntity.x < bounds.x) {
+            playerEntity.x += bounds.width;
+            window.bgOffsetX += bounds.width;
+          }
+          if (playerEntity.y < bounds.y) {
+            playerEntity.y += bounds.height;
+            window.bgOffsetY += bounds.height;
+          }
+          if (playerEntity.x > bounds.x + bounds.width/2) {
+            playerEntity.x -= bounds.width;
+            window.bgOffsetX -= bounds.width;
+          }
+          if (playerEntity.y > bounds.y + bounds.height/2) {
+            playerEntity.y -= bounds.height;
+            window.bgOffsetY -= bounds.height;
+          }
+        });
 
-      bossOs.update(playerEntity);
+        bossOs.update(playerEntity);
+      }
+
 
       while (entityKillList.length > 0) {
         var entity = entityKillList.pop();
@@ -519,7 +542,14 @@
       */
       x = (window.bgOffsetX-window.Game.Camera.x())/50;
       y = (window.bgOffsetY-window.Game.Camera.y())/50;
-      window.setTransform(document.getElementById("bgShip"), "translate(" + x + "px," + y + "px)");
+      if (document.getLevel().levelNo != 5) {
+        var shipScale = [0.25, 0.50, 0.75, 0];
+        var scale = shipScale[document.getLevel().levelNo];
+        window.setTransform(document.getElementById("bgShip"), "translate(" + x + "px," + y + "px) scale(" + scale + "," + scale + ")");
+        document.getElementById("bgShip").style.visibility = "visible";
+      } else {
+        document.getElementById("bgShip").style.visibility = "hidden";
+      }
 
       cachedTime = t;
     };

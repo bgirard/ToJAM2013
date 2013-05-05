@@ -62,6 +62,7 @@
     }
 
     div.options = options;
+    div.img = img;
     div.classList.add('Entity');
     extraClasses.forEach(function(className) {
       div.classList.add(className);
@@ -131,7 +132,7 @@
     div.weaponReloadTime = {
       "Missile": 150,
       "Laser": 500,
-      "Bullet": 150,
+      "Bullet": 400,
       "BulletStrong": 200,
     };
     div.weaponCooldown = {};
@@ -200,6 +201,10 @@
       if (this.minimap) {
         this.minimap.parentNode.removeChild(this.minimap);
       }
+      if (div.id == "player") {
+        window.restartLevel();
+      }
+
     };
 
     var BulletList = {
@@ -273,6 +278,7 @@
           y: (Math.cos(rot) * -this.height/2) + this.y,
           velX: 2 * this.velMax * vDirX,
           velY: 2 * this.velMax * vDirY,
+          rotation: this.rotation,
           img: "images/projectiles/laser" + laserColor + ".png",
           width: 4,
           height: 62,
@@ -303,6 +309,7 @@
           y: (Math.cos(rot) * -this.height/2) + this.y,
           velX: 2 * this.velMax * vDirX,
           velY: 2 * this.velMax * vDirY,
+          rotation: this.rotation,
           faceVelocityDirection: true,
           img: "images/projectiles/missile.png",
           width: 9,
@@ -387,17 +394,18 @@
 
       if (div.life != div.lifeMax) {
         // Draw HP bar
+        var lifeBarWidth = Math.min(div.width, 256);
         if (div.lifeBar == null) {
           div.lifeBar = document.createElement("div");
           div.lifeBar.className = "lifeBar";
           div.lifeBar.style.height = "8px";
-          div.lifeBar.style.marginLeft = -div.width/2 + 'px';
+          div.lifeBar.style.marginLeft = -div.width/2 + (div.width-lifeBarWidth)/2 + 'px';
           div.lifeBar.style.marginTop = -div.height/2 + 'px';
           div.parentNode.appendChild(div.lifeBar);
         }
         div.lifeBar.style.left = (div.x - window.Game.Camera.x()) + 'px';
         div.lifeBar.style.top = (div.y - window.Game.Camera.y()) + 'px';
-        div.lifeBar.style.width = ((div.life/div.lifeMax) * div.width) + "px";
+        div.lifeBar.style.width = ((div.life/div.lifeMax) * lifeBarWidth) + "px";
         div.lifeBar.style.backgroundColor = "hsl(" + ((div.life/div.lifeMax)*100) + ",100%,50%)";
       }
 
@@ -410,6 +418,8 @@
         var bounds = document.getElementsByClassName("Bounds")[0];
         div.minimap.style.left = (div.topLeftX() - bounds.topLeftX()) * 100 / bounds.width + "%";
         div.minimap.style.top = (div.topLeftY() - bounds.topLeftY()) * 100 / bounds.height + "%";
+        div.minimap.style.width = Math.floor(div.width/bounds.width*100) + "%";
+        div.minimap.style.height = Math.floor(div.height/bounds.height*100) + "%";
         div.minimap.style.backgroundColor = div.minimapColor;
       }
     };
@@ -462,7 +472,7 @@
     wormhole: function(dt) {
       var killedAllPirate = document.getElementsByClassName("Pirate").length == 0;
       if (killedAllPirate) {
-        this.minimapColor = "rgb(" + (128 + 128*Math.sin(Date.now() / 180)).toFixed(0) + ",0,0)"  
+        this.minimapColor = "rgb(" + (128 + 128*Math.sin(Date.now() / 180)).toFixed(0) + ",0,0)"
       }
       window.collisionDetection("Player", "Wormhole", function() {
         if (killedAllPirate) {
@@ -485,8 +495,8 @@
     },
     ai: function(dt) {
       // Seek player
-      var player = document.getElementById("player"); 
-      if (this.distanceTo(player.centerX(), player.centerY()) < 500) {
+      var player = document.getElementById("player");
+      if (player && this.distanceTo(player.centerX(), player.centerY()) < 500) {
         this.seekX = player.centerX();
         this.seekY = player.centerY();
       }
@@ -511,13 +521,17 @@
         if (Math.abs(changeToAngle) > 0.1 * dt) {
           changeToAngle = sign(changeToAngle) * 0.1 * dt;
         }
-        this.rotation -= changeToAngle % 360;
+        if (this.rotationAccel != 0) {
+          this.rotation -= changeToAngle % 360;
+        }
 
         if (this.distanceTo(this.seekX, this.seekY) > 200) {
           idle = false;
           this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), -1);
         }
-        logic.weapon.call(this, dt);
+        if (player && this.distanceTo(player.centerX(), player.centerY()) < 700) {
+          logic.weapon.call(this, dt);
+        }
       }
 
       if (idle) {
@@ -526,8 +540,8 @@
         var otherPirate = null;
         window.collisionDetection("Pirate", "Pirate", function(p1, p2) {
           if (self == p1 && self != p2) {
-            otherPirate = p2; 
-          } 
+            otherPirate = p2;
+          }
         });
         if (otherPirate != null) {
           idle = false;
@@ -562,6 +576,9 @@
     Camera: {
       // Fix to the player
       x: function() {
+        if (document.getPlayer() == null) {
+          return Game.Camera.cameraOldX;
+        }
         var offset = document.getLevel().offsetWidth;
         var cameraNewX = document.getPlayer().x - offset / 2;
         if (Game.Camera.cameraOldX != null && Math.abs(Game.Camera.cameraOldX - cameraNewX) > 50) {
@@ -571,6 +588,9 @@
         return cameraNewX;
       },
       y: function() {
+        if (document.getPlayer() == null) {
+          return Game.Camera.cameraOldY;
+        }
         var offset = document.getLevel().offsetHeight;
         var cameraNewY = document.getPlayer().y - offset / 2;
         if (Game.Camera.cameraOldY != null && Math.abs(Game.Camera.cameraOldY - cameraNewY) > 50) {
