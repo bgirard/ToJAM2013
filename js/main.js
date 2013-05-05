@@ -365,6 +365,7 @@
         entities[i].render();
       }
 
+      /*
       var x, y;
       x = -5000 + (window.bgOffsetX-window.Game.Camera.x())/5;
       y = -5000 + (window.bgOffsetY-window.Game.Camera.y())/5;
@@ -375,6 +376,7 @@
       x = -5000 + (window.bgOffsetX-window.Game.Camera.x())/50;
       y = -5000 + (window.bgOffsetY-window.Game.Camera.y())/50;
       window.setTransform(document.getElementById("bg1"), "translate(" + x + "px," + y + "px)");
+      */
 
       cachedTime = t;
     };

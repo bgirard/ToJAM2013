@@ -86,6 +86,9 @@
     div.velX = options['velX'] || 0.0;
     div.velY = options['velY'] || 0.0;
     div.velMax = 0.5;
+    if (div.className.indexOf("Pirate") != -1) {
+      div.velMax = 0.5/2;
+    }
     div.drag = 0.000;
     div.accel = 0.01;
     div.rotation = 0;
@@ -94,6 +97,9 @@
     div.rotationDrag = 0.15;
     div.maxRotationVel = .2;
     div.velDamp = 0.1;
+    if (div.className.indexOf("Pirate") != -1) {
+      div.velDamp = 0.001;
+    }
     div.rotationDamp = 0.1;
     div.scaling = options.scaling;
     div.update = options.update ? options.update.bind(div) : undefined;
@@ -111,11 +117,11 @@
     div.ttl = options['ttl'] || null;
 
     div.centerX = function() {
-      return this.x+this.width/2;
+      return this.x;
     };
 
     div.centerY = function() {
-      return this.y+this.height/2;
+      return this.y;
     };
 
     div.faceAngle = function (x, y) {
@@ -252,7 +258,7 @@
     ai: function(dt) {
       // Seek player
       var player = document.getElementById("player"); 
-      if (this.distanceTo(player.centerX(), player.centerY()) < 300) {
+      if (this.distanceTo(player.centerX(), player.centerY()) < 500) {
         this.seekX = player.centerX();
         this.seekY = player.centerY();
       }
@@ -278,13 +284,15 @@
         }
         this.rotation -= changeToAngle % 360;
 
-        if (this.distanceTo(this.seekX, this.seekY) > 100) {
+        if (this.distanceTo(this.seekX, this.seekY) > 200) {
           this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), -1);
+          document.title = "> 100";
         } else {
-          this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), 0);
+          this.thrust(this, dt, this.faceAngle(this.x, this.y), 0);
+          document.title = "< 100";
         }
       } else {
-        this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), 0);
+        this.thrust(this, dt, this.faceAngle(this.x, this.y), 0);
       }
     },
     default: function(dt) {
