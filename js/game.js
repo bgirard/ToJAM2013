@@ -135,7 +135,12 @@
       "Bullet": 400,
       "BulletStrong": 200,
     };
-    div.weaponCooldown = {};
+    div.weaponCooldown = {
+      "Missile": 0,
+      "Laser": 0,
+      "Bullet": 0,
+      "BulletStrong": 0,
+    };
     div.ttl = options['ttl'] || null;
     div.owner = options['owner'] || null;
 
@@ -484,8 +489,7 @@
     },
     weapon: function(dt, bulletType) {
       bulletType = bulletType || this.bulletType
-      this.weaponCooldown[bulletType] = Math.max(0, this.weaponCooldown[bulletType] - dt);
-      if(!this.weaponCooldown[bulletType]) {
+      if(0 == this.weaponCooldown[bulletType]) {
         this.weaponCooldown[bulletType] = this.weaponReloadTime[bulletType];
         this.fire(bulletType);
       }
@@ -557,6 +561,11 @@
     },
     player: function(dt) {
       logic.motion.call(this, dt);
+      this.weaponCooldown["Laser"] = Math.max(0, this.weaponCooldown["Laser"] - dt);
+      this.weaponCooldown["Missile"] = Math.max(0, this.weaponCooldown["Missile"] - dt);
+      this.weaponCooldown["Bullet"] = Math.max(0, this.weaponCooldown["Bullet"] - dt);
+      this.weaponCooldown["BulletStrong"] = Math.max(0, this.weaponCooldown["BulletStrong"] - dt);
+
       if(Game.playerKeyStates.fire) {
         // This will check cooldown
         logic.weapon.call(this, dt, "Missile");
