@@ -23,6 +23,7 @@ function level() {
       classes: ['Player'],
       id: 'player',
       life: 1000,
+      bulletType: "Missile",
       x: -600,
       y: -600,
       rotation: 180,

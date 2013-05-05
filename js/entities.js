@@ -9,6 +9,15 @@
         definition: 'wormhole'
       }      
     },
+    'spaceBuoy': {
+      width: 84,
+      height: 84,
+      hitBox: [60, 60],
+      classes: ['spaceBuoy'],
+      spriteLayout: {
+        definition: 'spaceBuoy'
+      }      
+    },
     'laserHit': {
       classes: ['LaserHit'],
       spriteLayout: {

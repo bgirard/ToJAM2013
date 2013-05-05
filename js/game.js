@@ -143,6 +143,14 @@
       return this.y - this.height/2;
     }
 
+    div.bottomRightX = function() {
+      return this.x + this.width/2;
+    }
+
+    div.bottomRightY = function() {
+      return this.y + this.height/2;
+    }
+
     div.centerX = function() {
       return this.x;
     };

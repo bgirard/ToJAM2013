@@ -137,6 +137,12 @@
       width: 304,
       height: 44
     },
+    'spaceBuoy': {
+      image: 'images/environment/spaceBuoy.png',
+      numFrames: 15,
+      width: 1290,
+      height: 84
+    },
     'laser': {
       image: 'images/explosions/laserHit.png',
       numFrames: 5,
