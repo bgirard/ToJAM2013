@@ -101,11 +101,11 @@
     div.ttl = options['ttl'] || null;
 
     div.centerX = function() {
-      return this.x+this.width/2;
+      return this.x;
     };
 
     div.centerY = function() {
-      return this.y+this.height/2;
+      return this.y;
     };
 
     div.faceAngle = function (x, y) {
