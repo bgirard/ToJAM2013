@@ -2,12 +2,13 @@
 
   var SoundCache = {};
 
-  window.preloadSound = function(sfx) {
-    if (SoundCache[sfx] == null) {
-      SoundCache[sfx] = document.createElement('audio');
-      SoundCache[sfx].autobuffer = true;
-      SoundCache[sfx].preload = "auto";
-      SoundCache[sfx].src = sfx;
+  window.preloadSound = function(sfx, name) {
+    name = name || sfx;
+    if (SoundCache[name] == null) {
+      SoundCache[name] = document.createElement('audio');
+      SoundCache[name].autobuffer = true;
+      SoundCache[name].preload = "auto";
+      SoundCache[name].src = sfx;
     }
   };
 
@@ -25,7 +26,7 @@
 
 if (window.location.search.indexOf('nosound') === -1) {
   if (window.location.search.indexOf('nomusic') === -1) {
-    window.preloadSound('audio/07 Seven.mp3');
+    window.preloadSound('audio/07 Seven.ogg', 'level1-sound');
   }
   window.preloadSound('audio/wormhole.wav');
   window.preloadSound('audio/laser.wav');

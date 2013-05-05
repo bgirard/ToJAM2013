@@ -221,7 +221,7 @@
 
     document.setLevel(Game.levels['level1']());
 
-    window.playSound('audio/07 Seven.mp3');
+    window.playSound('level1-sound');
 
     var frame = 0;
     var cachedTime = Date.now();
