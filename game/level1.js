@@ -20,12 +20,11 @@ function level() {
       update: Game.logic.default
     })
   , new Game.Entity({
+      type: 'player',
       classes: ['Player'],
       id: 'player',
       x: 100,
       y: 100,
-      width: 70,
-      height: 60,
       img: "images/ships/ship.png",
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,

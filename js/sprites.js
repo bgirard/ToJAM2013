@@ -84,6 +84,12 @@
       numFrames: 13,
       width: 1664,
       height: 128
+    },
+    'ship': {
+      image: 'images/ships/ship.png',
+      numFrames: 1,
+      width: 70,
+      height: 60      
     }
   };
 
