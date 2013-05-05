@@ -47,13 +47,19 @@
     var speedThruster = hudContainer.querySelector('.speed');
     var speedThrusterFront = speedThruster.querySelector('.front');
 
+    var laser = hudContainer.querySelector('.weapon-2');
+    var missile = hudContainer.querySelector('.weapon-1');
+
+    var laserFront = laser.querySelector('.front');
+    var missileFront = missile.querySelector('.front');
+
     var buttonMap = {
       'left': leftThruster.querySelector('.button:nth-child(1)'),
       'right': rightThruster.querySelector('.button:nth-child(1)'),
       'up': speedThruster.querySelector('.button:nth-child(1)'),
       'down': speedThruster.querySelector('.button:nth-child(2)'),
-      'laser': hudContainer.querySelector('.weapon-2 .button'),
-      'missile': hudContainer.querySelector('.weapon-1 .button')
+      'laser': laser.querySelector('.button'),
+      'missile': missile.querySelector('.button')
     };
 
     var keys = Object.keys(playerKeyMap);
@@ -188,6 +194,19 @@
       var s = Math.round(Math.min(1, Math.max(0, Math.sqrt(x + y) / playerEntity.velMax)) * 1000)/1000;
       speedThrusterFront.style.height = s * 100 + '%';
       speedThrusterFront.style.top = -s * 50 + 50 + '%';    // lol, thanks css
+
+      var laserValue = 1 - (playerEntity.weaponCooldown['Laser'] / playerEntity.weaponReloadTime['Laser']);
+      laserFront.style.height = laserValue * 100 + '%';
+
+      var missileValue;
+      
+      if (playerEntity.hasEndGameBullets) {
+        missileValue = 1 - (playerEntity.weaponCooldown['EndGameBullet'] / playerEntity.weaponReloadTime['EndGameBullet']);
+      }
+      else {
+        missileValue = 1 - (playerEntity.weaponCooldown['Missile'] / playerEntity.weaponReloadTime['Missile']);
+      }
+      missileFront.style.height = missileValue * 100 + '%';
 
       runAI();
     };

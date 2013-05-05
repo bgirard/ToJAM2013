@@ -60,6 +60,7 @@ function spawnWave(div, dt) {
 }
 
 var id = 'level1';
+
 function level() {
 
   var div = document.createElement('div');
