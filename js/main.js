@@ -343,6 +343,7 @@
         window.playSound('audio/laserHit.wav');
 
         pirate.life -= bullet.damage;
+        pirate.thrust(pirate, 10, pirate.faceAngle(bullet.lastX || bullet.x, bullet.lastY || bullet.y), 1);
         if(pirate.life <= 0) {
           document.spawn(new Game.Entity({
             type: 'explosion',

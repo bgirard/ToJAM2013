@@ -264,6 +264,8 @@
         this.velY = Math.min(0, this.velY + Math.max(0, dt * this.drag * Math.cos(this.rotation * degToRad)));
       }
 
+      this.lastX = this.x;
+      this.lastY = this.y;
       this.x += dt * this.velX;
       this.y += dt * this.velY;
 
