@@ -51,6 +51,7 @@
     var missile = hudContainer.querySelector('.weapon-1');
 
     var laserFront = laser.querySelector('.front');
+    var missileFront = missile.querySelector('.front');
 
     var buttonMap = {
       'left': leftThruster.querySelector('.button:nth-child(1)'),
@@ -194,7 +195,11 @@
       speedThrusterFront.style.height = s * 100 + '%';
       speedThrusterFront.style.top = -s * 50 + 50 + '%';    // lol, thanks css
 
-      laserFront.style.height = playerEntity.weaponCooldown['Laser'] / playerEntity.weaponReloadTime['Laser'] * 100 + '%';
+      var laserValue = 1 - (playerEntity.weaponCooldown['Laser'] / playerEntity.weaponReloadTime['Laser']);
+      laserFront.style.height = laserValue * 100 + '%';
+
+      var missileValue = 1 - (playerEntity.weaponCooldown['Missile'] / playerEntity.weaponReloadTime['Missile']);
+      missileFront.style.height = missileValue * 100 + '%';
 
       runAI();
     };
