@@ -23,7 +23,7 @@
     element.style.height = definition.height + 'px';
 
     var indexFunctions = {
-      lock: function() {
+      lock: function(dt) {
         if (animationIndex === definition.lock[1]) {
           animationIndex = definition.lock[0];
         }
@@ -31,13 +31,13 @@
           animationIndex++;
         }
       },
-      normal: function() {
+      normal: function(dt) {
         animationIndex = (animationIndex + 1) % definition.numFrames;
         if (definition.lock && animationIndex > definition.lock[0]) {
           indexFunction = indexFunctions.lock;
         }
       },
-      reverseToStart: function() {
+      reverseToStart: function(dt) {
         animationIndex = Math.max(0, animationIndex - 1);
       }
     };
@@ -49,8 +49,8 @@
       indexFunction = indexFunctions.normal;
     };
 
-    element.updateSprite = function () {
-      indexFunction();
+    element.updateSprite = function (dt) {
+      indexFunction(dt);
       spriteElement.style.backgroundPosition = definition.width - (definition.width / definition.numFrames * animationIndex) + 'px 0';
     };
 
