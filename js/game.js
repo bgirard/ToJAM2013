@@ -266,12 +266,12 @@
         if (div.minimap == null) {
           div.minimap = document.createElement("div");
           div.minimap.className = "minimapEntity";
-          div.minimap.style.backgroundColor = div.minimapColor;
           document.getElementById("minimap").appendChild(div.minimap);
         }
         var bounds = document.getElementsByClassName("Bounds")[0];
         div.minimap.style.left = (div.topLeftX() - bounds.topLeftX()) * 100 / bounds.width + "%";
         div.minimap.style.top = (div.topLeftY() - bounds.topLeftY()) * 100 / bounds.height + "%";
+        div.minimap.style.backgroundColor = div.minimapColor;
       }
     };
 
@@ -317,8 +317,11 @@
       }
     },
     wormhole: function(dt) {
+      var killedAllPirate = document.getElementsByClassName("Pirate").length == 0;
+      if (killedAllPirate) {
+        this.minimapColor = "rgb(" + (128 + 128*Math.sin(Date.now() / 180)).toFixed(0) + ",0,0)"  
+      }
       window.collisionDetection("Player", "Wormhole", function() {
-        var killedAllPirate = document.getElementsByClassName("Pirate").length == 0;
         if (killedAllPirate) {
           var nextLevel = document.getLevel().nextId;
           window.changeLevelOnNextFrame(Game.levels[nextLevel]());
