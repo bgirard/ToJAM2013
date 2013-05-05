@@ -97,6 +97,7 @@
     // Weapon properties
     div.weaponReloadTime = 0;
     div.weaponCooldown = 0;
+    div.ttl = options['ttl'] || null;
 
     div.centerX = function() {
       return this.x+this.width/2;
@@ -214,7 +215,13 @@
           img: "images/bullet1.png",
           width: 16,
           height: 16,
+          ttl: 2000,
           update: function(dt) {
+            this.ttl = Math.max(0, this.ttl - dt);
+            if(!this.ttl) {
+              document.kill(this);
+              return;
+            }
             logic.motion.call(this, dt);
           }
         }));

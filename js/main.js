@@ -117,8 +117,10 @@
     var entities2 = level.getElementsByClassName(classTwo);
     for(var i = 0; i < entities1.length; ++i) {
       var entity1 = entities1[i];
+      if(!entity1) continue;
       for(var j = 0; j < entities2.length; ++j) {
         var entity2 = entities2[i];
+        if(!entity2) continue;
         if (entity1.x < entity2.x + entity2.width &&
             entity2.x < entity1.x + entity1.width &&
             entity1.y < entity2.y + entity2.height &&
@@ -153,6 +155,10 @@
 
   document.spawn = function spawn(entity) {
     document.getLevel().appendChild(entity);
+  };
+
+  document.kill = function kill(entity) {
+    entity.parentNode.removeChild(entity);
   };
 
   window.onload = function (e) {
@@ -225,13 +231,13 @@
 
       for(i = 0, l = entities.length; i < l; ++ i) {
         var entity = entities[i];
-        if('function' === typeof entity.ai)
+        if(entity && 'function' === typeof entity.ai)
           entity.ai(dt);
       }
 
       for(i = 0, l = entities.length; i < l; ++ i) {
         var entity = entities[i];
-        if('function' === typeof entity.update)
+        if(entity && 'function' === typeof entity.update)
           entity.update(dt);
       }
 
