@@ -22,6 +22,8 @@
     element.style.width = definition.width / definition.numFrames + 'px';
     element.style.height = definition.height + 'px';
 
+    var rewound = false;
+
     var indexFunctions = {
       lock: function(dt) {
         if (animationIndex === definition.lock[1]) {
@@ -32,13 +34,24 @@
         }
       },
       normal: function(dt) {
+        if (rewound) {
+          spriteElement.style.visibility = 'visible';
+          rewound = false;
+        }
         animationIndex = (animationIndex + 1) % definition.numFrames;
         if (definition.lock && animationIndex > definition.lock[0]) {
           indexFunction = indexFunctions.lock;
         }
       },
       reverseToStart: function(dt) {
-        animationIndex = Math.max(0, animationIndex - 1);
+        animationIndex--;
+        if (animationIndex === -1 && rewound === false) {
+          rewound = true;
+          if (definition.hideWhenRewound) {
+            spriteElement.style.visibility = 'hidden';
+          }
+        }
+        animationIndex = Math.max(0, animationIndex);
       }
     };
 
@@ -60,6 +73,10 @@
 
     element.continueSprite = function () {
       indexFunction = indexFunctions.normal;
+    };
+
+    element.isRewound = function () {
+      return rewound;
     };
 
     return element;
@@ -94,7 +111,8 @@
       numFrames: 6,
       width: 240,
       height: 88,
-      lock: [4, 5]
+      lock: [4, 5],
+      hideWhenRewound: true
     },
     'missile': {
       image: 'images/explosions/missleHit.png',
