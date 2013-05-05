@@ -69,7 +69,13 @@
       classes = classes ? ' ' + classes : '';
       line.className = 'line' + classes;
       preventTyping = preventTyping || false;
-      line.innerHTML = preventTyping ? str : '&nbsp;';
+
+      if (str.length === 0) {
+        str = '&nbsp;';
+        preventTyping = true;
+      }
+
+      line.innerHTML = preventTyping ? str : '';
       consoleTextArea.insertBefore(line, consoleTextArea.firstChild);
       if (str.length > 0 && !preventTyping) {
         var lineInterval = setInterval(function(){
@@ -130,18 +136,22 @@
         randomKey = keyMapKeys[Math.floor(Math.random() * keyMapKeys.length)];
       }
 
+      playerKeyStates[randomAction] = false;
       delete playerKeyMap[actionKey];
       playerKeyMap[randomKey] = randomAction;
       buttonMap[randomAction].innerHTML = randomKey;
       currentSwitchMap[randomAction] = actionKey;
+      buttonMap[randomAction].classList.remove('on');
       buttonMap[randomAction].classList.add('blink');
 
       setTimeout(function(){
         buttonMap[randomAction].classList.remove('blink');
+        buttonMap[randomAction].classList.remove('on');
         delete playerKeyMap[randomKey];
         playerKeyMap[actionKey] = randomAction;
         buttonMap[randomAction].innerHTML = actionKey;
         delete currentSwitchMap[randomAction];
+        playerKeyStates[randomAction] = false;
       }, Math.round(2000 + Math.random()*5000));
     }
 
