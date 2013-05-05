@@ -115,12 +115,26 @@
     var level = document.getLevel();
     var entities2 = level.getElementsByClassName(classTwo);
     var hasCol = false;
+    var w1, w2, h1, h2;
+    var hw1, hw2, hh1, hh2;
+
     for(var j = 0; j < entities2.length; ++j) {
       var entity2 = entities2[j];
-      if (entity1.x < entity2.x + entity2.width &&
-          entity2.x < entity1.x + entity1.width &&
-          entity1.y < entity2.y + entity2.height &&
-          entity2.y < entity1.y + entity1.height) {
+
+      // for center alignment, i.e. marginLeft, marginTop
+      w1 = entity1.width;
+      w2 = entity2.width;
+      h1 = entity1.height;
+      h2 = entity2.height;
+      hw1 = w1/2;
+      hw2 = w2/2;
+      hh1 = h1/2;
+      hh2 = h2/2;
+
+      if (entity1.x - hw1 < entity2.x - hw2 + w2 &&
+          entity2.x - hw2 < entity1.x - hw1 + w1 &&
+          entity1.y - hh1 < entity2.y - hh2 + h2 &&
+          entity2.y - hh2 < entity1.y - hh1 + h1) {
 
           hasCol = true;
       }
@@ -133,16 +147,30 @@
     var level = document.getLevel();
     var entities1 = level.getElementsByClassName(classOne);
     var entities2 = level.getElementsByClassName(classTwo);
+    var w1, w2, h1, h2;
+    var hw1, hw2, hh1, hh2;
+
     for(var i = 0; i < entities1.length; ++i) {
       var entity1 = entities1[i];
       if(!entity1) continue;
       for(var j = 0; j < entities2.length; ++j) {
         var entity2 = entities2[j];
         if(!entity2) continue;
-        if (entity1.x < entity2.x + entity2.width &&
-            entity2.x < entity1.x + entity1.width &&
-            entity1.y < entity2.y + entity2.height &&
-            entity2.y < entity1.y + entity1.height) {
+
+        // for center alignment, i.e. marginLeft, marginTop
+        w1 = entity1.width;
+        w2 = entity2.width;
+        h1 = entity1.height;
+        h2 = entity2.height;
+        hw1 = w1/2;
+        hw2 = w2/2;
+        hh1 = h1/2;
+        hh2 = h2/2;
+
+        if (entity1.x - hw1 < entity2.x - hw2 + w2 &&
+            entity2.x - hw2 < entity1.x - hw1 + w1 &&
+            entity1.y - hh1 < entity2.y - hh2 + h2 &&
+            entity2.y - hh2 < entity1.y - hh1 + h1) {
 
             callback(entity1, entity2);
 
