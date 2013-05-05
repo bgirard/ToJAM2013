@@ -267,6 +267,10 @@
 
       bossOs.update(playerEntity);
 
+      Array.prototype.forEach.call(document.getLevel().querySelectorAll('.sprite'), function(element){
+        element.updateSprite();
+      });
+
       // Flush render state to DOM
       for(i = 0, l = entities.length; i < l; ++ i) {
         entities[i].render();

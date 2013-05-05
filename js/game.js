@@ -46,13 +46,16 @@
     var height = entityDefinition.height || options['height'] || 10;
     var extraClasses = options['classes'] || [];
 
-    var div;
+    var div = document.createElement('div');
 
-    if (entityDefinition.spriteLayout && entityDefinition.spriteLayout.root) {
-      console.log(entityDefinition.spriteLayout.root, Game.Sprite);
+    if (entityDefinition.spriteLayout && entityDefinition.spriteLayout) {
+      Game.Sprite.createFromLayout(entityDefinition.spriteLayout, div);
     }
-
-    div = div || document.createElement('div');
+    else {
+      if(img) {
+        div.style.backgroundImage = "url(" + img + ")";
+      }
+    }
 
     div.options = options;
     div.classList.add('Entity');
@@ -62,11 +65,7 @@
     div.id = id;
     div.width = width;
     div.height = height;
-    if(img) {
-      div.style.backgroundImage = "url(" + img + ")";
-    } else {
-      //div.style.backgroundColor = "red";
-    }
+
     div.style.width = width + 'px';
     div.style.height = height + 'px';
 

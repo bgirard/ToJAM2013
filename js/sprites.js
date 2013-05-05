@@ -3,10 +3,20 @@
   function Sprite (definition, element) {
     element = element || document.createElement('div');
 
+    var spriteElement = document.createElement('div');
+
     var animationIndex = 0;
 
-    element.style.backgroundImage = 'url(' + Sprite.urlPrefix + definition.image + ')';
-    element.style.backgroundSize = definition.width + ' ' + definition.height;
+    element.appendChild(spriteElement);
+
+    spriteElement.style.backgroundImage = 'url(' + Sprite.urlPrefix + definition.image + ')';
+    spriteElement.style.backgroundSize = definition.width + ' ' + definition.height;
+    spriteElement.style.backgroundPosition = '0 0';
+    spriteElement.style.position = 'absolute';
+    spriteElement.style.width = '100%';
+    spriteElement.style.height = '100%';
+    spriteElement.style.zIndex = 5;
+
     element.classList.add('sprite');
 
     element.style.width = definition.width / definition.numFrames + 'px';
@@ -40,8 +50,8 @@
     };
 
     element.updateSprite = function () {
-      indexFunction();      
-      element.style.backgroundPosition = definition.width - (definition.width / definition.numFrames * animationIndex) + ' ' + definition.height;
+      indexFunction();
+      spriteElement.style.backgroundPosition = definition.width - (definition.width / definition.numFrames * animationIndex) + 'px 0';
     };
 
     element.reverseSpriteToStart = function () {
@@ -54,6 +64,24 @@
 
     return element;
   }
+
+  Sprite.createFromLayout = function (layout, element) {
+    element = element || document.createElement('div');
+    element.childSprites = element.childSprites || {};
+    Sprite(Game.spriteDefinitions[layout.definition], element);
+    if (layout.children) {
+      Object.keys(layout.children).forEach(function(name){
+        var childLayout = layout.children[name];
+        var childDefinition = Game.spriteDefinitions[childLayout.definition];
+        var childElement = Sprite(childDefinition);
+        element.appendChild(childElement);
+        childElement.style.position = 'absolute';
+        childElement.style.left = childLayout.position[0] + 'px';
+        childElement.style.top = childLayout.position[1] + 'px';
+        childElement.style.zIndex = 3;
+      });
+    }
+  };
 
   Sprite.urlPrefix = '';
 
