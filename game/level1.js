@@ -25,6 +25,7 @@ function level() {
       life: 1000,
       x: -600,
       y: -600,
+      rotation: 180,
       update: Game.logic.player
     })
   , new Game.Entity({
