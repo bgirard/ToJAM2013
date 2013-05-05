@@ -67,7 +67,7 @@
     div.height = height;
 
     div.style.width = width + 'px';
-    div.style.height = height + 'px';
+    div.style.height = height.toFixed(1) + 'px';
 
     div.x = options['x'] || 0;
     div.y = options['y'] || 0;
