@@ -283,7 +283,7 @@
           width: 4,
           height: 62,
           ttl: 1500,
-          damage: 30,
+          damage: 50,
           owner: this,
           faceVelocityDirection: true,
           update: function(dt) {
