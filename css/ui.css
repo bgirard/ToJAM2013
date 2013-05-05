@@ -312,10 +312,16 @@ html, body {
 .hud-element.weapon-2 .button {
 }
 
-.hud-element.weapon-2 .front {
+.hud-element.weapon-2 .icon {
   left: -65px;
-  width: 129px;
-  height: 200px;
+  position: absolute;
+  width: 65px;
+  height: 100px;
+}
+
+.hud-element.weapon-2 .front {
+  position: absolute;
+  width: 100%;
   background-image: url('../images/hud/lasersFull.png');
   -webkit-transition: 0.1s height;
      -moz-transition: 0.1s height;
@@ -323,16 +329,18 @@ html, body {
        -o-transition: 0.1s height;
           transition: 0.1s height;
   background-repeat: no-repeat;
-  background-size: 50% 50%;
+  background-size: 100% 100px;
+  background-position: 0 100%;
+  bottom: 0;
+  height: 50%;
 }
 
 .hud-element.weapon-2 .back {
-  left: -65px;
-  width: 129px;
-  height: 200px;
+  width: 100%;
+  height: 100%;
   background-image: url('../images/hud/lasersEmpty.png');
   background-repeat: no-repeat;
-  background-size: 50% 50%;
+  background-size: 100% 100px;
 }
 
 .hud-element.power {
