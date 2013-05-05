@@ -242,7 +242,12 @@
           owner: this,
           update: function(dt) {
             this.ttl = Math.max(0, this.ttl - dt);
-            if (this.missileLockOnTarget == null || this.distanceTo(this.missileLockOnTarget.centerX(), this.missileLockOnTarget.centerY()) > seekRange) {
+            if (this.missileLockOnTarget == null ||
+              this.missileLockOnTarget.life <= 0 ||
+              this.distanceTo(this.missileLockOnTarget.centerX(), this.missileLockOnTarget.centerY()) > seekRange) {
+              // Clear target
+              this.missileLockOnTarget = null;
+
               // Find a target
               var possibleTargets = [];
               // Right now this code only works for a player missile seeking a pirate
@@ -251,7 +256,7 @@
               });
               if (possibleTargets.length != 0) {
                 this.missileLockOnTarget = possibleTargets[Math.floor(Math.random()*possibleTargets.length)];
-                console.log("Aquire target: " + this.missileLockOnTarget.id);
+                //console.log("Aquire target: " + this.missileLockOnTarget.id);
               } else {
                 this.missileLockOnTarget = null;
               }
