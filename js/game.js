@@ -298,7 +298,7 @@
         });
       },
       "EndGameBullet": function() {
-        return BulletList["Missile"].bind(this)(2);
+        return BulletList["Missile"].bind(this)(2, 20000);
       },
       "Missile": function(scaling, damage) {
         Sound.play('missile');
@@ -319,7 +319,7 @@
           width: 9,
           height: 24,
           ttl: 1500,
-          damage: 10,
+          damage: damage || 10,
           owner: this,
           scaling: scaling,
           hitType: "explosion",
