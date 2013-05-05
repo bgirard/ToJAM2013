@@ -23,11 +23,11 @@ section {
 
   vertical-align: middle;
 
-  -webkit-transition: 1s opacity, 1s visibility;
-     -moz-transition: 1s opacity, 1s visibility;
-      -ms-transition: 1s opacity, 1s visibility;
-       -o-transition: 1s opacity, 1s visibility;
-          transition: 1s opacity, 1s visibility;
+  -webkit-transition: 2s opacity, 2s visibility;
+     -moz-transition: 2s opacity, 2s visibility;
+      -ms-transition: 2s opacity, 2s visibility;
+       -o-transition: 2s opacity, 2s visibility;
+          transition: 2s opacity, 2s visibility;
 
   text-align: center;
 }
@@ -74,4 +74,35 @@ section img {
 
 .parallax {
   position: absolute;
+}
+
+@-webkit-keyframes mothership-animation {
+  0%   { background-position: 0 0; }
+  100% { background-position: -1624px 0; }
+}
+@-moz-keyframes mothership-animation {
+  0%   { background-position: 0 0; }
+  100% { background-position: -1624px 0; }
+}
+@-o-keyframes mothership-animation {
+  0%   { background-position: 0 0; }
+  100% { background-position: -1624px 0; }
+}
+@keyframes mothership-animation {
+  0%   { background-position: 0 0; }
+  100% { background-position: -1624px 0; }
+}
+
+.mothership {
+  width: 812px;
+  height: 589px;
+  background-image: url('../images/intro/1/pirateMotherShip.png');
+  background-position: 0 0;
+  background-size: 1624px 589px;
+  right: 100px;
+  top: -90px;
+  -webkit-animation: mothership-animation .1s steps(2, start) infinite;
+  -moz-animation:    mothership-animation .1s steps(2, start) infinite;
+  -o-animation:      mothership-animation .1s steps(2, start) infinite;
+  animation:         mothership-animation .1s steps(2, start) infinite;
 }

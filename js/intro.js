@@ -41,10 +41,34 @@
     });
 
     Array.prototype.forEach.call(parallax, function (item) {
-      writeTransition(item, 'right ' + duration/1000 + 's');
-      setTimeout(function(){
-        item.style.right = item.getAttribute('data-ro');
-      }, 0);
+      var transitions = item.getAttribute('data-transitions');
+      var durations = item.getAttribute('data-durations');
+
+      if (transitions) {
+        transitions = transitions.split(';');
+        if (durations) {
+          durations = durations.split(';');
+        }
+        else {
+          durations = [];
+        }
+
+        var transitionStrings = [];
+
+        transitions.forEach(function(t, i){
+          var itemDuration = durations[i] || duration/1000;
+          var pieces = t.split(':');
+          transitionStrings.push(pieces[0] + ' ' + itemDuration + 's linear');
+          setTimeout(function(){
+            if (pieces[0][0] === ' ') {
+              pieces[0] = pieces[0].substr(1);
+            }
+            item.style[pieces[0]] = pieces[1];
+          }, 0);
+        });
+
+        writeTransition(item, transitionStrings.join(','));
+      }
     });
 
     currentScene.classList.add('on');
