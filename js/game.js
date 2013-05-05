@@ -296,7 +296,7 @@
         var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
         var vDirX = Math.sin(rot);
         var vDirY = -Math.cos(rot);
-        var seekRange = 600;
+        var seekRange = 900;
         return new Game.Entity({
           classes: ['Bullet'],
           x: (-Math.sin(rot) * -this.height/2) + this.x,
