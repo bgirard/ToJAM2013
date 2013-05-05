@@ -304,9 +304,9 @@
         });
       },
       "EndGameBullet": function() {
-        return BulletList["Missile"].bind(this)(2, 20000);
+        return BulletList["Missile"].bind(this)(1, 20000, 27, 72, "images/projectiles/missileBig.png");
       },
-      "Missile": function(scaling, damage) {
+      "Missile": function(scaling, damage, w, h, img) {
         Sound.play('missile');
         var rot = degToRad * this.rotation;
         var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
@@ -321,9 +321,9 @@
           velY: 2 * this.velMax * vDirY,
           rotation: this.rotation,
           faceVelocityDirection: true,
-          img: "images/projectiles/missile.png",
-          width: 9,
-          height: 24,
+          img: img || "images/projectiles/missile.png",
+          width: w || 9,
+          height: h || 24,
           ttl: 1500,
           damage: damage || 10,
           owner: this,
