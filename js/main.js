@@ -371,9 +371,10 @@
         // Apply rotation
         var rotationDirSign = 0;
         if (playerKeyStates.left) {
-          rotationDirSign = -1;
-        } else if (playerKeyStates.right) {
-          rotationDirSign = 1;
+          rotationDirSign += -1;
+        }
+        if (playerKeyStates.right) {
+          rotationDirSign += 1;
         }
 
         if (playerKeyStates.up && !rocketsActive) {
