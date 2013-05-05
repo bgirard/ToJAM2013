@@ -203,7 +203,7 @@
           img: "images/bullet1.png",
           width: 16,
           height: 16,
-          ttl: 2000,
+          ttl: 1500,
           damage: 10,
           owner: this,
           update: function(dt) {

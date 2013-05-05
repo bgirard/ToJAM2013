@@ -369,7 +369,7 @@
 
       window.collisionDetection("Damagable", "Bullet", function(target, bullet) {
         // Don't let the player hit himself
-        if (bullet.owner == playerEntity && target == playerEntity) return;
+        if (bullet.owner == target) return;
 
         entityKillList.push(bullet);
         document.spawn(new Game.Entity({
