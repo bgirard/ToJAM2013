@@ -118,7 +118,13 @@
       image: 'images/ships/ship.png',
       numFrames: 1,
       width: 70,
-      height: 60      
+      height: 60
+    },
+    'wormhole': {
+      image: 'images/wormhole.png',
+      numFrames: 7,
+      width: 1960,
+      height: 280
     }
   };
 

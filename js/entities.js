@@ -1,5 +1,13 @@
 (function(){
   Game.entityDefinitions = {
+    'wormhole': {
+      width: 280,
+      height: 280,
+      classes: ['Wormhole'],
+      spriteLayout: {
+        definition: 'wormhole'
+      }      
+    },
     'player': {
       classes: ['Player'],
       width: 70,
