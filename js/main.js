@@ -107,6 +107,17 @@
     }
   };
 
+  window.inDistance = function(distance, entity1, classTwo, callback) {
+    var level = document.getLevel();
+    var entities2 = level.getElementsByClassName(classTwo);
+    for(var j = 0; j < entities2.length; ++j) {
+      var entity2 = entities2[j];
+      if (entity1.distanceTo(entity2.centerX(), entity2.centerY()) < distance) {
+        callback(entity1, entity2);
+      }
+    }
+  }
+
   /**
    * Run collision detection between two CSS classes such as 'entity', 'mines',
    * invoking the callback with each collision
@@ -188,6 +199,7 @@
     if(currentLevel)
       currentLevel.parentNode.removeChild(currentLevel);
     document.getElementById('gameboard').appendChild(level);
+    document.getElementById('minimap').innerHTML = "";
     document.title = "current level: " + level.id;
   };
 
@@ -318,6 +330,10 @@
         var nextLevel = document.getLevel().nextId;
         changeLevelOnNextFrame = Game.levels[nextLevel]();
         window.playSound('audio/wormhole.wav');
+      });
+
+      window.inDistance(400, playerEntity, "Entity", function(player, entity) {
+        entity.scouted = true;
       });
 
       window.collisionDetection("Pirate", "Bullet", function(pirate, bullet) {

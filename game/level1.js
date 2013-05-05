@@ -20,8 +20,8 @@ function level() {
       type: 'player',
       classes: ['Player'],
       id: 'player',
-      x: 100,
-      y: 100,
+      x: -600,
+      y: -600,
       update: Game.logic.player
     })
   , new Game.Entity({
