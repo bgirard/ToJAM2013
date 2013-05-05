@@ -261,7 +261,7 @@
       var entityKillList = [];
 
       if(playerEntity) {
-        document.title = "Player: " + playerEntity.x.toFixed(1) + ", " + playerEntity.y.toFixed(1);
+        //document.title = "Player: " + playerEntity.x.toFixed(1) + ", " + playerEntity.y.toFixed(1);
 
         // Apply rotation
         var rotationDirSign = 0;

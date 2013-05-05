@@ -201,11 +201,6 @@ html, body {
 
 .hud-element.thruster .front {
   background-image: url('../images/hud/boosterBarSmallFull.png');
-  -webkit-transition: 0.1s height;
-     -moz-transition: 0.1s height;
-      -ms-transition: 0.1s height;
-       -o-transition: 0.1s height;
-          transition: 0.1s height;
 }
 
 .hud-element.thruster .back {
