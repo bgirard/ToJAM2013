@@ -202,54 +202,63 @@
     document.getElementById('minimap').innerHTML = "";
 
     // Prepare bounds
+    var buoyOrEnergy = false;
     var bounds = document.getElementsByClassName("Bounds")[0];
     // Top
+    buoyOrEnergy = true;
     for (var x = bounds.topLeftX() + 50; x < bounds.bottomRightX(); x+=300) {
       document.spawn(new Game.Entity({
         x: x,
         y: bounds.topLeftY() + 50,
-        type: 'spaceBuoy',
+        type: buoyOrEnergy ? 'spaceBuoy' : 'spaceBuoyEnergy',
         spriteFrameTime: 100, //ms
-        width: 84,
-        height: 84,
+        width: buoyOrEnergy ? 84 : 720/12,
+        height: buoyOrEnergy ? 84 : 230, 
         img: "images/environment/spaceBuoy.png",
       }));
+      //buoyOrEnergy = !buoyOrEnergy;
     }
     // Bottom
+    buoyOrEnergy = true;
     for (var x = bounds.topLeftX() + 50; x < bounds.bottomRightX(); x+=300) {
       document.spawn(new Game.Entity({
         x: x,
         y: bounds.topLeftY() + bounds.height - 50,
-        type: 'spaceBuoy',
+        type: buoyOrEnergy ? 'spaceBuoy' : 'spaceBuoyEnergy',
         spriteFrameTime: 100, //ms
-        width: 84,
-        height: 84,
+        width: buoyOrEnergy ? 84 : 720/12,
+        height: buoyOrEnergy ? 84 : 230, 
         img: "images/environment/spaceBuoy.png",
       }));
+      //buoyOrEnergy = !buoyOrEnergy;
     }
     // Left 
+    buoyOrEnergy = true;
     for (var y = bounds.topLeftY() + 300; y < bounds.bottomRightY() - 300 - 100; y+=300) {
       document.spawn(new Game.Entity({
         x: bounds.topLeftX() + 50,
         y: y,
-        type: 'spaceBuoy',
+        type: buoyOrEnergy ? 'spaceBuoy' : 'spaceBuoyEnergy',
         spriteFrameTime: 100, //ms
-        width: 84,
-        height: 84,
+        width: buoyOrEnergy ? 84 : 720/12,
+        height: buoyOrEnergy ? 84 : 230, 
         img: "images/environment/spaceBuoy.png",
       }));
+      //buoyOrEnergy = !buoyOrEnergy;
     }
     // Right
+    buoyOrEnergy = true;
     for (var y = bounds.topLeftY() + 300; y < bounds.bottomRightY() - 300 - 100; y+=300) {
       document.spawn(new Game.Entity({
         x: bounds.topLeftX() + bounds.width - 50,
         y: y,
-        type: 'spaceBuoy',
+        type: buoyOrEnergy ? 'spaceBuoy' : 'spaceBuoyEnergy',
         spriteFrameTime: 100, //ms
-        width: 84,
-        height: 84,
+        width: buoyOrEnergy ? 84 : 720/12,
+        height: buoyOrEnergy ? 84 : 230, 
         img: "images/environment/spaceBuoy.png",
       }));
+      //buoyOrEnergy = !buoyOrEnergy;
     }
   };
 
@@ -333,6 +342,7 @@
     document.getPlayer().childSprites.rocket2.reverseSpriteToStart();
 
     var rocketsActive = false;
+    var rocketsLoop = Sound.createLoop('rockets');
 
     function main() {
       window.requestAnimFrame(main);
@@ -344,6 +354,7 @@
         document.getPlayer().childSprites.rocket2.reverseSpriteToStart();
         rocketsActive = false;
       }
+
       var t = Date.now();
       var dt = t - cachedTime;
       var i;
@@ -360,20 +371,24 @@
         // Apply rotation
         var rotationDirSign = 0;
         if (playerKeyStates.left) {
-          rotationDirSign = -1;
-        } else if (playerKeyStates.right) {
-          rotationDirSign = 1;
+          rotationDirSign += -1;
+        }
+        if (playerKeyStates.right) {
+          rotationDirSign += 1;
         }
 
         if (playerKeyStates.up && !rocketsActive) {
           playerEntity.childSprites.rocket1.continueSprite();
           playerEntity.childSprites.rocket2.continueSprite();
+          Sound.play('thrust');
           rocketsActive = true;
+          rocketsLoop.play();
         }
         else if (!playerKeyStates.up && rocketsActive) {
           rocketsActive = false;
           playerEntity.childSprites.rocket1.reverseSpriteToStart();
           playerEntity.childSprites.rocket2.reverseSpriteToStart();
+          rocketsLoop.pause();
         }
 
         // d/ms                  += ms * scalar * d/ms^2

@@ -148,7 +148,7 @@ html, body {
 .hud-element.speed {
   width: 55px;
   height: 300px;
-  bottom: -125px;
+  top: -125px;
   left: 50%;
 }
 
@@ -268,7 +268,7 @@ html, body {
 
 .hud-element.weapon-1 {
   top: 0;
-  left: 50%;
+  right: 45px;
 }
 
 .hud-element.weapon-1 .button {
@@ -301,7 +301,7 @@ html, body {
 
 .hud-element.weapon-2 {
   top: 0;
-  right: 50%;
+  left: 65px;
 }
 
 .hud-element.weapon-2 .button {
@@ -359,8 +359,8 @@ html, body {
 
 .hud-element.console {
   width: 40%;
-  height: 20%;
-  bottom: 5%;
+  height: 130px;
+  bottom: 0;
   right: 50%;
   margin-right: -20%;
   overflow: hidden;

@@ -18,6 +18,15 @@
         definition: 'spaceBuoy'
       }      
     },
+    'spaceBuoyEnergy': {
+      width: 720/12,
+      height: 230,
+      hitBox: [60, 60],
+      classes: ['spaceBuoyEnergy'],
+      spriteLayout: {
+        definition: 'spaceBuoyEnergy'
+      }      
+    },
     'laserHit': {
       classes: ['LaserHit'],
       spriteLayout: {
