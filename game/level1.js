@@ -67,6 +67,7 @@ function level() {
       spriteFrameX: 0,
       //spriteMaxFrameX: 4,
       update: Game.logic.default,
+      ai: Game.logic.idle,
     })
   , new Game.Entity({
       classes: ['Bounds'],

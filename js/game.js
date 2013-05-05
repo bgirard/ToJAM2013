@@ -323,6 +323,9 @@
         window.playSound('audio/laser.wav');
       }
     },
+    idle: function(dt) {
+      this.thrust(this, dt, this.faceAngle(this.x, this.y), 0);
+    },
     ai: function(dt) {
       // Seek player
       var player = document.getElementById("player"); 
