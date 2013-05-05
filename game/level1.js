@@ -22,6 +22,7 @@ function level() {
       type: 'player',
       classes: ['Player'],
       id: 'player',
+      life: 1000,
       x: -600,
       y: -600,
       update: Game.logic.player
@@ -67,6 +68,7 @@ function level() {
       spriteFrameX: 0,
       //spriteMaxFrameX: 4,
       update: Game.logic.default,
+      ai: Game.logic.idle,
     })
   , new Game.Entity({
       classes: ['Bounds'],

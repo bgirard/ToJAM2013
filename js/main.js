@@ -367,7 +367,10 @@
         entity.scouted = true;
       });
 
-      window.collisionDetection("Pirate", "Bullet", function(pirate, bullet) {
+      window.collisionDetection("Damagable", "Bullet", function(target, bullet) {
+        // Don't let the player hit himself
+        if (bullet.owner == playerEntity && target == playerEntity) return;
+
         entityKillList.push(bullet);
         document.spawn(new Game.Entity({
           type: 'laserHit',
@@ -376,16 +379,16 @@
         }));
         Sound.play('laserHit');
 
-        pirate.life -= bullet.damage;
-        pirate.thrust(pirate, 10, pirate.faceAngle(bullet.lastX || bullet.x, bullet.lastY || bullet.y), 1);
-        if(pirate.life <= 0) {
+        target.life -= bullet.damage;
+        target.thrust(target, 10, target.faceAngle(bullet.lastX || bullet.x, bullet.lastY || bullet.y), 1);
+        if(target.life <= 0) {
           document.spawn(new Game.Entity({
             type: 'explosion',
             x: bullet.x,
             y: bullet.y,
           }));
           Sound.play('explosion');
-          entityKillList.push(pirate);
+          entityKillList.push(target);
         }
       });
 
