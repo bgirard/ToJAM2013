@@ -131,7 +131,7 @@
     div.weaponReloadTime = {
       "Missile": 150,
       "Laser": 500,
-      "Bullet": 150,
+      "Bullet": 400,
       "BulletStrong": 200,
     };
     div.weaponCooldown = {};
@@ -517,7 +517,9 @@
           idle = false;
           this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), -1);
         }
-        logic.weapon.call(this, dt);
+        if (this.distanceTo(player.centerX(), player.centerY()) < 700) {
+          logic.weapon.call(this, dt);
+        }
       }
 
       if (idle) {
