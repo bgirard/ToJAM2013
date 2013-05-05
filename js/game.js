@@ -1,5 +1,4 @@
 (function(){
-
   var degToRad = 0.0174532925;
 
   function clamp(number, min, max) {
@@ -36,13 +35,25 @@
   function Entity(options) {
     options = options || {};
 
+    var entityDefinition = {};
+    if (options.type) {
+      entityDefinition = Game.entityDefinitions[options.type];
+    }
+
     var id = options['id'] || 'Entity' + nextEntityId++;
     var img = options['img'];
-    var width = options['width'] || 10;
-    var height = options['height'] || 10;
+    var width = entityDefinition.width || options['width'] || 10;
+    var height = entityDefinition.height || options['height'] || 10;
     var extraClasses = options['classes'] || [];
 
-    var div = document.createElement('div');
+    var div;
+
+    if (entityDefinition.spriteLayout && entityDefinition.spriteLayout.root) {
+      console.log(entityDefinition.spriteLayout.root, Game.Sprite);
+    }
+
+    div = div || document.createElement('div');
+
     div.options = options;
     div.classList.add('Entity');
     extraClasses.forEach(function(className) {
@@ -84,7 +95,7 @@
     div.frameTimeRemaining = div.spriteFrameTime;
 
     // Weapon properties
-    div.weaponReloadTime = 1000;
+    div.weaponReloadTime = 0;
     div.weaponCooldown = 0;
 
     div.centerX = function() {
@@ -126,6 +137,8 @@
     }
 
     div.render = function render() {
+      div.style.marginLeft = -div.width/2 + 'px';
+      div.style.marginTop = -div.height/2 + 'px';
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
       div.style.top = (div.y - window.Game.Camera.y()) + 'px';
       var transformStr = "";
@@ -144,6 +157,10 @@
         setTransform(div, transformStr);
       }
     };
+
+    if (options.create) {
+      options.create.call(div);
+    }
 
     return div;
   };
@@ -184,13 +201,14 @@
       this.weaponCooldown = Math.max(0, this.weaponCooldown - dt);
       if(Game.playerKeyStates.fire && !this.weaponCooldown) {
         this.weaponCooldown = this.weaponReloadTime;
+        var rot = degToRad * this.rotation;
         var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
-        var vDirX = Math.sin(degToRad * this.rotation);
-        var vDirY = -Math.cos(degToRad * this.rotation);
+        var vDirX = Math.sin(rot);
+        var vDirY = -Math.cos(rot);
         document.spawn(new Game.Entity({
           classes: ['Bullet'],
-          x: this.x + this.width/2 - 8,
-          y: this.y - 16,
+          x: (-Math.sin(rot) * -this.height/2) + this.x,
+          y: (Math.cos(rot) * -this.height/2) + this.y,
           velX: 2 * this.velMax * vDirX,
           velY: 2 * this.velMax * vDirY,
           img: "images/bullet1.png",

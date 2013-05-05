@@ -174,8 +174,6 @@
   };
 
   window.onload = function (e) {
-    console.log('game start!');
-
     window.bgOffsetX = 0;
     window.bgOffsetY = 0;
     var bossOs = new BossOs({
