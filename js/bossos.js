@@ -25,8 +25,8 @@
       'down': speedThruster.querySelector('.button:nth-child(2)'),
       // 'power': hudContainer.querySelector('.power'),
       // 'shield': hudContainer.querySelector('.shield'),
-      'laser': hudContainer.querySelector('.weapon-1 .button'),
-      'missile': hudContainer.querySelector('.weapon-2 .button')
+      'laser': hudContainer.querySelector('.weapon-2 .button'),
+      'missile': hudContainer.querySelector('.weapon-1 .button')
     };
 
     var keys = Object.keys(playerKeyMap);
