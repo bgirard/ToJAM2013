@@ -92,7 +92,7 @@
     div.accel = 0.01;
     div.rotation = options['rotation'] || 0;
     div.rotationVel = options['rotationVel'] || 0;
-    div.rotationAccel = options['rotationAccel'] || 0.002;
+    div.rotationAccel = options['rotationAccel'] || 0.0005;
     div.rotationDrag = 0.15;
     div.maxRotationVel = .2;
     div.velDamp = 0.1;
