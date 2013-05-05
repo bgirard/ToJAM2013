@@ -219,18 +219,10 @@
         }
         this.rotation -= changeToAngle % 360;
 
-        document.title = "Aquire: " + changeToAngle;
         if (this.distanceTo(player) > 100) {
           this.thrust(this, dt/10, this.faceAngle(player), -1);
         }
-      } else {
-        document.title = "not Aquire";
       }
-      return;
-      if (this.shift == null) {
-        this.shift = Math.random() * 5;
-      }
-      this.rotation = 90 * Math.sin(this.shift + Date.now()/100);
     },
     default: function(dt) {
       logic.motion.call(this, dt);
