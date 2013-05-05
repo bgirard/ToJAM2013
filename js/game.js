@@ -95,7 +95,7 @@
     div.frameTimeRemaining = div.spriteFrameTime;
 
     // Weapon properties
-    div.weaponReloadTime = 1000;
+    div.weaponReloadTime = 0;
     div.weaponCooldown = 0;
 
     div.centerX = function() {
@@ -137,8 +137,8 @@
     }
 
     div.render = function render() {
-      div.style.marginLeft = -div.clientHeight/2 + 'px';
-      div.style.marginTop = -div.clientTop/2 + 'px';
+      div.style.marginLeft = -div.width/2 + 'px';
+      div.style.marginTop = -div.height/2 + 'px';
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
       div.style.top = (div.y - window.Game.Camera.y()) + 'px';
       var transformStr = "";
@@ -207,8 +207,8 @@
         var vDirY = -Math.cos(rot);
         document.spawn(new Game.Entity({
           classes: ['Bullet'],
-          x: (-Math.sin(rot) * this.height/2) + this.x,
-          y: (Math.cos(rot) * this.height/2) + this.y,
+          x: (-Math.sin(rot) * -this.height/2) + this.x,
+          y: (Math.cos(rot) * -this.height/2) + this.y,
           velX: 2 * this.velMax * vDirX,
           velY: 2 * this.velMax * vDirY,
           img: "images/bullet1.png",
@@ -222,7 +222,7 @@
     },
     ai: function(dt) {
       // Seek player
-      var player = document.getElementById("player"); 
+      var player = document.getElementById("player");
       if (this.distanceTo(player) < 500) {
         // Aquire player
         var changeToAngle = this.rotation - this.faceAngle(player);
