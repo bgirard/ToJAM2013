@@ -466,7 +466,9 @@
         Sound.play('laserHit');
 
         target.life -= bullet.damage;
-        target.thrust(target, 10, target.faceAngle(bullet.lastX || bullet.x, bullet.lastY || bullet.y), 1);
+        if (target.id != "Mothership") {
+          target.thrust(target, 10, target.faceAngle(bullet.lastX || bullet.x, bullet.lastY || bullet.y), 1);
+        }
         if(target.life <= 0) {
           document.spawn(new Game.Entity({
             type: 'explosion',

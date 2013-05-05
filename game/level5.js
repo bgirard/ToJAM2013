@@ -31,6 +31,7 @@ function level() {
       update: Game.logic.player
     })
   , new Game.Entity({
+      id: "Mothership",
       classes: ['Pirate', 'Mothership'],
       x: 2000,
       y: 500,
