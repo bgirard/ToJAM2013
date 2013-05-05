@@ -43,22 +43,23 @@
     Array.prototype.forEach.call(parallax, function (item) {
       var transitions = item.getAttribute('data-transitions');
       var durations = item.getAttribute('data-durations');
+      var delays = item.getAttribute('data-delays');
 
       if (transitions) {
         transitions = transitions.split(';');
-        if (durations) {
-          durations = durations.split(';');
-        }
-        else {
-          durations = [];
-        }
+        durations = durations ? durations.split(';') : [];
+        delays = delays ? delays.split(';') : [];
 
         var transitionStrings = [];
 
         transitions.forEach(function(t, i){
+          if (t.length === 0) return;
           var itemDuration = durations[i] || duration/1000;
+          var delay = delays[i] ? ' ' + delays[i] + 's' : '';
           var pieces = t.split(':');
-          transitionStrings.push(pieces[0] + ' ' + itemDuration + 's linear');
+
+          transitionStrings.push(pieces[0] + ' ' + itemDuration + 's linear' + delay);
+
           setTimeout(function(){
             if (pieces[0][0] === ' ') {
               pieces[0] = pieces[0].substr(1);
