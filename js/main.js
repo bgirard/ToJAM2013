@@ -492,6 +492,11 @@
             if (totalExplosions == 50) {
               entityKillList.push(target);
             }
+            if (totalExplosions == 0) {
+              window.setTimeout(function end_game() {
+               window.location = "end.html"     
+              }, 3000);
+            }
           }
           if(target.life <= 0 && target.startDeathAnimation != true) {
             target.startDeathAnimation = true;
