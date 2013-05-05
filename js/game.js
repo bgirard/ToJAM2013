@@ -283,9 +283,12 @@
     },
     wormhole: function(dt) {
       window.collisionDetection("Player", "Wormhole", function() {
-        var nextLevel = document.getLevel().nextId;
-        window.changeLevelOnNextFrame(Game.levels[nextLevel]());
-        window.playSound('audio/wormhole.wav');
+        var killedAllPirate = document.getElementsByClassName("Pirate").length == 0;
+        if (killedAllPirate) {
+          var nextLevel = document.getLevel().nextId;
+          window.changeLevelOnNextFrame(Game.levels[nextLevel]());
+          window.playSound('audio/wormhole.wav');
+        }
       });
     },
     weapon: function(dt) {
