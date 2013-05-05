@@ -15,7 +15,6 @@ function level() {
       y: -200,
       width: 128,
       height: 128,
-      rotationVel: 0.3,
       img: "images/wormhole.png",
       update: Game.logic.default
     })
