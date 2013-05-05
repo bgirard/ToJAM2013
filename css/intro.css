@@ -20,14 +20,13 @@ section {
   bottom: 0;
   opacity: 0;
   visibility: hidden;
-
   vertical-align: middle;
-
   text-align: center;
 }
 
-section h1 {
+section h1, section h2 {
   font-weight: normal;
+  white-space: nowrap;
 }
 
 .vertical-center-container {
