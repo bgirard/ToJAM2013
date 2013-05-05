@@ -135,11 +135,14 @@ html, body {
 .hud-element.speed .front {
   width: 100%;
   background-image: url('../images/hud/boosterBarSmallFull.png');
+
   -webkit-transition: 0.1s height, 0.1s top;
      -moz-transition: 0.1s height, 0.1s top;
       -ms-transition: 0.1s height, 0.1s top;
        -o-transition: 0.1s height, 0.1s top;
           transition: 0.1s height, 0.1s top;
+
+
   background-size: 55px 300px;
   background-position: 0 50%;
   background-repeat: no-repeat;
