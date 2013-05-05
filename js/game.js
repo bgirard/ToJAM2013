@@ -261,6 +261,7 @@
         console.log("Outside");
       });
 
+      var idle = true;
       if (this.seekX != null && this.seekY != null) {
         // Aquire player
         var changeToAngle = this.rotation - this.faceAngle(this.seekX, this.seekY);
@@ -276,14 +277,27 @@
         this.rotation -= changeToAngle % 360;
 
         if (this.distanceTo(this.seekX, this.seekY) > 200) {
+          idle = false;
           this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), -1);
-          document.title = "> 100";
-        } else {
-          this.thrust(this, dt, this.faceAngle(this.x, this.y), 0);
-          document.title = "< 100";
         }
-      } else {
-        this.thrust(this, dt, this.faceAngle(this.x, this.y), 0);
+      }
+
+      if (idle) {
+        // Check if we overlap with another Pirate
+        var self = this;
+        var otherPirate = null;
+        window.collisionDetection("Pirate", "Pirate", function(p1, p2) {
+          if (self == p1 && self != p2) {
+            otherPirate = p2; 
+          } 
+        });
+        if (otherPirate != null) {
+          idle = false;
+          this.thrust(this, dt, otherPirate.faceAngle(this.x, this.y), -1);
+        }
+        if (idle) {
+          this.thrust(this, dt, this.faceAngle(this.x, this.y), 0);
+        }
       }
     },
     default: function(dt) {
