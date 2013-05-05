@@ -128,7 +128,7 @@
     // Weapon properties
     div.bulletType = options['bulletType'] || "Bullet";
     div.weaponReloadTime = {
-      "Missle": 150,
+      "Missile": 150,
       "Bullet": 150,
     };
     div.weaponCooldown = {};
@@ -220,12 +220,13 @@
           }
         });
       },
-      "Missle": function() {
-        Sound.play('missle');
+      "Missile": function() {
+        Sound.play('missile');
         var rot = degToRad * this.rotation;
         var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
         var vDirX = Math.sin(rot);
         var vDirY = -Math.cos(rot);
+        var seekRange = 600;
         return new Game.Entity({
           classes: ['Bullet'],
           x: (-Math.sin(rot) * -this.height/2) + this.x,
@@ -241,8 +242,27 @@
           owner: this,
           update: function(dt) {
             this.ttl = Math.max(0, this.ttl - dt);
-            if (this.lastX != null && this.lastY != null) {
-              this.thrust(this, dt, this.faceAngle(this.lastX, this.lastY) + 20 * Math.sin(Date.now() / 100), 1);
+            if (this.missileLockOnTarget == null || this.distanceTo(this.missileLockOnTarget.centerX(), this.missileLockOnTarget.centerY()) > seekRange) {
+              // Find a target
+              var possibleTargets = [];
+              // Right now this code only works for a player missile seeking a pirate
+              window.inDistance(400, this, "Pirate", function(player, entity) {
+                possibleTargets.push(entity);
+              });
+              if (possibleTargets.length != 0) {
+                this.missileLockOnTarget = possibleTargets[Math.floor(Math.random()*possibleTargets.length)];
+                console.log("Aquire target: " + this.missileLockOnTarget.id);
+              } else {
+                this.missileLockOnTarget = null;
+              }
+            }
+            if (this.missileLockOnTarget) {
+              this.thrust(this, dt, this.faceAngle(this.missileLockOnTarget.centerX(), this.missileLockOnTarget.centerY()) + 2 * Math.sin(Date.now() / 100), -1);
+            } else {
+              // No target, drift using a Math.sin based thrust
+              if (this.lastX != null && this.lastY != null) {
+                this.thrust(this, dt, this.faceAngle(this.lastX, this.lastY) + 20 * Math.sin(Date.now() / 100), 1);
+              }
             }
             if(!this.ttl) {
               this.kill();
@@ -452,7 +472,7 @@
         logic.weapon.call(this, dt);
       }
       if(Game.playerKeyStates.missile) {
-        logic.weapon.call(this, dt, "Missle");
+        logic.weapon.call(this, dt, "Missile");
       }
     }
   };
