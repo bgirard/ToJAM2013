@@ -360,6 +360,8 @@
     var rocketsActive = false;
     var rocketsLoop = Sound.createLoop('rockets');
 
+    var entityKillList = [];
+
     function main() {
       window.requestAnimFrame(main);
 
@@ -378,8 +380,6 @@
 
       var level = document.getElementsByClassName('Level')[0];
       var playerEntity = level.getElementsByClassName('Player')[0];
-
-      var entityKillList = [];
 
       if(playerEntity) {
         //document.title = "Player: " + playerEntity.x.toFixed(1) + ", " + playerEntity.y.toFixed(1);
@@ -475,14 +475,38 @@
         if (target.id != "Mothership") {
           target.thrust(target, 10, target.faceAngle(bullet.lastX || bullet.x, bullet.lastY || bullet.y), 1);
         }
-        if(target.life <= 0) {
-          document.spawn(new Game.Entity({
-            type: 'explosion',
-            x: bullet.x,
-            y: bullet.y,
-          }));
-          Sound.play('explosion');
-          entityKillList.push(target);
+        if (target.id == "Mothership") {
+          var TIME_TO_EXPLODE = 5000;
+          var totalExplosions = 5000 / 50;
+          function mothership_explode() {
+            totalExplosions--;
+            if (totalExplosions > 0) {
+              window.setTimeout(mothership_explode, 50);
+            }
+            document.spawn(new Game.Entity({
+              type: 'explosion',
+              x: target.x + Math.floor(Math.random()*target.width - target.width/2),
+              y: target.y + Math.floor(Math.random()*target.height - target.height/2),
+            }));
+            Sound.play('explosion');
+            if (totalExplosions == 50) {
+              entityKillList.push(target);
+            }
+          }
+          if(target.life <= 0 && target.startDeathAnimation != true) {
+            target.startDeathAnimation = true;
+            window.setTimeout(mothership_explode, 50);
+          }
+        } else {
+          if(target.life <= 0) {
+            document.spawn(new Game.Entity({
+              type: 'explosion',
+              x: bullet.x,
+              y: bullet.y,
+            }));
+            Sound.play('explosion');
+            entityKillList.push(target);
+          }
         }
       });
 
