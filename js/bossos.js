@@ -198,7 +198,14 @@
       var laserValue = 1 - (playerEntity.weaponCooldown['Laser'] / playerEntity.weaponReloadTime['Laser']);
       laserFront.style.height = laserValue * 100 + '%';
 
-      var missileValue = 1 - (playerEntity.weaponCooldown['Missile'] / playerEntity.weaponReloadTime['Missile']);
+      var missileValue;
+      
+      if (playerEntity.hasEndGameBullets) {
+        missileValue = 1 - (playerEntity.weaponCooldown['EndGameBullet'] / playerEntity.weaponReloadTime['EndGameBullet']);
+      }
+      else {
+        missileValue = 1 - (playerEntity.weaponCooldown['Missile'] / playerEntity.weaponReloadTime['Missile']);
+      }
       missileFront.style.height = missileValue * 100 + '%';
 
       runAI();

@@ -575,7 +575,7 @@
 
       if(Game.playerKeyStates.fire) {
         // This will check cooldown
-        if (true || player.hasEndGameBullets) {
+        if (player.hasEndGameBullets) {
           logic.weapon.call(this, dt, "EndGameBullet");
         } else {
           logic.weapon.call(this, dt, "Missile");
@@ -590,7 +590,7 @@
         }
       }
       if(Game.playerKeyStates.missile) {
-        if (true || player.hasEndGameBullets) {
+        if (player.hasEndGameBullets) {
           logic.weapon.call(this, dt, "EndGameBullet");
         } else {
           logic.weapon.call(this, dt, "Missile");
