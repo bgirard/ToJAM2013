@@ -279,11 +279,22 @@
       // Fix to the player
       x: function() {
         var offset = document.getLevel().offsetWidth;
-        return document.getPlayer().x - offset / 2;
+        var cameraNewX = document.getPlayer().x - offset / 2;
+        if (Game.Camera.cameraOldX != null && Math.abs(Game.Camera.cameraOldX - cameraNewX) > 50) {
+          cameraNewX = Game.Camera.cameraOldX - 10 * sign(Game.Camera.cameraOldX - cameraNewX);
+        }
+        Game.Camera.cameraOldX = cameraNewX;
+        return cameraNewX;
       },
       y: function() {
         var offset = document.getLevel().offsetHeight;
-        return document.getPlayer().y - offset / 2;
+        var cameraNewY = document.getPlayer().y - offset / 2;
+        if (Game.Camera.cameraOldY != null && Math.abs(Game.Camera.cameraOldY - cameraNewY) > 50) {
+          cameraNewY = Game.Camera.cameraOldY - 10 * sign(Game.Camera.cameraOldY - cameraNewY);
+          document.title = cameraNewY;
+        }
+        Game.Camera.cameraOldY = cameraNewY;
+        return cameraNewY;
       },
     },
     levels: {},
