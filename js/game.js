@@ -247,10 +247,12 @@
         this.seekY = player.centerY();
       }
 
+      var self = this;
       window.noCollisionDetection(this, "Bounds", function(pirate) {
         var bounds = document.getElementsByClassName("Bounds")[0];
-        this.seekX = bounds.centerX();
-        this.seekY = bounds.centerY();
+        self.seekX = bounds.centerX();
+        self.seekY = bounds.centerY();
+        console.log("Outside");
       });
 
       if (this.seekX != null && this.seekY != null) {

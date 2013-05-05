@@ -65,8 +65,8 @@ function level() {
     })
   , new Game.Entity({
       classes: ['Bounds'],
-      x: -1000,
-      y: -1000,
+      x: 0,
+      y: 0,
       width: 2000,
       height: 2000,
     })
