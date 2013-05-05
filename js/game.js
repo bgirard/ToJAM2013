@@ -516,7 +516,7 @@
       logic.motion.call(this, dt);
       if(Game.playerKeyStates.fire) {
         // This will check cooldown
-        logic.weapon.call(this, dt, "Missle");
+        logic.weapon.call(this, dt, "Missile");
       }
       if(Game.playerKeyStates.laser) {
         // This will check cooldown
