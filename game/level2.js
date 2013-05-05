@@ -42,7 +42,8 @@ function level() {
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
       spriteMaxFrameX: 4,
-      update: Game.logic.default
+      update: Game.logic.default,
+      ai: Game.logic.ai,
     })
   , new Game.Entity({
       classes: ['Pirate'],
@@ -54,7 +55,8 @@ function level() {
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
       spriteMaxFrameX: 4,
-      update: Game.logic.default
+      update: Game.logic.default,
+      ai: Game.logic.ai,
     })
   , new Game.Entity({
       classes: ['Pirate'],
@@ -66,7 +68,8 @@ function level() {
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
       spriteMaxFrameX: 4,
-      update: Game.logic.default
+      update: Game.logic.default,
+      ai: Game.logic.ai,
     })
   , new Game.Entity({
       classes: ['Bounds'],
