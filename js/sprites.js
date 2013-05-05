@@ -139,6 +139,12 @@
       width: 1664,
       height: 128
     },
+    'laserHit': {
+      image: 'images/explosions/laserHit.png',
+      numFrames: 5,
+      width: 110,
+      height: 27
+    },
     'ship': {
       image: 'images/ships/ship.png',
       numFrames: 1,
