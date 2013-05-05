@@ -141,6 +141,7 @@
       "Laser": 0,
       "Bullet": 0,
       "BulletStrong": 0,
+      "EndGameBullet": 0,
     };
     div.ttl = options['ttl'] || null;
     div.owner = options['owner'] || null;
@@ -566,10 +567,11 @@
     },
     player: function(dt) {
       logic.motion.call(this, dt);
-      this.weaponCooldown["Laser"] = Math.max(0, this.weaponCooldown["Laser"] - dt);
-      this.weaponCooldown["Missile"] = Math.max(0, this.weaponCooldown["Missile"] - dt);
-      this.weaponCooldown["Bullet"] = Math.max(0, this.weaponCooldown["Bullet"] - dt);
-      this.weaponCooldown["BulletStrong"] = Math.max(0, this.weaponCooldown["BulletStrong"] - dt);
+
+      var bulletTypes = Object.keys(this.weaponCooldown);
+      bulletTypes.forEach(function(bulletType) {
+        this.weaponCooldown[bulletType] = Math.max(0, this.weaponCooldown[bulletType] - dt);
+      }.bind(this));
 
       if(Game.playerKeyStates.fire) {
         // This will check cooldown
