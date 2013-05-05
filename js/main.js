@@ -202,54 +202,63 @@
     document.getElementById('minimap').innerHTML = "";
 
     // Prepare bounds
+    var buoyOrEnergy = false;
     var bounds = document.getElementsByClassName("Bounds")[0];
     // Top
+    buoyOrEnergy = true;
     for (var x = bounds.topLeftX() + 50; x < bounds.bottomRightX(); x+=300) {
       document.spawn(new Game.Entity({
         x: x,
         y: bounds.topLeftY() + 50,
-        type: 'spaceBuoy',
+        type: buoyOrEnergy ? 'spaceBuoy' : 'spaceBuoyEnergy',
         spriteFrameTime: 100, //ms
-        width: 84,
-        height: 84,
+        width: buoyOrEnergy ? 84 : 720/12,
+        height: buoyOrEnergy ? 84 : 230, 
         img: "images/environment/spaceBuoy.png",
       }));
+      //buoyOrEnergy = !buoyOrEnergy;
     }
     // Bottom
+    buoyOrEnergy = true;
     for (var x = bounds.topLeftX() + 50; x < bounds.bottomRightX(); x+=300) {
       document.spawn(new Game.Entity({
         x: x,
         y: bounds.topLeftY() + bounds.height - 50,
-        type: 'spaceBuoy',
+        type: buoyOrEnergy ? 'spaceBuoy' : 'spaceBuoyEnergy',
         spriteFrameTime: 100, //ms
-        width: 84,
-        height: 84,
+        width: buoyOrEnergy ? 84 : 720/12,
+        height: buoyOrEnergy ? 84 : 230, 
         img: "images/environment/spaceBuoy.png",
       }));
+      //buoyOrEnergy = !buoyOrEnergy;
     }
     // Left 
+    buoyOrEnergy = true;
     for (var y = bounds.topLeftY() + 300; y < bounds.bottomRightY() - 300 - 100; y+=300) {
       document.spawn(new Game.Entity({
         x: bounds.topLeftX() + 50,
         y: y,
-        type: 'spaceBuoy',
+        type: buoyOrEnergy ? 'spaceBuoy' : 'spaceBuoyEnergy',
         spriteFrameTime: 100, //ms
-        width: 84,
-        height: 84,
+        width: buoyOrEnergy ? 84 : 720/12,
+        height: buoyOrEnergy ? 84 : 230, 
         img: "images/environment/spaceBuoy.png",
       }));
+      //buoyOrEnergy = !buoyOrEnergy;
     }
     // Right
+    buoyOrEnergy = true;
     for (var y = bounds.topLeftY() + 300; y < bounds.bottomRightY() - 300 - 100; y+=300) {
       document.spawn(new Game.Entity({
         x: bounds.topLeftX() + bounds.width - 50,
         y: y,
-        type: 'spaceBuoy',
+        type: buoyOrEnergy ? 'spaceBuoy' : 'spaceBuoyEnergy',
         spriteFrameTime: 100, //ms
-        width: 84,
-        height: 84,
+        width: buoyOrEnergy ? 84 : 720/12,
+        height: buoyOrEnergy ? 84 : 230, 
         img: "images/environment/spaceBuoy.png",
       }));
+      //buoyOrEnergy = !buoyOrEnergy;
     }
   };
 
