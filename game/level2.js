@@ -6,6 +6,7 @@ function level() {
   var div = document.createElement('div');
   div.classList.add('Level');
   div.id = id;
+  div.levelNo = 2;
   div.nextId = 'level3';
 
   [
