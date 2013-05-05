@@ -418,3 +418,32 @@ hr {
        -o-transition: .5s width;
           transition: .5s width;
 }
+
+@-webkit-keyframes blink {
+  0%   { visibility: visible; }
+  100% { visibility: hidden; }
+}
+@-moz-keyframes blink {
+  0%   { visibility: visible; }
+  100% { visibility: hidden; }
+}
+@-o-keyframes blink {
+  0%   { visibility: visible; }
+  100% { visibility: hidden; }
+}
+@keyframes blink {
+  0%   { visibility: visible; }
+  100% { visibility: hidden; }
+}
+
+.line.alert {
+  color: #f80;
+  font-weight: bold;
+}
+
+.line.alert .blink {
+  -webkit-animation: blink .75s steps(2, start) infinite;
+     -moz-animation: blink .75s steps(2, start) infinite;
+       -o-animation: blink .75s steps(2, start) infinite;
+          animation: blink .75s steps(2, start) infinite;
+}

@@ -132,7 +132,7 @@
       hideWhenRewound: true
     },
     'missile': {
-      image: 'images/explosions/missleHit.png',
+      image: 'images/explosions/missileHit.png',
       numFrames: 8,
       width: 304,
       height: 44
