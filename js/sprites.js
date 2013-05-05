@@ -1,5 +1,7 @@
 (function(){
   
+  var FRAME_DURATION = 40;
+
   function Sprite (definition, element) {
     element = element || document.createElement('div');
 
@@ -62,8 +64,13 @@
       indexFunction = indexFunctions.normal;
     };
 
+    var frameTime = 0;
     element.updateSprite = function (dt) {
-      indexFunction(dt);
+      frameTime += dt;
+      while (frameTime > FRAME_DURATION) {
+        indexFunction(dt);
+        frameTime = Math.max(0, frameTime - FRAME_DURATION);
+      }
       spriteElement.style.backgroundPosition = definition.width - (definition.width / definition.numFrames * animationIndex) + 'px 0';
     };
 
