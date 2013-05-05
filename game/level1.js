@@ -14,7 +14,9 @@ function level() {
       classes: ['Wormhole'],
       x: 200,
       y: -200,
-      update: Game.logic.default
+      showOnMinimap: true,
+      minimapColor: "black",      
+      update: Game.logic.wormhole
     })
   , new Game.Entity({
       type: 'player',
@@ -51,6 +53,20 @@ function level() {
       //spriteMaxFrameX: 4,
       update: Game.logic.default,
       ai: Game.logic.ai,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: -10,
+      y: 300,
+      width: 64,
+      height: 62,
+      life: 100,
+      img: "images/asteroid.png",
+      rotationVel: 0.2,
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
     })
   , new Game.Entity({
       classes: ['Bounds'],

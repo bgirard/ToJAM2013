@@ -14,7 +14,9 @@ function level() {
       classes: ['Wormhole'],
       x: 200,
       y: -200,
-      update: Game.logic.default
+      showOnMinimap: true,
+      minimapColor: "black",      
+      update: Game.logic.wormhole
     })
   , new Game.Entity({
       type: 'player',

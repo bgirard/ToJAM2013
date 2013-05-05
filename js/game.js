@@ -103,7 +103,7 @@
     div.life = options.life;
     div.lifeMax = options.life;
     div.showOnMinimap = options['showOnMinimap'] || false;
-    div.minimapColor = "red";
+    div.minimapColor = options['minimapColor'] || "red";
     div.scouted = false;
     if (div.className.indexOf("Pirate") != -1) {
       div.showOnMinimap = true;
@@ -176,7 +176,7 @@
         this.lifeBar.parentNode.removeChild(this.lifeBar);
       }
       if (this.minimap) {
-        this.minima.parentNode.removeChild(this.minimap);
+        this.minimap.parentNode.removeChild(this.minimap);
       }
     };
 
@@ -236,7 +236,6 @@
           document.getElementById("minimap").appendChild(div.minimap);
         }
         var bounds = document.getElementsByClassName("Bounds")[0];
-        document.title = (div.topLeftX());
         div.minimap.style.left = (div.topLeftX() - bounds.topLeftX()) * 100 / bounds.width + "%";
         div.minimap.style.top = (div.topLeftY() - bounds.topLeftY()) * 100 / bounds.height + "%";
       }
@@ -265,6 +264,8 @@
         this.velY = Math.min(0, this.velY + Math.max(0, dt * this.drag * Math.cos(this.rotation * degToRad)));
       }
 
+      this.lastX = this.x;
+      this.lastY = this.y;
       this.x += dt * this.velX;
       this.y += dt * this.velY;
 
@@ -280,6 +281,16 @@
         }
         this.frameTimeRemaining = this.spriteFrameTime;
       }
+    },
+    wormhole: function(dt) {
+      window.collisionDetection("Player", "Wormhole", function() {
+        var killedAllPirate = document.getElementsByClassName("Pirate").length == 0;
+        if (killedAllPirate) {
+          var nextLevel = document.getLevel().nextId;
+          window.changeLevelOnNextFrame(Game.levels[nextLevel]());
+          window.playSound('audio/wormhole.wav');
+        }
+      });
     },
     weapon: function(dt) {
       this.weaponCooldown = Math.max(0, this.weaponCooldown - dt);

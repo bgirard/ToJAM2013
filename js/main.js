@@ -200,7 +200,6 @@
       currentLevel.parentNode.removeChild(currentLevel);
     document.getElementById('gameboard').appendChild(level);
     document.getElementById('minimap').innerHTML = "";
-    document.title = "current level: " + level.id;
   };
 
   document.getLevel = function getLevel() {
@@ -240,6 +239,10 @@
     var changeLevelOnNextFrame = null;
     var degToRad = 0.0174532925;
     function sign(x) { return x ? x < 0 ? -1 : 1 : 0; }
+
+    window.changeLevelOnNextFrame = function(level) {
+      changeLevelOnNextFrame = level;
+    }
 
     document.getPlayer().childSprites.rocket1.reverseSpriteToStart();
     document.getPlayer().childSprites.rocket2.reverseSpriteToStart();
@@ -326,12 +329,6 @@
       }
 
       // Collisions
-      window.collisionDetection("Player", "Wormhole", function() {
-        var nextLevel = document.getLevel().nextId;
-        changeLevelOnNextFrame = Game.levels[nextLevel]();
-        window.playSound('audio/wormhole.wav');
-      });
-
       window.inDistance(400, playerEntity, "Entity", function(player, entity) {
         entity.scouted = true;
       });
@@ -346,6 +343,7 @@
         window.playSound('audio/laserHit.wav');
 
         pirate.life -= bullet.damage;
+        pirate.thrust(pirate, 10, pirate.faceAngle(bullet.lastX || bullet.x, bullet.lastY || bullet.y), 1);
         if(pirate.life <= 0) {
           document.spawn(new Game.Entity({
             type: 'explosion',
