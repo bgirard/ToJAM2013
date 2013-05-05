@@ -326,7 +326,7 @@
 
     document.setLevel(Game.levels['level1']());
 
-    //Sound.play('level-music');
+    Sound.play('level-music');
 
     var frame = 0;
     var cachedTime = Date.now();
