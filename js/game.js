@@ -392,17 +392,18 @@
 
       if (div.life != div.lifeMax) {
         // Draw HP bar
+        var lifeBarWidth = Math.min(div.width, 256);
         if (div.lifeBar == null) {
           div.lifeBar = document.createElement("div");
           div.lifeBar.className = "lifeBar";
           div.lifeBar.style.height = "8px";
-          div.lifeBar.style.marginLeft = -div.width/2 + 'px';
+          div.lifeBar.style.marginLeft = -div.width/2 + (div.width-lifeBarWidth)/2 + 'px';
           div.lifeBar.style.marginTop = -div.height/2 + 'px';
           div.parentNode.appendChild(div.lifeBar);
         }
         div.lifeBar.style.left = (div.x - window.Game.Camera.x()) + 'px';
         div.lifeBar.style.top = (div.y - window.Game.Camera.y()) + 'px';
-        div.lifeBar.style.width = ((div.life/div.lifeMax) * div.width) + "px";
+        div.lifeBar.style.width = ((div.life/div.lifeMax) * lifeBarWidth) + "px";
         div.lifeBar.style.backgroundColor = "hsl(" + ((div.life/div.lifeMax)*100) + ",100%,50%)";
       }
 
@@ -415,6 +416,8 @@
         var bounds = document.getElementsByClassName("Bounds")[0];
         div.minimap.style.left = (div.topLeftX() - bounds.topLeftX()) * 100 / bounds.width + "%";
         div.minimap.style.top = (div.topLeftY() - bounds.topLeftY()) * 100 / bounds.height + "%";
+        div.minimap.style.width = Math.floor(div.width/bounds.width*100) + "%";
+        div.minimap.style.height = Math.floor(div.height/bounds.height*100) + "%";
         div.minimap.style.backgroundColor = div.minimapColor;
       }
     };
@@ -516,7 +519,9 @@
         if (Math.abs(changeToAngle) > 0.1 * dt) {
           changeToAngle = sign(changeToAngle) * 0.1 * dt;
         }
-        this.rotation -= changeToAngle % 360;
+        if (this.rotationAccel != 0) {
+          this.rotation -= changeToAngle % 360;
+        }
 
         if (this.distanceTo(this.seekX, this.seekY) > 200) {
           idle = false;
