@@ -48,6 +48,11 @@ html, body {
 #player {
 }
 
+.hitbox {
+  position: absolute;
+  background: rgba(200, 0, 0, 0.5);
+}
+
 .Level {
   position: absolute;
   width: 100%;

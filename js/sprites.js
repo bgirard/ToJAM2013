@@ -1,5 +1,7 @@
 (function(){
   
+  var FRAME_DURATION = 40;
+
   function Sprite (definition, element) {
     element = element || document.createElement('div');
 
@@ -38,9 +40,19 @@
           spriteElement.style.visibility = 'visible';
           rewound = false;
         }
-        animationIndex = (animationIndex + 1) % definition.numFrames;
+        
+        animationIndex++;
+
         if (definition.lock && animationIndex > definition.lock[0]) {
           indexFunction = indexFunctions.lock;
+        }
+        else if (animationIndex === definition.numFrames) {
+          if (definition.loop !== false) {
+            animationIndex = 0;
+          }
+          else {
+            animationIndex--;
+          }
         }
       },
       reverseToStart: function(dt) {
@@ -62,8 +74,13 @@
       indexFunction = indexFunctions.normal;
     };
 
+    var frameTime = 0;
     element.updateSprite = function (dt) {
-      indexFunction(dt);
+      frameTime += dt;
+      while (frameTime > FRAME_DURATION) {
+        indexFunction(dt);
+        frameTime = Math.max(0, frameTime - FRAME_DURATION);
+      }
       spriteElement.style.backgroundPosition = definition.width - (definition.width / definition.numFrames * animationIndex) + 'px 0';
     };
 
@@ -130,7 +147,15 @@
       image: 'images/explosions/explosion.png',
       numFrames: 13,
       width: 1664,
-      height: 128
+      height: 128,
+      loop: false
+    },
+    'laserHit': {
+      image: 'images/explosions/laserHit.png',
+      numFrames: 5,
+      width: 110,
+      height: 27,
+      loop: false
     },
     'ship': {
       image: 'images/ships/ship.png',

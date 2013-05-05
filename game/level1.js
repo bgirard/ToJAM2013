@@ -30,6 +30,7 @@ function level() {
       y: 200,
       width: 80,
       height: 62,
+      life: 100,
       img: "images/ships/enemy1.png",
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
@@ -43,6 +44,7 @@ function level() {
       y: 200,
       width: 80,
       height: 62,
+      life: 100,
       img: "images/ships/enemy2.png",
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
@@ -52,8 +54,8 @@ function level() {
     })
   , new Game.Entity({
       classes: ['Bounds'],
-      x: -1000,
-      y: -1000,
+      x: 0,
+      y: 0,
       width: 2000,
       height: 2000,
     })

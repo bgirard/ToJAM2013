@@ -40,10 +40,14 @@
       entityDefinition = Game.entityDefinitions[options.type];
     }
 
+    Object.keys(entityDefinition).forEach(function(key){
+      options[key] = options[key] || entityDefinition[key];
+    });
+
     var id = options['id'] || 'Entity' + nextEntityId++;
     var img = options['img'];
-    var width = entityDefinition.width || options['width'] || 10;
-    var height = entityDefinition.height || options['height'] || 10;
+    var width = options.width || 10;
+    var height = options.height || 10;
     var extraClasses = options['classes'] || [];
 
     var div = document.createElement('div');
@@ -69,11 +73,16 @@
     div.style.width = width + 'px';
     div.style.height = height.toFixed(1) + 'px';
 
+    div.hitBox = entityDefinition.hitBox || [width*.8, height*.8];
+
     div.x = options['x'] || 0;
     div.y = options['y'] || 0;
     div.velX = options['velX'] || 0.0;
     div.velY = options['velY'] || 0.0;
     div.velMax = 0.5;
+    if (div.className.indexOf("Pirate") != -1) {
+      div.velMax = 0.5/2;
+    }
     div.drag = 0.000;
     div.accel = 0.01;
     div.rotation = 0;
@@ -82,10 +91,16 @@
     div.rotationDrag = 0.15;
     div.maxRotationVel = .2;
     div.velDamp = 0.1;
+    if (div.className.indexOf("Pirate") != -1) {
+      div.velDamp = 0.001;
+    }
     div.rotationDamp = 0.1;
-    div.scaling = options['scaling'];
-    div.update = options['update'] ? options['update'].bind(div) : undefined;
+    div.scaling = options.scaling;
+    div.update = options.update ? options.update.bind(div) : undefined;
     div.ai = options['ai'] ? options['ai'].bind(div) : undefined;
+
+    div.damage = options.damage;
+    div.life = options.life;
 
     // Sprite properties
     div.spriteFrameX = options.spriteFrameX;
@@ -99,11 +114,11 @@
     div.ttl = options['ttl'] || null;
 
     div.centerX = function() {
-      return this.x+this.width/2;
+      return this.x;
     };
 
     div.centerY = function() {
-      return this.y+this.height/2;
+      return this.y;
     };
 
     div.faceAngle = function (x, y) {
@@ -138,6 +153,16 @@
 
     div.style.marginLeft = -div.width/2 + 'px';
     div.style.marginTop = -div.height/2 + 'px';
+
+    if (window.location.search.indexOf('hitbox') > -1) {
+      var hitBoxElement = document.createElement('div');
+      hitBoxElement.className = 'hitbox';
+      hitBoxElement.style.top = (div.height - div.hitBox[1])/2 + 'px';
+      hitBoxElement.style.bottom = (div.height - div.hitBox[1])/2 + 'px';
+      hitBoxElement.style.left = (div.width - div.hitBox[0])/2 + 'px';
+      hitBoxElement.style.right = (div.width - div.hitBox[0])/2 + 'px';
+      div.appendChild(hitBoxElement);
+    }
 
     div.render = function render() {
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
@@ -216,6 +241,7 @@
           width: 16,
           height: 16,
           ttl: 2000,
+          damage: 10,
           update: function(dt) {
             this.ttl = Math.max(0, this.ttl - dt);
             if(!this.ttl) {
@@ -230,17 +256,19 @@
     ai: function(dt) {
       // Seek player
       var player = document.getElementById("player"); 
-      if (this.distanceTo(player.centerX(), player.centerY()) < 300) {
+      if (this.distanceTo(player.centerX(), player.centerY()) < 500) {
         this.seekX = player.centerX();
         this.seekY = player.centerY();
       }
 
+      var self = this;
       window.noCollisionDetection(this, "Bounds", function(pirate) {
         var bounds = document.getElementsByClassName("Bounds")[0];
-        this.seekX = bounds.centerX();
-        this.seekY = bounds.centerY();
+        self.seekX = bounds.centerX();
+        self.seekY = bounds.centerY();
       });
 
+      var idle = true;
       if (this.seekX != null && this.seekY != null) {
         // Aquire player
         var changeToAngle = this.rotation - this.faceAngle(this.seekX, this.seekY);
@@ -255,13 +283,28 @@
         }
         this.rotation -= changeToAngle % 360;
 
-        if (this.distanceTo(this.seekX, this.seekY) > 100) {
+        if (this.distanceTo(this.seekX, this.seekY) > 200) {
+          idle = false;
           this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), -1);
-        } else {
-          this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), 0);
         }
-      } else {
-        this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), 0);
+      }
+
+      if (idle) {
+        // Check if we overlap with another Pirate
+        var self = this;
+        var otherPirate = null;
+        window.collisionDetection("Pirate", "Pirate", function(p1, p2) {
+          if (self == p1 && self != p2) {
+            otherPirate = p2; 
+          } 
+        });
+        if (otherPirate != null) {
+          idle = false;
+          this.thrust(this, dt, otherPirate.faceAngle(this.x, this.y), -1);
+        }
+        if (idle) {
+          this.thrust(this, dt, this.faceAngle(this.x, this.y), 0);
+        }
       }
     },
     default: function(dt) {

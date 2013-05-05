@@ -122,10 +122,10 @@
       var entity2 = entities2[j];
 
       // for center alignment, i.e. marginLeft, marginTop
-      w1 = entity1.width;
-      w2 = entity2.width;
-      h1 = entity1.height;
-      h2 = entity2.height;
+      w1 = entity1.hitBox[0];
+      w2 = entity2.hitBox[0];
+      h1 = entity1.hitBox[1];
+      h2 = entity2.hitBox[1];
       hw1 = w1/2;
       hw2 = w2/2;
       hh1 = h1/2;
@@ -158,10 +158,10 @@
         if(!entity2) continue;
 
         // for center alignment, i.e. marginLeft, marginTop
-        w1 = entity1.width;
-        w2 = entity2.width;
-        h1 = entity1.height;
-        h2 = entity2.height;
+        w1 = entity1.hitBox[0];
+        w2 = entity2.hitBox[0];
+        h1 = entity1.hitBox[1];
+        h2 = entity2.hitBox[1];
         hw1 = w1/2;
         hw2 = w2/2;
         hh1 = h1/2;
@@ -207,6 +207,10 @@
     entity.parentNode.removeChild(entity);
   };
 
+  if (window.location.search.indexOf('nosound') === -1) {
+    window.preloadSound('audio/07 Seven.mp3');
+  }
+
   window.onload = function (e) {
     window.bgOffsetX = 0;
     window.bgOffsetY = 0;
@@ -220,6 +224,10 @@
     document.addEventListener('keyup', handleKeyEvent.bind(undefined, false, bossOs.playerKeyStateChange));
 
     document.setLevel(Game.levels['level1']());
+
+    if (window.location.search.indexOf('nosound') === -1) {
+      window.playSound('audio/07 Seven.mp3');
+    }
 
     var frame = 0;
     var cachedTime = Date.now();
@@ -249,6 +257,8 @@
 
       var level = document.getElementsByClassName('Level')[0];
       var playerEntity = level.getElementsByClassName('Player')[0];
+
+      var entityKillList = [];
 
       if(playerEntity) {
         document.title = "Player: " + playerEntity.x.toFixed(1) + ", " + playerEntity.y.toFixed(1);
@@ -314,6 +324,26 @@
         var nextLevel = document.getLevel().nextId;
         changeLevelOnNextFrame = Game.levels[nextLevel]();
       });
+
+      window.collisionDetection("Pirate", "Bullet", function(pirate, bullet) {
+        entityKillList.push(bullet);
+        document.spawn(new Game.Entity({
+          type: 'laserHit',
+          x: bullet.x,
+          y: bullet.y,
+        }));
+
+        pirate.life -= bullet.damage;
+        if(pirate.life <= 0) {
+          document.spawn(new Game.Entity({
+            type: 'explosion',
+            x: bullet.x,
+            y: bullet.y,
+          }));
+          entityKillList.push(pirate);
+        }
+      });
+
       window.noCollisionDetection(playerEntity, "Bounds", function() {
         var bounds = document.getElementsByClassName("Bounds")[0];
         // Outside the level
@@ -325,17 +355,24 @@
           playerEntity.y += bounds.height;
           window.bgOffsetY += bounds.height;
         }
-        if (playerEntity.x > bounds.x + bounds.width) {
+        if (playerEntity.x > bounds.x + bounds.width/2) {
           playerEntity.x -= bounds.width;
           window.bgOffsetX -= bounds.width;
         }
-        if (playerEntity.y > bounds.y + bounds.height) {
+        if (playerEntity.y > bounds.y + bounds.height/2) {
           playerEntity.y -= bounds.height;
           window.bgOffsetY -= bounds.height;
         }
       });
 
       bossOs.update(playerEntity);
+
+      while (entityKillList.length > 0) {
+        var entity = entityKillList.pop();
+        if (entity.parentNode) {
+          document.kill(entity);
+        }
+      }
 
       Array.prototype.forEach.call(document.getLevel().querySelectorAll('.sprite'), function(element){
         element.updateSprite(dt);
@@ -346,6 +383,7 @@
         entities[i].render();
       }
 
+      /*
       var x, y;
       x = -5000 + (window.bgOffsetX-window.Game.Camera.x())/5;
       y = -5000 + (window.bgOffsetY-window.Game.Camera.y())/5;
@@ -356,6 +394,7 @@
       x = -5000 + (window.bgOffsetX-window.Game.Camera.x())/50;
       y = -5000 + (window.bgOffsetY-window.Game.Camera.y())/50;
       window.setTransform(document.getElementById("bg1"), "translate(" + x + "px," + y + "px)");
+      */
 
       cachedTime = t;
     };
