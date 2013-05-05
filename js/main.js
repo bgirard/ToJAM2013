@@ -308,7 +308,7 @@
       bossOs.update(playerEntity);
 
       Array.prototype.forEach.call(document.getLevel().querySelectorAll('.sprite'), function(element){
-        element.updateSprite();
+        element.updateSprite(dt);
       });
 
       // Flush render state to DOM
