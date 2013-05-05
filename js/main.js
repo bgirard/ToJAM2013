@@ -227,10 +227,8 @@
     var degToRad = 0.0174532925;
     function sign(x) { return x ? x < 0 ? -1 : 1 : 0; }
 
-    var playerEntity = document.getLevel().getElementsByClassName('Player')[0];
-    playerEntity.reverseSpriteToStart();
-    playerEntity.childSprites.rocket1.reverseSpriteToStart();
-    playerEntity.childSprites.rocket2.reverseSpriteToStart();
+    document.getPlayer().childSprites.rocket1.reverseSpriteToStart();
+    document.getPlayer().childSprites.rocket2.reverseSpriteToStart();
 
     var rocketsActive = false;
 
@@ -240,6 +238,9 @@
       if (changeLevelOnNextFrame) {
         document.setLevel(changeLevelOnNextFrame);
         changeLevelOnNextFrame = null;
+        document.getPlayer().childSprites.rocket1.reverseSpriteToStart();
+        document.getPlayer().childSprites.rocket2.reverseSpriteToStart();
+        rocketsActive = false;
       }
       var t = Date.now();
       var dt = t - cachedTime;
