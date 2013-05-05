@@ -2,7 +2,7 @@
   
   var TIME_BETWEEN_SCENES = 1000;
 
-  var audio = document.querySelector('audio');
+  var music = document.querySelector('audio');
 
   var scenes = Array.prototype.slice.call(document.querySelectorAll('section'));
   var currentScene;
@@ -78,8 +78,6 @@
     currentScene = scenes[scenes.indexOf(currentScene) + 1];
 
     if (currentScene) {
-      console.log('starting scene', scenes.indexOf(currentScene));
-
       var duration = currentScene.getAttribute('data-duration') * 1000;
 
       setupCurrentScene(duration);
@@ -88,19 +86,41 @@
         exitCurrentScene();
       }, duration);      
     }
+  }
 
+  var loadingScreen = document.querySelector('.loading-screen');
+  var imageElements = Array.prototype.slice.call(document.querySelectorAll('img'));
+  var audioElements = Array.prototype.slice.call(document.querySelectorAll('audio'));
+  var loadableElements = imageElements.concat(audioElements);
+  var loadingBar = document.querySelector('hr');
+
+  function load () {
+    var numLoaded = 0;
+
+    loadableElements.forEach(function(element){
+      if (element.readyState > 0 || element.complete) {
+        numLoaded++;
+      }
+    });
+
+    loadingBar.style.width = numLoaded / loadableElements.length * 50 + '%';
+
+    if (numLoaded === loadableElements.length < 1) {
+      setTimeout(load, 10);
+    }
+    else {
+      loadingScreen.classList.add('off');
+      scenes.forEach(function(scene){
+        scene.classList.add('transition-hack');
+      });
+      setTimeout(start, 2000);
+    }
   }
 
   function start () {
-    audio.play();
-    nextScene();    
+    music.play();
+    nextScene();
   }
 
-  if (audio.readyState > 0) {
-    start();
-  }
-  else {
-    audio.addEventListener('canplay', start, false);  
-  }
-
+  load();
 }());

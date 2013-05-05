@@ -288,7 +288,7 @@
         if (killedAllPirate) {
           var nextLevel = document.getLevel().nextId;
           window.changeLevelOnNextFrame(Game.levels[nextLevel]());
-          window.playSound('audio/wormhole.wav');
+          Sound.play('wormhole');
         }
       });
     },
@@ -320,7 +320,7 @@
             logic.motion.call(this, dt);
           }
         }));
-        window.playSound('audio/laser.wav');
+        Sound.play('laser');
       }
     },
     ai: function(dt) {

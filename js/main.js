@@ -218,7 +218,41 @@
     entity.parentNode.removeChild(entity);
   };
 
+
   window.onload = function (e) {
+    var loadingBar = document.querySelector('hr');
+    var loadingScreen = document.querySelector('.loading-screen');
+
+    Sound.loadAudioNodes(function (progress) {
+        loadingBar.style.width = progress * 25 + '%';
+      },
+      function(){
+        var images = Array.prototype.slice.call(document.querySelectorAll('img'));
+
+        function check () {
+          var loaded = 0;
+
+          images.forEach(function(image){
+            if (image.complete > 2) {
+              loaded++;
+            }
+          });
+
+          if (loaded < images.length) {
+            loadingBar.style.width = 25 + (loaded / images.length) * 25 + '%';
+            setTimeout(check, 20);
+          }
+          else {
+            loadingScreen.classList.add('off');
+            setTimeout(start, 1000);
+          }
+        }
+
+        check();      
+      });
+  };
+
+  function start () {
     window.bgOffsetX = 0;
     window.bgOffsetY = 0;
     var bossOs = new BossOs({
@@ -232,7 +266,7 @@
 
     document.setLevel(Game.levels['level1']());
 
-    window.playSound('level1-sound');
+    Sound.play('level-music');
 
     var frame = 0;
     var cachedTime = Date.now();
@@ -340,7 +374,7 @@
           x: bullet.x,
           y: bullet.y,
         }));
-        window.playSound('audio/laserHit.wav');
+        Sound.play('laserHit');
 
         pirate.life -= bullet.damage;
         pirate.thrust(pirate, 10, pirate.faceAngle(bullet.lastX || bullet.x, bullet.lastY || bullet.y), 1);
@@ -350,7 +384,7 @@
             x: bullet.x,
             y: bullet.y,
           }));
-          window.playSound('audio/explosion.wav');
+          Sound.play('explosion');
           entityKillList.push(pirate);
         }
       });
