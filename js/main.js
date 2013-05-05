@@ -221,9 +221,7 @@
 
     document.setLevel(Game.levels['level1']());
 
-    if (window.location.search.indexOf('nosound') === -1) {
-      window.playSound('audio/07 Seven.mp3');
-    }
+    window.playSound('audio/07 Seven.mp3');
 
     var frame = 0;
     var cachedTime = Date.now();
