@@ -429,7 +429,7 @@
       }
 
       // Collisions
-      window.inDistance(400, playerEntity, "Entity", function(player, entity) {
+      window.inDistance(300000, playerEntity, "Entity", function(player, entity) {
         entity.scouted = true;
       });
 

@@ -12,8 +12,8 @@ function level() {
     new Game.Entity({
       type: 'wormhole',
       classes: ['Wormhole'],
-      x: 200,
-      y: -200,
+      x: 7000,
+      y: 1000,
       showOnMinimap: true,
       minimapColor: "black",      
       update: Game.logic.wormhole
@@ -24,15 +24,15 @@ function level() {
       id: 'player',
       life: 1000,
       bulletType: "Missile",
-      x: -600,
-      y: -600,
-      rotation: 180,
+      x: 600,
+      y: 1000,
+      rotation: 90,
       update: Game.logic.player
     })
   , new Game.Entity({
       classes: ['Pirate'],
-      x: 200,
-      y: 200,
+      x: 3200,
+      y: 500,
       width: 80,
       height: 62,
       life: 100,
@@ -45,11 +45,25 @@ function level() {
     })
   , new Game.Entity({
       classes: ['Pirate'],
-      x: 300,
-      y: 200,
+      x: 3400,
+      y: 750,
       width: 80,
       height: 62,
       life: 100,
+      img: "images/ships/enemy1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3500,
+      y: 1000,
+      width: 80,
+      height: 62,
+      life: 300,
       img: "images/ships/enemy2.png",
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
@@ -59,24 +73,108 @@ function level() {
     })
   , new Game.Entity({
       classes: ['Pirate'],
-      x: -10,
-      y: 300,
-      width: 64,
+      x: 3400,
+      y: 1250,
+      width: 80,
       height: 62,
       life: 100,
-      img: "images/asteroid.png",
-      rotationVel: 0.2,
+      img: "images/ships/enemy1.png",
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
       //spriteMaxFrameX: 4,
       update: Game.logic.default,
-      ai: Game.logic.idle,
+      ai: Game.logic.ai,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3200,
+      y: 1500,
+      width: 80,
+      height: 62,
+      life: 100,
+      img: "images/ships/enemy1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+   //    ROW 2
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3200 + 2000,
+      y: 500,
+      width: 80,
+      height: 62,
+      life: 100,
+      img: "images/ships/enemy1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3400 + 2000,
+      y: 750,
+      width: 80,
+      height: 62,
+      life: 100,
+      img: "images/ships/enemy1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3500 + 2000,
+      y: 1000,
+      width: 80,
+      height: 62,
+      life: 300,
+      img: "images/ships/enemy2.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3400 + 2000,
+      y: 1250,
+      width: 80,
+      height: 62,
+      life: 100,
+      img: "images/ships/enemy1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
+    })
+  , new Game.Entity({
+      classes: ['Pirate'],
+      x: 3200 + 2000,
+      y: 1500,
+      width: 80,
+      height: 62,
+      life: 100,
+      img: "images/ships/enemy1.png",
+      spriteFrameTime: 100, //ms
+      spriteFrameX: 0,
+      //spriteMaxFrameX: 4,
+      update: Game.logic.default,
+      ai: Game.logic.ai,
     })
   , new Game.Entity({
       classes: ['Bounds'],
-      x: 0,
-      y: 0,
-      width: 2000,
+      x: 4000,
+      y: 1000,
+      width: 8000,
       height: 2000,
     })
   ].forEach(function(entity) {

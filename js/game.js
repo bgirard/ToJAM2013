@@ -130,7 +130,7 @@
     div.hitType = options['hitType'] || "laserHit";
     div.weaponReloadTime = {
       "Missile": 150,
-      "Laser": 300,
+      "Laser": 500,
       "Bullet": 150,
     };
     div.weaponCooldown = {};
@@ -248,7 +248,7 @@
           width: 3,
           height: 31,
           ttl: 1500,
-          damage: 10,
+          damage: 30,
           owner: this,
           faceVelocityDirection: true,
           update: function(dt) {
