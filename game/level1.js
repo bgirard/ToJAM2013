@@ -22,6 +22,7 @@ function level() {
       type: 'player',
       classes: ['Player'],
       id: 'player',
+      life: 1000,
       x: -600,
       y: -600,
       update: Game.logic.player

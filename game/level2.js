@@ -24,6 +24,7 @@ function level() {
       id: 'player',
       x: 100,
       y: 100,
+      life: 1000,
       update: Game.logic.player
     })
   , new Game.Entity({

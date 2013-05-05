@@ -70,6 +70,11 @@
     div.width = width;
     div.height = height;
 
+    if (div.className.indexOf("Pirate") != -1 ||
+        div.className.indexOf("Player") != -1) {
+      div.classList.add("Damagable");
+    }
+
     div.style.width = width + 'px';
     div.style.height = height.toFixed(1) + 'px';
 
@@ -124,6 +129,7 @@
     div.weaponReloadTime = 150;
     div.weaponCooldown = 0;
     div.ttl = options['ttl'] || null;
+    div.owner = options['owner'] || null;
 
     div.topLeftX = function() {
       return this.x - this.width/2;
@@ -199,6 +205,7 @@
           height: 16,
           ttl: 2000,
           damage: 10,
+          owner: this,
           update: function(dt) {
             this.ttl = Math.max(0, this.ttl - dt);
             if(!this.ttl) {
