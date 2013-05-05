@@ -95,12 +95,12 @@
       return this.y+this.height/2;
     }
 
-    div.faceAngle = function (player) {
-      return Math.atan2(player.y - this.y, player.x - this.x)/degToRad + 90;
+    div.faceAngle = function (x, y) {
+      return Math.atan2(y - this.y, x - this.x)/degToRad + 90;
     }
 
-    div.distanceTo = function distanceTo(player) {
-      return Math.sqrt((this.centerX() - player.centerX())*(this.centerX() - player.centerX()) + (this.centerY() - player.centerY())*(this.centerY() - player.centerY()));
+    div.distanceTo = function distanceTo(x, y) {
+      return Math.sqrt((this.centerX() - x)*(this.centerX() - x) + (this.centerY() - y)*(this.centerY() - y));
     }
 
     div.thrust = function thrust(div, dt, dirAngle, thrustDirSign) {
@@ -205,9 +205,20 @@
     ai: function(dt) {
       // Seek player
       var player = document.getElementById("player"); 
-      if (this.distanceTo(player) < 500) {
+      if (this.distanceTo(player.centerX(), player.centerY()) < 300) {
+        this.seekX = player.centerX();
+        this.seekY = player.centerY();
+      }
+
+      window.noCollisionDetection(this, "Bounds", function(pirate) {
+        var bounds = document.getElementsByClassName("Bounds")[0];
+        this.seekX = bounds.centerX();
+        this.seekY = bounds.centerY();
+      });
+
+      if (this.seekX != null && this.seekY != null) {
         // Aquire player
-        var changeToAngle = this.rotation - this.faceAngle(player);
+        var changeToAngle = this.rotation - this.faceAngle(this.seekX, this.seekY);
         if (changeToAngle > 180) {
           changeToAngle = 360 - changeToAngle;
         }
@@ -219,9 +230,13 @@
         }
         this.rotation -= changeToAngle % 360;
 
-        if (this.distanceTo(player) > 100) {
-          this.thrust(this, dt/10, this.faceAngle(player), -1);
+        if (this.distanceTo(this.seekX, this.seekY) > 100) {
+          this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), -1);
+        } else {
+          this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), 0);
         }
+      } else {
+        this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), 0);
       }
     },
     default: function(dt) {
