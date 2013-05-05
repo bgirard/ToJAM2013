@@ -350,6 +350,9 @@
     window.changeLevelOnNextFrame = function(level) {
       changeLevelOnNextFrame = level;
     }
+    window.restartLevel = function() {
+      window.changeLevelOnNextFrame(Game.levels[document.getLevel().id]());
+    }
 
     document.getPlayer().childSprites.rocket1.reverseSpriteToStart();
     document.getPlayer().childSprites.rocket2.reverseSpriteToStart();
@@ -529,7 +532,9 @@
       */
       x = (window.bgOffsetX-window.Game.Camera.x())/50;
       y = (window.bgOffsetY-window.Game.Camera.y())/50;
-      window.setTransform(document.getElementById("bgShip"), "translate(" + x + "px," + y + "px)");
+      var shipScale = [0.25, 0.50, 0.75, 0];
+      var scale = shipScale[document.getLevel().levelNo];
+      window.setTransform(document.getElementById("bgShip"), "translate(" + x + "px," + y + "px) scale(" + scale + "," + scale + ")");
 
       cachedTime = t;
     };

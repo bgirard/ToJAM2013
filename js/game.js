@@ -201,6 +201,10 @@
       if (this.minimap) {
         this.minimap.parentNode.removeChild(this.minimap);
       }
+      if (div.id == "player") {
+        window.restartLevel();
+      }
+
     };
 
     var BulletList = {
