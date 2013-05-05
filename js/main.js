@@ -265,6 +265,10 @@
     var pirates = level.getElementsByClassName('Pirate');
     for (var i = 0; i < pirates.length; i++) {
       var pirate = pirates[i];
+      if (pirate.img.indexOf("asteroid") != -1) {
+        // Use their initial rotation
+        continue;
+      }
       var playerEntity = document.getPlayer();
       pirate.rotation = pirate.faceAngle(playerEntity.centerX(), playerEntity.centerY());
     }

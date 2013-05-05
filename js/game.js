@@ -62,6 +62,7 @@
     }
 
     div.options = options;
+    div.img = img;
     div.classList.add('Entity');
     extraClasses.forEach(function(className) {
       div.classList.add(className);
