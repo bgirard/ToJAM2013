@@ -410,8 +410,10 @@
         // d/ms                  += ms * scalar * d/ms^2
         playerEntity.rotationVel += dt * rotationDirSign * playerEntity.rotationAccel;
 
-        // d/ms                  *= ms * scalar/ms
-        playerEntity.rotationVel *= Math.pow(playerEntity.rotationDamp, dt/1000);
+        if (playerEntity.rotationAccel != 0) {
+          // d/ms                  *= ms * scalar/ms
+          playerEntity.rotationVel *= Math.pow(playerEntity.rotationDamp, dt/1000);
+        }
 
         if (Math.abs(playerEntity.rotationVel) > playerEntity.maxRotationVel) {
           playerEntity.rotationVel = playerEntity.maxRotationVel * sign(playerEntity.rotationVel);
@@ -532,9 +534,14 @@
       */
       x = (window.bgOffsetX-window.Game.Camera.x())/50;
       y = (window.bgOffsetY-window.Game.Camera.y())/50;
-      var shipScale = [0.25, 0.50, 0.75, 0];
-      var scale = shipScale[document.getLevel().levelNo];
-      window.setTransform(document.getElementById("bgShip"), "translate(" + x + "px," + y + "px) scale(" + scale + "," + scale + ")");
+      if (document.getLevel().levelNo != 5) {
+        var shipScale = [0.25, 0.50, 0.75, 0];
+        var scale = shipScale[document.getLevel().levelNo];
+        window.setTransform(document.getElementById("bgShip"), "translate(" + x + "px," + y + "px) scale(" + scale + "," + scale + ")");
+        document.getElementById("bgShip").style.visibility = "visible";
+      } else {
+        document.getElementById("bgShip").style.visibility = "hidden";
+      }
 
       cachedTime = t;
     };

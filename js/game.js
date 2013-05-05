@@ -516,7 +516,9 @@
         if (Math.abs(changeToAngle) > 0.1 * dt) {
           changeToAngle = sign(changeToAngle) * 0.1 * dt;
         }
-        this.rotation -= changeToAngle % 360;
+        if (this.rotationAccel != 0) {
+          this.rotation -= changeToAngle % 360;
+        }
 
         if (this.distanceTo(this.seekX, this.seekY) > 200) {
           idle = false;
