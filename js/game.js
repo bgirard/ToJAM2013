@@ -102,6 +102,16 @@
     div.damage = options.damage;
     div.life = options.life;
     div.lifeMax = options.life;
+    div.showOnMinimap = options['showOnMinimap'] || false;
+    div.minimapColor = "red";
+    div.scouted = false;
+    if (div.className.indexOf("Pirate") != -1) {
+      div.showOnMinimap = true;
+    }
+    if (div.className.indexOf("Player") != -1) {
+      div.showOnMinimap = true;
+      div.minimapColor = "green";
+    }
 
     // Sprite properties
     div.spriteFrameX = options.spriteFrameX;
@@ -113,6 +123,14 @@
     div.weaponReloadTime = 150;
     div.weaponCooldown = 0;
     div.ttl = options['ttl'] || null;
+
+    div.topLeftX = function() {
+      return this.x - this.width/2;
+    }
+
+    div.topLeftY = function() {
+      return this.y - this.height/2;
+    }
 
     div.centerX = function() {
       return this.x;
@@ -156,6 +174,9 @@
       document.kill(this);
       if (this.lifeBar) {
         this.lifeBar.parentNode.removeChild(this.lifeBar);
+      }
+      if (this.minimap) {
+        this.minima.parentNode.removeChild(this.minimap);
       }
     };
 
@@ -205,6 +226,19 @@
         div.lifeBar.style.top = (div.y - window.Game.Camera.y()) + 'px';
         div.lifeBar.style.width = ((div.life/div.lifeMax) * div.width) + "px";
         div.lifeBar.style.backgroundColor = "hsl(" + ((div.life/div.lifeMax)*100) + ",100%,50%)";
+      }
+
+      if (div.showOnMinimap && div.scouted == true) {
+        if (div.minimap == null) {
+          div.minimap = document.createElement("div");
+          div.minimap.className = "minimapEntity";
+          div.minimap.style.backgroundColor = div.minimapColor;
+          document.getElementById("minimap").appendChild(div.minimap);
+        }
+        var bounds = document.getElementsByClassName("Bounds")[0];
+        document.title = (div.topLeftX());
+        div.minimap.style.left = (div.topLeftX() - bounds.topLeftX()) * 100 / bounds.width + "%";
+        div.minimap.style.top = (div.topLeftY() - bounds.topLeftY()) * 100 / bounds.height + "%";
       }
     };
 

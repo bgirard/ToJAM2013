@@ -84,6 +84,21 @@ html, body {
   visibility: visible;
 }
 
+.minimapEntity {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+}
+
+#minimap {
+  background-color: rgba(0, 100, 0, 0.8);
+  top: 80%;
+  height: 17%;
+  left: 7%;
+  width: 20%;
+}
+
 .hud-element.button {
   text-align: center;
   font-family: 'VT323', cursive;
