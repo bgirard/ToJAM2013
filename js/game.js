@@ -180,6 +180,39 @@
       }
     };
 
+    var BulletList = {
+      "Bullet": function() {
+        window.playSound('audio/laser.wav');
+        var rot = degToRad * this.rotation;
+        var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
+        var vDirX = Math.sin(rot);
+        var vDirY = -Math.cos(rot);
+        return new Game.Entity({
+          classes: ['Bullet'],
+          x: (-Math.sin(rot) * -this.height/2) + this.x,
+          y: (Math.cos(rot) * -this.height/2) + this.y,
+          velX: 2 * this.velMax * vDirX,
+          velY: 2 * this.velMax * vDirY,
+          img: "images/bullet1.png",
+          width: 16,
+          height: 16,
+          ttl: 2000,
+          damage: 10,
+          update: function(dt) {
+            this.ttl = Math.max(0, this.ttl - dt);
+            if(!this.ttl) {
+              this.kill();
+              return;
+            }
+            logic.motion.call(this, dt);
+          }
+        });
+      },
+    };
+    div.fire = function(bulletName) {
+      document.spawn(BulletList[bulletName].bind(this)());
+    }
+
     div.style.marginLeft = -div.width/2 + 'px';
     div.style.marginTop = -div.height/2 + 'px';
 
@@ -292,35 +325,11 @@
         }
       });
     },
-    weapon: function(dt) {
+    weapon_bullet: function(dt) {
       this.weaponCooldown = Math.max(0, this.weaponCooldown - dt);
       if(Game.playerKeyStates.fire && !this.weaponCooldown) {
         this.weaponCooldown = this.weaponReloadTime;
-        var rot = degToRad * this.rotation;
-        var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
-        var vDirX = Math.sin(rot);
-        var vDirY = -Math.cos(rot);
-        document.spawn(new Game.Entity({
-          classes: ['Bullet'],
-          x: (-Math.sin(rot) * -this.height/2) + this.x,
-          y: (Math.cos(rot) * -this.height/2) + this.y,
-          velX: 2 * this.velMax * vDirX,
-          velY: 2 * this.velMax * vDirY,
-          img: "images/bullet1.png",
-          width: 16,
-          height: 16,
-          ttl: 2000,
-          damage: 10,
-          update: function(dt) {
-            this.ttl = Math.max(0, this.ttl - dt);
-            if(!this.ttl) {
-              this.kill();
-              return;
-            }
-            logic.motion.call(this, dt);
-          }
-        }));
-        window.playSound('audio/laser.wav');
+        this.fire("Bullet");
       }
     },
     idle: function(dt) {
@@ -385,7 +394,7 @@
     },
     player: function(dt) {
       logic.motion.call(this, dt);
-      logic.weapon.call(this, dt);
+      logic.weapon_bullet.call(this, dt);
     }
   };
 
