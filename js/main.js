@@ -424,7 +424,7 @@
 
         entityKillList.push(bullet);
         document.spawn(new Game.Entity({
-          type: 'laserHit',
+          type: bullet.hitType || 'laserHit',
           x: bullet.x,
           y: bullet.y,
         }));

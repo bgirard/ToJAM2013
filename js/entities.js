@@ -34,6 +34,22 @@
         }
       }
     },
+    'missileHit': {
+      classes: ['MissileHit'],
+      spriteLayout: {
+        definition: 'missileHit'
+      },
+      width: 304/8,
+      height: 44,
+      ttl: 1000,
+      update: function(dt) {
+        this.ttl = Math.max(0, this.ttl - dt);
+        if(!this.ttl) {
+          document.kill(this);
+          return;
+        }
+      }
+    },
     'explosion': {
       classes: ['Explosion'],
       spriteLayout: {

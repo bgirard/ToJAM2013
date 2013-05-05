@@ -127,6 +127,7 @@
 
     // Weapon properties
     div.bulletType = options['bulletType'] || "Bullet";
+    div.hitType = options['hitType'] || "laserHit";
     div.weaponReloadTime = {
       "Missile": 150,
       "Bullet": 150,
@@ -248,6 +249,7 @@
           ttl: 1500,
           damage: 10,
           owner: this,
+          hitType: "missileHit",
           update: function(dt) {
             this.ttl = Math.max(0, this.ttl - dt);
             if (this.missileLockOnTarget == null ||

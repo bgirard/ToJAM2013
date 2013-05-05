@@ -163,6 +163,13 @@
       height: 27,
       loop: false
     },
+    'missileHit': {
+      image: 'images/explosions/missileHit.png',
+      numFrames: 8,
+      width: 304,
+      height: 44,
+      loop: false
+    },
     'ship': {
       image: 'images/ships/ship.png',
       numFrames: 1,
