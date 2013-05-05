@@ -130,6 +130,7 @@
     div.hitType = options['hitType'] || "laserHit";
     div.weaponReloadTime = {
       "Missile": 150,
+      "Laser": 300,
       "Bullet": 150,
     };
     div.weaponCooldown = {};
@@ -219,6 +220,37 @@
           ttl: 1500,
           damage: 10,
           owner: this,
+          update: function(dt) {
+            this.ttl = Math.max(0, this.ttl - dt);
+            if(!this.ttl) {
+              this.kill();
+              return;
+            }
+            logic.motion.call(this, dt);
+          }
+        });
+      },
+      "Laser": function() {
+        var LaserColors = ["Blue", "Green", "Red", "Purple", "Yellow"];
+        Sound.play('laser');
+        var rot = degToRad * this.rotation;
+        var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
+        var vDirX = Math.sin(rot);
+        var vDirY = -Math.cos(rot);
+        var laserColor = LaserColors[Math.floor(Math.random() * LaserColors.length)];
+        return new Game.Entity({
+          classes: ['Bullet'],
+          x: (-Math.sin(rot) * -this.height/2) + this.x,
+          y: (Math.cos(rot) * -this.height/2) + this.y,
+          velX: 2 * this.velMax * vDirX,
+          velY: 2 * this.velMax * vDirY,
+          img: "images/projectiles/laser" + laserColor + ".png",
+          width: 3,
+          height: 31,
+          ttl: 1500,
+          damage: 10,
+          owner: this,
+          faceVelocityDirection: true,
           update: function(dt) {
             this.ttl = Math.max(0, this.ttl - dt);
             if(!this.ttl) {
@@ -484,7 +516,11 @@
       logic.motion.call(this, dt);
       if(Game.playerKeyStates.fire) {
         // This will check cooldown
-        logic.weapon.call(this, dt);
+        logic.weapon.call(this, dt, "Missle");
+      }
+      if(Game.playerKeyStates.laser) {
+        // This will check cooldown
+        logic.weapon.call(this, dt, "Laser");
       }
       if(Game.playerKeyStates.missile) {
         logic.weapon.call(this, dt, "Missile");
