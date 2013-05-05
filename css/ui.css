@@ -448,7 +448,7 @@ hr {
   font-weight: bold;
 }
 
-.line.alert .blink {
+.blink {
   -webkit-animation: blink .75s steps(2, start) infinite;
      -moz-animation: blink .75s steps(2, start) infinite;
        -o-animation: blink .75s steps(2, start) infinite;

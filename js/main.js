@@ -76,7 +76,6 @@
     'D': 'right',
     'W': 'up',
     'S': 'down',
-    'SPACE': 'fire',
     'P': 'power',
     'T': 'shield',
     'M': 'missile',
