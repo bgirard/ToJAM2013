@@ -368,7 +368,7 @@
       while (entityKillList.length > 0) {
         var entity = entityKillList.pop();
         if (entity.parentNode) {
-          document.kill(entity);
+          entity.kill();
         }
       }
 

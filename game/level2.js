@@ -30,6 +30,7 @@ function level() {
       y: 200,
       width: 288 / 4,
       height: 72,
+      life: 300,
       img: "images/ship1.png",
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
@@ -43,6 +44,7 @@ function level() {
       y: 210,
       width: 288 / 4,
       height: 72,
+      life: 300,
       img: "images/ship1.png",
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
@@ -56,6 +58,7 @@ function level() {
       y: 211,
       width: 288 / 4,
       height: 72,
+      life: 300,
       img: "images/ship1.png",
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,

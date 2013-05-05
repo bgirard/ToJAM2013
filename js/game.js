@@ -101,6 +101,7 @@
 
     div.damage = options.damage;
     div.life = options.life;
+    div.lifeMax = options.life;
 
     // Sprite properties
     div.spriteFrameX = options.spriteFrameX;
@@ -151,6 +152,13 @@
       }
     };
 
+    div.kill = function() {
+      document.kill(this);
+      if (this.lifeBar) {
+        this.lifeBar.parentNode.removeChild(this.lifeBar);
+      }
+    };
+
     div.style.marginLeft = -div.width/2 + 'px';
     div.style.marginTop = -div.height/2 + 'px';
 
@@ -181,6 +189,22 @@
       }
       if (transformStr != "") {
         setTransform(div, transformStr);
+      }
+
+      if (div.life != div.lifeMax) {
+        // Draw HP bar
+        if (div.lifeBar == null) {
+          div.lifeBar = document.createElement("div");
+          div.lifeBar.className = "lifeBar";
+          div.lifeBar.style.height = "8px";
+          div.lifeBar.style.marginLeft = -div.width/2 + 'px';
+          div.lifeBar.style.marginTop = -div.height/2 + 'px';
+          div.parentNode.appendChild(div.lifeBar);
+        }
+        div.lifeBar.style.left = (div.x - window.Game.Camera.x()) + 'px';
+        div.lifeBar.style.top = (div.y - window.Game.Camera.y()) + 'px';
+        div.lifeBar.style.width = ((div.life/div.lifeMax) * div.width) + "px";
+        div.lifeBar.style.backgroundColor = "hsl(" + ((div.life/div.lifeMax)*100) + ",100%,50%)";
       }
     };
 
@@ -245,7 +269,7 @@
           update: function(dt) {
             this.ttl = Math.max(0, this.ttl - dt);
             if(!this.ttl) {
-              document.kill(this);
+              this.kill();
               return;
             }
             logic.motion.call(this, dt);
