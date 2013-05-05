@@ -100,19 +100,19 @@
 
     div.centerX = function() {
       return this.x+this.width/2;
-    }
+    };
 
     div.centerY = function() {
       return this.y+this.height/2;
-    }
+    };
 
     div.faceAngle = function (x, y) {
       return Math.atan2(y - this.y, x - this.x)/degToRad + 90;
-    }
+    };
 
     div.distanceTo = function distanceTo(x, y) {
       return Math.sqrt((this.centerX() - x)*(this.centerX() - x) + (this.centerY() - y)*(this.centerY() - y));
-    }
+    };
 
     div.thrust = function thrust(div, dt, dirAngle, thrustDirSign) {
       // Thrust
@@ -134,11 +134,12 @@
         div.velX = dampVelX;
         div.velY = dampVelY;
       }
-    }
+    };
+
+    div.style.marginLeft = -div.width/2 + 'px';
+    div.style.marginTop = -div.height/2 + 'px';
 
     div.render = function render() {
-      div.style.marginLeft = -div.width/2 + 'px';
-      div.style.marginTop = -div.height/2 + 'px';
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
       div.style.top = (div.y - window.Game.Camera.y()) + 'px';
       var transformStr = "";
