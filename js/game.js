@@ -487,7 +487,7 @@
     ai: function(dt) {
       // Seek player
       var player = document.getElementById("player"); 
-      if (this.distanceTo(player.centerX(), player.centerY()) < 500) {
+      if (player && this.distanceTo(player.centerX(), player.centerY()) < 500) {
         this.seekX = player.centerX();
         this.seekY = player.centerY();
       }
@@ -518,7 +518,7 @@
           idle = false;
           this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), -1);
         }
-        if (this.distanceTo(player.centerX(), player.centerY()) < 700) {
+        if (player && this.distanceTo(player.centerX(), player.centerY()) < 700) {
           logic.weapon.call(this, dt);
         }
       }
@@ -565,6 +565,9 @@
     Camera: {
       // Fix to the player
       x: function() {
+        if (document.getPlayer() == null) {
+          return Game.Camera.cameraOldX;
+        }
         var offset = document.getLevel().offsetWidth;
         var cameraNewX = document.getPlayer().x - offset / 2;
         if (Game.Camera.cameraOldX != null && Math.abs(Game.Camera.cameraOldX - cameraNewX) > 50) {
@@ -574,6 +577,9 @@
         return cameraNewX;
       },
       y: function() {
+        if (document.getPlayer() == null) {
+          return Game.Camera.cameraOldY;
+        }
         var offset = document.getLevel().offsetHeight;
         var cameraNewY = document.getPlayer().y - offset / 2;
         if (Game.Camera.cameraOldY != null && Math.abs(Game.Camera.cameraOldY - cameraNewY) > 50) {
