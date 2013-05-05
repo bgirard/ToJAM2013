@@ -75,8 +75,9 @@
         preventTyping = true;
       }
 
-      line.innerHTML = preventTyping ? str : '';
+      line.innerHTML = preventTyping ? str : ' ';
       consoleTextArea.insertBefore(line, consoleTextArea.firstChild);
+
       if (str.length > 0 && !preventTyping) {
         var lineInterval = setInterval(function(){
           line.innerHTML = line.innerHTML + str[strIndex++];

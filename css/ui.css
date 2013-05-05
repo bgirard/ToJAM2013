@@ -377,7 +377,7 @@ html, body {
   background: transparent;
   color: #bbb;
   overflow: hidden;
-  font-family: courier;
+  font-family: courier, monospace;
   font-size: 8pt;
   border: 1px solid #bbb;
 }
@@ -441,6 +441,10 @@ hr {
 @keyframes blink {
   0%   { visibility: visible; }
   100% { visibility: hidden; }
+}
+
+.line {
+  width: 100%;
 }
 
 .line.alert {
