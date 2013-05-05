@@ -392,17 +392,18 @@
 
       if (div.life != div.lifeMax) {
         // Draw HP bar
+        var lifeBarWidth = Math.min(div.width, 256);
         if (div.lifeBar == null) {
           div.lifeBar = document.createElement("div");
           div.lifeBar.className = "lifeBar";
           div.lifeBar.style.height = "8px";
-          div.lifeBar.style.marginLeft = -div.width/2 + 'px';
+          div.lifeBar.style.marginLeft = -div.width/2 + (div.width-lifeBarWidth)/2 + 'px';
           div.lifeBar.style.marginTop = -div.height/2 + 'px';
           div.parentNode.appendChild(div.lifeBar);
         }
         div.lifeBar.style.left = (div.x - window.Game.Camera.x()) + 'px';
         div.lifeBar.style.top = (div.y - window.Game.Camera.y()) + 'px';
-        div.lifeBar.style.width = ((div.life/div.lifeMax) * div.width) + "px";
+        div.lifeBar.style.width = ((div.life/div.lifeMax) * lifeBarWidth) + "px";
         div.lifeBar.style.backgroundColor = "hsl(" + ((div.life/div.lifeMax)*100) + ",100%,50%)";
       }
 
