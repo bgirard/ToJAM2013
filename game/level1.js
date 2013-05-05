@@ -64,6 +64,7 @@ function level() {
       width: 80,
       height: 62,
       life: 300,
+      bulletType: "BulletStrong",
       img: "images/ships/enemy2.png",
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
@@ -135,6 +136,7 @@ function level() {
       width: 80,
       height: 62,
       life: 300,
+      bulletType: "BulletStrong",
       img: "images/ships/enemy2.png",
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
