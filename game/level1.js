@@ -25,10 +25,6 @@ function level() {
       id: 'player',
       x: 100,
       y: 100,
-      img: "images/ships/ship.png",
-      spriteFrameTime: 100, //ms
-      spriteFrameX: 0,
-      //spriteMaxFrameX: 4,
       update: Game.logic.player
     })
   , new Game.Entity({

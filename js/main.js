@@ -198,6 +198,14 @@
     var changeLevelOnNextFrame = null;
     var degToRad = 0.0174532925;
     function sign(x) { return x ? x < 0 ? -1 : 1 : 0; }
+
+    var playerEntity = document.getLevel().getElementsByClassName('Player')[0];
+    playerEntity.reverseSpriteToStart();
+    playerEntity.childSprites.rocket1.reverseSpriteToStart();
+    playerEntity.childSprites.rocket2.reverseSpriteToStart();
+
+    var rocketsActive = false;
+
     function main() {
       window.requestAnimFrame(main);
 
@@ -212,6 +220,7 @@
 
       var level = document.getElementsByClassName('Level')[0];
       var playerEntity = level.getElementsByClassName('Player')[0];
+
       if(playerEntity) {
 
         // Apply rotation
@@ -220,6 +229,17 @@
           rotationDirSign = -1;
         } else if (playerKeyStates.right) {
           rotationDirSign = 1;
+        }
+
+        if (playerKeyStates.up && !rocketsActive) {
+          playerEntity.childSprites.rocket1.continueSprite();
+          playerEntity.childSprites.rocket2.continueSprite();
+          rocketsActive = true;
+        }
+        else if (!playerKeyStates.up && rocketsActive) {
+          rocketsActive = false;
+          playerEntity.childSprites.rocket1.reverseSpriteToStart();
+          playerEntity.childSprites.rocket2.reverseSpriteToStart();
         }
 
         // d/ms                  += ms * scalar * d/ms^2

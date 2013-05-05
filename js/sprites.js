@@ -74,6 +74,7 @@
         var childLayout = layout.children[name];
         var childDefinition = Game.spriteDefinitions[childLayout.definition];
         var childElement = Sprite(childDefinition);
+        element.childSprites[name] = childElement;
         element.appendChild(childElement);
         childElement.style.position = 'absolute';
         childElement.style.left = childLayout.position[0] + 'px';
