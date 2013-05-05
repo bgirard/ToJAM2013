@@ -250,6 +250,8 @@
       var level = document.getElementsByClassName('Level')[0];
       var playerEntity = level.getElementsByClassName('Player')[0];
 
+      var entityKillList = [];
+
       if(playerEntity) {
         document.title = "Player: " + playerEntity.x.toFixed(1) + ", " + playerEntity.y.toFixed(1);
 
@@ -314,6 +316,16 @@
         var nextLevel = document.getLevel().nextId;
         changeLevelOnNextFrame = Game.levels[nextLevel]();
       });
+
+      window.collisionDetection("Pirate", "Bullet", function(pirate, bullet) {
+        entityKillList.push(bullet);
+        document.spawn(new Game.Entity({
+          type: 'laserHit',
+          x: bullet.x,
+          y: bullet.y,
+        }));
+      });
+
       window.noCollisionDetection(playerEntity, "Bounds", function() {
         var bounds = document.getElementsByClassName("Bounds")[0];
         // Outside the level
@@ -336,6 +348,13 @@
       });
 
       bossOs.update(playerEntity);
+
+      while (entityKillList.length > 0) {
+        var entity = entityKillList.pop();
+        if (entity.parentNode) {
+          document.kill(entity);
+        }
+      }
 
       Array.prototype.forEach.call(document.getLevel().querySelectorAll('.sprite'), function(element){
         element.updateSprite(dt);

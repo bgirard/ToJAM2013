@@ -35,15 +35,25 @@
   function Entity(options) {
     options = options || {};
 
+    var optionKeys = ['id', 'img', 'classes', 'width', 'height',
+                      'x', 'y', 'width', 'height', 'type', 'update',
+                      'ai', 'scaling', 'spriteFrameTime',
+                      'velX', 'velY', 'rotationVel', 'rotationAccel',
+                      'ttl'];
+
     var entityDefinition = {};
     if (options.type) {
       entityDefinition = Game.entityDefinitions[options.type];
     }
 
+    optionKeys.forEach(function(key){
+      options[key] = options[key] || entityDefinition[key];
+    });
+
     var id = options['id'] || 'Entity' + nextEntityId++;
     var img = options['img'];
-    var width = entityDefinition.width || options['width'] || 10;
-    var height = entityDefinition.height || options['height'] || 10;
+    var width = options.width || 10;
+    var height = options.height || 10;
     var extraClasses = options['classes'] || [];
 
     var div = document.createElement('div');
@@ -85,8 +95,8 @@
     div.maxRotationVel = .2;
     div.velDamp = 0.1;
     div.rotationDamp = 0.1;
-    div.scaling = options['scaling'];
-    div.update = options['update'] ? options['update'].bind(div) : undefined;
+    div.scaling = options.scaling;
+    div.update = options.update ? options.update.bind(div) : undefined;
     div.ai = options['ai'] ? options['ai'].bind(div) : undefined;
 
     // Sprite properties
@@ -252,7 +262,6 @@
         var bounds = document.getElementsByClassName("Bounds")[0];
         self.seekX = bounds.centerX();
         self.seekY = bounds.centerY();
-        console.log("Outside");
       });
 
       if (this.seekX != null && this.seekY != null) {
