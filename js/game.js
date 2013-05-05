@@ -35,18 +35,12 @@
   function Entity(options) {
     options = options || {};
 
-    var optionKeys = ['id', 'img', 'classes', 'width', 'height',
-                      'x', 'y', 'width', 'height', 'type', 'update',
-                      'ai', 'scaling', 'spriteFrameTime',
-                      'velX', 'velY', 'rotationVel', 'rotationAccel',
-                      'ttl'];
-
     var entityDefinition = {};
     if (options.type) {
       entityDefinition = Game.entityDefinitions[options.type];
     }
 
-    optionKeys.forEach(function(key){
+    Object.keys(entityDefinition).forEach(function(key){
       options[key] = options[key] || entityDefinition[key];
     });
 
@@ -104,6 +98,9 @@
     div.scaling = options.scaling;
     div.update = options.update ? options.update.bind(div) : undefined;
     div.ai = options['ai'] ? options['ai'].bind(div) : undefined;
+
+    div.damage = options.damage;
+    div.life = options.life;
 
     // Sprite properties
     div.spriteFrameX = options.spriteFrameX;
@@ -244,6 +241,7 @@
           width: 16,
           height: 16,
           ttl: 2000,
+          damage: 10,
           update: function(dt) {
             this.ttl = Math.max(0, this.ttl - dt);
             if(!this.ttl) {

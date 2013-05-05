@@ -324,6 +324,16 @@
           x: bullet.x,
           y: bullet.y,
         }));
+
+        pirate.life -= bullet.damage;
+        if(pirate.life <= 0) {
+          document.spawn(new Game.Entity({
+            type: 'explosion',
+            x: bullet.x,
+            y: bullet.y,
+          }));
+          entityKillList.push(pirate);
+        }
       });
 
       window.noCollisionDetection(playerEntity, "Bounds", function() {

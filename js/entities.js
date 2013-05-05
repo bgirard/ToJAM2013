@@ -25,6 +25,22 @@
         }
       }
     },
+    'explosion': {
+      classes: ['Explosion'],
+      spriteLayout: {
+        definition: 'explosion'
+      },
+      width: 128,
+      height: 128,
+      ttl: 500,
+      update: function(dt) {
+        this.ttl = Math.max(0, this.ttl - dt);
+        if(!this.ttl) {
+          document.kill(this);
+          return;
+        }
+      }
+    },
     'player': {
       classes: ['Player'],
       width: 70,
