@@ -431,6 +431,12 @@
 
       }
 
+      // Update level
+      var level = document.getLevel();
+      if (level && level.update) {
+        level.update(dt);
+      }
+
       // Update entities
       var entities = level.getElementsByClassName('Entity');
 

@@ -1,6 +1,66 @@
 (function() {
 
-var id = 'level5';
+function spawnWave(div, dt) {
+  div.currentWave++;
+  var killedWave = document.getElementsByClassName("Wave").length == 0;
+  if (killedWave) {
+    div.timeUntilNextWave -= dt;
+  }
+  if (killedWave && div.timeUntilNextWave < 0) {
+    div.timeUntilNextWave = 5000;
+    [
+      new Game.Entity({
+        classes: ['Pirate', 'Wave'],
+        x: 1750,
+        y: 700,
+        width: 80,
+        height: 62,
+        life: 100,
+        img: "images/ships/enemy1.png",
+        spriteFrameTime: 100, //ms
+        spriteFrameX: 0,
+        //spriteMaxFrameX: 4,
+        update: Game.logic.default,
+        ai: Game.logic.ai,
+      })
+    , new Game.Entity({
+        classes: ['Pirate', 'Wave'],
+        x: 2000,
+        y: 650,
+        width: 80,
+        height: 62,
+        life: 900,
+        scaling: 2,
+        bulletType: "BulletStrong",
+        img: "images/ships/enemy2.png",
+        spriteFrameTime: 100, //ms
+        spriteFrameX: 0,
+        //spriteMaxFrameX: 4,
+        update: Game.logic.default,
+        ai: Game.logic.ai,
+      })
+    , new Game.Entity({
+        classes: ['Pirate', 'Wave'],
+        x: 2250,
+        y: 700,
+        width: 80,
+        height: 62,
+        life: 100,
+        img: "images/ships/enemy1.png",
+        spriteFrameTime: 100, //ms
+        spriteFrameX: 0,
+        //spriteMaxFrameX: 4,
+        update: Game.logic.default,
+        ai: Game.logic.ai,
+      })
+    ].forEach(function(entity) {
+      div.appendChild(entity);
+    });
+  }
+}
+
+var id = 'level1';
+
 function level() {
 
   var div = document.createElement('div');
@@ -8,6 +68,14 @@ function level() {
   div.id = id;
   div.levelNo = 5;
   div.nextId = 'level1';
+  div.currentWave = 0;
+
+  div.timeInLevel = 0;
+  div.timeUntilNextWave = 5000;
+  div.update = function(dt) {
+    div.timeInLevel += dt;
+    spawnWave(div, dt);
+  };
 
   [
     new Game.Entity({
