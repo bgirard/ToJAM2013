@@ -49,6 +49,13 @@ html, body {
   background-image: url('../images/bg/layer3.png');
 }
 
+#bgShip {
+  position: absolute;
+  width: 840px;
+  height: 346px;
+  background-image: url('../images/environment/enemyMotherShip.png');
+}
+
 #player {
 }
 
