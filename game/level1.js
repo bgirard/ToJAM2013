@@ -10,13 +10,10 @@ function level() {
 
   [
     new Game.Entity({
+      type: 'wormhole',
       classes: ['Wormhole'],
       x: 200,
       y: -200,
-      width: 128,
-      height: 128,
-      rotationVel: 0.3,
-      img: "images/wormhole.png",
       update: Game.logic.default
     })
   , new Game.Entity({
@@ -25,10 +22,6 @@ function level() {
       id: 'player',
       x: 100,
       y: 100,
-      img: "images/ships/ship.png",
-      spriteFrameTime: 100, //ms
-      spriteFrameX: 0,
-      //spriteMaxFrameX: 4,
       update: Game.logic.player
     })
   , new Game.Entity({

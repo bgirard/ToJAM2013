@@ -1,19 +1,29 @@
 (function(){
   Game.entityDefinitions = {
+    'wormhole': {
+      width: 280,
+      height: 280,
+      classes: ['Wormhole'],
+      spriteLayout: {
+        definition: 'wormhole'
+      }      
+    },
     'player': {
       classes: ['Player'],
       width: 70,
       height: 60,
       update: Game.logic.player,
       spriteLayout: {
-        root: 'ship',
-        rocket1: {
-          definition: 'fireBigBlue',
-          position: [20, 60]
-        },
-        rocket2: {
-          definition: 'fireBigBlue',
-          position: [40, 60]
+        definition: 'ship',
+        children: {
+          rocket1: {
+            definition: 'fireBigBlue',
+            position: [0, 50]
+          },
+          rocket2: {
+            definition: 'fireBigBlue',
+            position: [30, 50]
+          }
         }
       }
     }

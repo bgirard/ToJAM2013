@@ -59,7 +59,7 @@
       leftThrusterFront.style.height = Math.min(1, Math.max(0, -playerEntity.rotationVel / playerEntity.maxRotationVel)) * 100 + '%';
       rightThrusterFront.style.height = Math.min(1, Math.max(0, playerEntity.rotationVel / playerEntity.maxRotationVel)) * 100 + '%';
 
-      var s = Math.min(1, Math.max(0, Math.sqrt(x + y) / playerEntity.velMax));
+      var s = Math.round(Math.min(1, Math.max(0, Math.sqrt(x + y) / playerEntity.velMax)) * 1000)/1000;
       speedThrusterFront.style.height = s * 100 + '%';
       speedThrusterFront.style.top = -s * 50 + 50 + '%';    // lol, thanks css
     };

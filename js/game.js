@@ -46,13 +46,16 @@
     var height = entityDefinition.height || options['height'] || 10;
     var extraClasses = options['classes'] || [];
 
-    var div;
+    var div = document.createElement('div');
 
-    if (entityDefinition.spriteLayout && entityDefinition.spriteLayout.root) {
-      console.log(entityDefinition.spriteLayout.root, Game.Sprite);
+    if (entityDefinition.spriteLayout && entityDefinition.spriteLayout) {
+      Game.Sprite.createFromLayout(entityDefinition.spriteLayout, div);
     }
-
-    div = div || document.createElement('div');
+    else {
+      if(img) {
+        div.style.backgroundImage = "url(" + img + ")";
+      }
+    }
 
     div.options = options;
     div.classList.add('Entity');
@@ -62,13 +65,9 @@
     div.id = id;
     div.width = width;
     div.height = height;
-    if(img) {
-      div.style.backgroundImage = "url(" + img + ")";
-    } else {
-      //div.style.backgroundColor = "red";
-    }
+
     div.style.width = width + 'px';
-    div.style.height = height + 'px';
+    div.style.height = height.toFixed(1) + 'px';
 
     div.x = options['x'] || 0;
     div.y = options['y'] || 0;
@@ -101,19 +100,19 @@
 
     div.centerX = function() {
       return this.x+this.width/2;
-    }
+    };
 
     div.centerY = function() {
       return this.y+this.height/2;
-    }
+    };
 
     div.faceAngle = function (x, y) {
       return Math.atan2(y - this.y, x - this.x)/degToRad + 90;
-    }
+    };
 
     div.distanceTo = function distanceTo(x, y) {
       return Math.sqrt((this.centerX() - x)*(this.centerX() - x) + (this.centerY() - y)*(this.centerY() - y));
-    }
+    };
 
     div.thrust = function thrust(div, dt, dirAngle, thrustDirSign) {
       // Thrust
@@ -135,15 +134,16 @@
         div.velX = dampVelX;
         div.velY = dampVelY;
       }
-    }
+    };
+
+    div.style.marginLeft = -div.width/2 + 'px';
+    div.style.marginTop = -div.height/2 + 'px';
 
     div.render = function render() {
-      div.style.marginLeft = -div.width/2 + 'px';
-      div.style.marginTop = -div.height/2 + 'px';
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
       div.style.top = (div.y - window.Game.Camera.y()) + 'px';
       var transformStr = "";
-      transformStr += " rotate("+div.rotation+"deg)";
+      transformStr += " rotate("+div.rotation.toFixed(1)+"deg)";
 
       if (div.spriteFrameX != null || div.spriteFrameY != null) {
         var frameX = div.spriteFrameX || 0;
@@ -279,11 +279,21 @@
       // Fix to the player
       x: function() {
         var offset = document.getLevel().offsetWidth;
-        return document.getPlayer().x - offset / 2;
+        var cameraNewX = document.getPlayer().x - offset / 2;
+        if (Game.Camera.cameraOldX != null && Math.abs(Game.Camera.cameraOldX - cameraNewX) > 50) {
+          cameraNewX = Game.Camera.cameraOldX - 10 * sign(Game.Camera.cameraOldX - cameraNewX);
+        }
+        Game.Camera.cameraOldX = cameraNewX;
+        return cameraNewX;
       },
       y: function() {
         var offset = document.getLevel().offsetHeight;
-        return document.getPlayer().y - offset / 2;
+        var cameraNewY = document.getPlayer().y - offset / 2;
+        if (Game.Camera.cameraOldY != null && Math.abs(Game.Camera.cameraOldY - cameraNewY) > 50) {
+          cameraNewY = Game.Camera.cameraOldY - 10 * sign(Game.Camera.cameraOldY - cameraNewY);
+        }
+        Game.Camera.cameraOldY = cameraNewY;
+        return cameraNewY;
       },
     },
     levels: {},
