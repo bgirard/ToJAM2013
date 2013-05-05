@@ -207,10 +207,6 @@
     entity.parentNode.removeChild(entity);
   };
 
-  if (window.location.search.indexOf('nosound') === -1) {
-    window.preloadSound('audio/07 Seven.mp3');
-  }
-
   window.onload = function (e) {
     window.bgOffsetX = 0;
     window.bgOffsetY = 0;
@@ -225,9 +221,7 @@
 
     document.setLevel(Game.levels['level1']());
 
-    if (window.location.search.indexOf('nosound') === -1) {
-      window.playSound('audio/07 Seven.mp3');
-    }
+    window.playSound('audio/07 Seven.mp3');
 
     var frame = 0;
     var cachedTime = Date.now();
@@ -323,6 +317,7 @@
       window.collisionDetection("Player", "Wormhole", function() {
         var nextLevel = document.getLevel().nextId;
         changeLevelOnNextFrame = Game.levels[nextLevel]();
+        window.playSound('audio/wormhole.wav');
       });
 
       window.collisionDetection("Pirate", "Bullet", function(pirate, bullet) {
@@ -332,6 +327,7 @@
           x: bullet.x,
           y: bullet.y,
         }));
+        window.playSound('audio/laserHit.wav');
 
         pirate.life -= bullet.damage;
         if(pirate.life <= 0) {
@@ -340,6 +336,7 @@
             x: bullet.x,
             y: bullet.y,
           }));
+          window.playSound('audio/explosion.wav');
           entityKillList.push(pirate);
         }
       });

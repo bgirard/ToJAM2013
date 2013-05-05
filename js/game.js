@@ -110,7 +110,7 @@
     div.frameTimeRemaining = div.spriteFrameTime;
 
     // Weapon properties
-    div.weaponReloadTime = 0;
+    div.weaponReloadTime = 150;
     div.weaponCooldown = 0;
     div.ttl = options['ttl'] || null;
 
@@ -275,6 +275,7 @@
             logic.motion.call(this, dt);
           }
         }));
+        window.playSound('audio/laser.wav');
       }
     },
     ai: function(dt) {
