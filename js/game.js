@@ -278,6 +278,7 @@
           y: (Math.cos(rot) * -this.height/2) + this.y,
           velX: 2 * this.velMax * vDirX,
           velY: 2 * this.velMax * vDirY,
+          rotation: this.rotation,
           img: "images/projectiles/laser" + laserColor + ".png",
           width: 4,
           height: 62,
@@ -308,6 +309,7 @@
           y: (Math.cos(rot) * -this.height/2) + this.y,
           velX: 2 * this.velMax * vDirX,
           velY: 2 * this.velMax * vDirY,
+          rotation: this.rotation,
           faceVelocityDirection: true,
           img: "images/projectiles/missile.png",
           width: 9,
@@ -470,7 +472,7 @@
     wormhole: function(dt) {
       var killedAllPirate = document.getElementsByClassName("Pirate").length == 0;
       if (killedAllPirate) {
-        this.minimapColor = "rgb(" + (128 + 128*Math.sin(Date.now() / 180)).toFixed(0) + ",0,0)"  
+        this.minimapColor = "rgb(" + (128 + 128*Math.sin(Date.now() / 180)).toFixed(0) + ",0,0)"
       }
       window.collisionDetection("Player", "Wormhole", function() {
         if (killedAllPirate) {
@@ -493,7 +495,7 @@
     },
     ai: function(dt) {
       // Seek player
-      var player = document.getElementById("player"); 
+      var player = document.getElementById("player");
       if (player && this.distanceTo(player.centerX(), player.centerY()) < 500) {
         this.seekX = player.centerX();
         this.seekY = player.centerY();
@@ -538,8 +540,8 @@
         var otherPirate = null;
         window.collisionDetection("Pirate", "Pirate", function(p1, p2) {
           if (self == p1 && self != p2) {
-            otherPirate = p2; 
-          } 
+            otherPirate = p2;
+          }
         });
         if (otherPirate != null) {
           idle = false;
