@@ -169,13 +169,14 @@
       this.weaponCooldown = Math.max(0, this.weaponCooldown - dt);
       if(Game.playerKeyStates.fire && !this.weaponCooldown) {
         this.weaponCooldown = this.weaponReloadTime;
+        var rot = degToRad * this.rotation;
         var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
-        var vDirX = Math.sin(degToRad * this.rotation);
-        var vDirY = -Math.cos(degToRad * this.rotation);
+        var vDirX = Math.sin(rot);
+        var vDirY = -Math.cos(rot);
         document.spawn(new Game.Entity({
           classes: ['Bullet'],
-          x: this.x + this.width/2 - 8,
-          y: this.y - 16,
+          x: (-Math.sin(rot) * this.height/2) + this.x,
+          y: (Math.cos(rot) * this.height/2) + this.y,
           velX: 2 * this.velMax * vDirX,
           velY: 2 * this.velMax * vDirY,
           img: "images/bullet1.png",
