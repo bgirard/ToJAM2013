@@ -117,7 +117,6 @@
       var velMag = Math.sqrt(newVelX*newVelX + newVelY*newVelY);
 
       if (velMag != 0) {
-        //console.log("1: " + (newVelX/velMag));
         var dampVelX = window.clamp(velMag * Math.pow(div.velDamp, dt/1000), -div.velMax, div.velMax) * (newVelX/velMag);
         var dampVelY = window.clamp(velMag * Math.pow(div.velDamp, dt/1000), -div.velMax, div.velMax) * (newVelY/velMag);
 
@@ -215,11 +214,15 @@
         if (changeToAngle < -180) {
           changeToAngle = changeToAngle + 360;
         }
-        document.title = "Aquire: " + changeToAngle;
         if (Math.abs(changeToAngle) > 0.1 * dt) {
           changeToAngle = sign(changeToAngle) * 0.1 * dt;
         }
         this.rotation -= changeToAngle % 360;
+
+        document.title = "Aquire: " + changeToAngle;
+        if (this.distanceTo(player) > 100) {
+          this.thrust(this, dt/10, this.faceAngle(player), -1);
+        }
       } else {
         document.title = "not Aquire";
       }
@@ -228,7 +231,6 @@
         this.shift = Math.random() * 5;
       }
       this.rotation = 90 * Math.sin(this.shift + Date.now()/100);
-      this.thrust(this, dt, this.rotation, 1);
     },
     default: function(dt) {
       logic.motion.call(this, dt);
