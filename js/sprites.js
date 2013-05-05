@@ -40,9 +40,19 @@
           spriteElement.style.visibility = 'visible';
           rewound = false;
         }
-        animationIndex = (animationIndex + 1) % definition.numFrames;
+        
+        animationIndex++;
+
         if (definition.lock && animationIndex > definition.lock[0]) {
           indexFunction = indexFunctions.lock;
+        }
+        else if (animationIndex === definition.numFrames) {
+          if (definition.loop !== false) {
+            animationIndex = 0;
+          }
+          else {
+            animationIndex--;
+          }
         }
       },
       reverseToStart: function(dt) {
@@ -137,13 +147,15 @@
       image: 'images/explosions/explosion.png',
       numFrames: 13,
       width: 1664,
-      height: 128
+      height: 128,
+      loop: false
     },
     'laserHit': {
       image: 'images/explosions/laserHit.png',
       numFrames: 5,
       width: 110,
-      height: 27
+      height: 27,
+      loop: false
     },
     'ship': {
       image: 'images/ships/ship.png',
