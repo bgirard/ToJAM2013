@@ -90,7 +90,7 @@
     }
     div.drag = 0.000;
     div.accel = 0.01;
-    div.rotation = 0;
+    div.rotation = options['rotation'] || 0;
     div.rotationVel = options['rotationVel'] || 0;
     div.rotationAccel = options['rotationAccel'] || 0.002;
     div.rotationDrag = 0.15;
@@ -107,6 +107,7 @@
     div.damage = options.damage;
     div.life = options.life;
     div.lifeMax = options.life;
+    div.faceVelocityDirection = options['faceVelocityDirection'] || false;
     div.showOnMinimap = options['showOnMinimap'] || false;
     div.minimapColor = options['minimapColor'] || "red";
     div.scouted = false;
@@ -203,7 +204,36 @@
           img: "images/bullet1.png",
           width: 16,
           height: 16,
-          ttl: 2000,
+          ttl: 1500,
+          damage: 10,
+          owner: this,
+          update: function(dt) {
+            this.ttl = Math.max(0, this.ttl - dt);
+            if(!this.ttl) {
+              this.kill();
+              return;
+            }
+            logic.motion.call(this, dt);
+          }
+        });
+      },
+      "Missle": function() {
+        Sound.play('missle');
+        var rot = degToRad * this.rotation;
+        var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
+        var vDirX = Math.sin(rot);
+        var vDirY = -Math.cos(rot);
+        return new Game.Entity({
+          classes: ['Bullet'],
+          x: (-Math.sin(rot) * -this.height/2) + this.x,
+          y: (Math.cos(rot) * -this.height/2) + this.y,
+          velX: 2 * this.velMax * vDirX,
+          velY: 2 * this.velMax * vDirY,
+          faceVelocityDirection: true,
+          img: "images/projectiles/missile.png",
+          width: 9,
+          height: 16,
+          ttl: 1500,
           damage: 10,
           owner: this,
           update: function(dt) {
@@ -321,6 +351,10 @@
           this.spriteFrameY = (this.spriteFrameY + 1) % this.options.spriteMaxFrameY;
         }
         this.frameTimeRemaining = this.spriteFrameTime;
+      }
+
+      if (this.faceVelocityDirection) {
+        this.rotation = (180 + this.faceAngle(this.lastX, this.lastY)) % 360;
       }
     },
     wormhole: function(dt) {
