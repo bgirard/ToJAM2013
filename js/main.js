@@ -317,6 +317,7 @@
       window.collisionDetection("Player", "Wormhole", function() {
         var nextLevel = document.getLevel().nextId;
         changeLevelOnNextFrame = Game.levels[nextLevel]();
+        window.playSound('audio/wormhole.wav');
       });
 
       window.collisionDetection("Pirate", "Bullet", function(pirate, bullet) {

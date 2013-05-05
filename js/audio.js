@@ -27,6 +27,8 @@ if (window.location.search.indexOf('nosound') === -1) {
   if (window.location.search.indexOf('nomusic') === -1) {
     window.preloadSound('audio/07 Seven.mp3');
   }
+  window.preloadSound('audio/wormhole.wav');
+  window.preloadSound('audio/laser.wav');
   window.preloadSound('audio/laserHit.wav');
   window.preloadSound('audio/explosion.wav');
   window.preloadSound("audio/death.ogg");
