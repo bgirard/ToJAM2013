@@ -200,7 +200,6 @@
       currentLevel.parentNode.removeChild(currentLevel);
     document.getElementById('gameboard').appendChild(level);
     document.getElementById('minimap').innerHTML = "";
-    document.title = "current level: " + level.id;
   };
 
   document.getLevel = function getLevel() {
