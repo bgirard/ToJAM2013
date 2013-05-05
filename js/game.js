@@ -415,6 +415,8 @@
         var bounds = document.getElementsByClassName("Bounds")[0];
         div.minimap.style.left = (div.topLeftX() - bounds.topLeftX()) * 100 / bounds.width + "%";
         div.minimap.style.top = (div.topLeftY() - bounds.topLeftY()) * 100 / bounds.height + "%";
+        div.minimap.style.width = Math.floor(div.width/bounds.width*100) + "%";
+        div.minimap.style.height = Math.floor(div.height/bounds.height*100) + "%";
         div.minimap.style.backgroundColor = div.minimapColor;
       }
     };
