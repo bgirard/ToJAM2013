@@ -342,6 +342,7 @@
     document.getPlayer().childSprites.rocket2.reverseSpriteToStart();
 
     var rocketsActive = false;
+    var rocketsLoop = Sound.createLoop('rockets');
 
     function main() {
       window.requestAnimFrame(main);
@@ -353,6 +354,7 @@
         document.getPlayer().childSprites.rocket2.reverseSpriteToStart();
         rocketsActive = false;
       }
+
       var t = Date.now();
       var dt = t - cachedTime;
       var i;
@@ -378,12 +380,15 @@
         if (playerKeyStates.up && !rocketsActive) {
           playerEntity.childSprites.rocket1.continueSprite();
           playerEntity.childSprites.rocket2.continueSprite();
+          Sound.play('thrust');
           rocketsActive = true;
+          rocketsLoop.play();
         }
         else if (!playerKeyStates.up && rocketsActive) {
           rocketsActive = false;
           playerEntity.childSprites.rocket1.reverseSpriteToStart();
           playerEntity.childSprites.rocket2.reverseSpriteToStart();
+          rocketsLoop.pause();
         }
 
         // d/ms                  += ms * scalar * d/ms^2
