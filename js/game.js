@@ -290,7 +290,6 @@
         var cameraNewY = document.getPlayer().y - offset / 2;
         if (Game.Camera.cameraOldY != null && Math.abs(Game.Camera.cameraOldY - cameraNewY) > 50) {
           cameraNewY = Game.Camera.cameraOldY - 10 * sign(Game.Camera.cameraOldY - cameraNewY);
-          document.title = cameraNewY;
         }
         Game.Camera.cameraOldY = cameraNewY;
         return cameraNewY;

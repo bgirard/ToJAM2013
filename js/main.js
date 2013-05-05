@@ -222,6 +222,7 @@
       var playerEntity = level.getElementsByClassName('Player')[0];
 
       if(playerEntity) {
+        document.title = "Player: " + playerEntity.x.toFixed(1) + ", " + playerEntity.y.toFixed(1);
 
         // Apply rotation
         var rotationDirSign = 0;
@@ -284,7 +285,7 @@
         var nextLevel = document.getLevel().nextId;
         changeLevelOnNextFrame = Game.levels[nextLevel]();
       });
-      window.noCollisionDetection(player, "Bounds", function() {
+      window.noCollisionDetection(playerEntity, "Bounds", function() {
         var bounds = document.getElementsByClassName("Bounds")[0];
         // Outside the level
         if (playerEntity.x < bounds.x) {
