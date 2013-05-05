@@ -259,6 +259,20 @@
       }));
       //buoyOrEnergy = !buoyOrEnergy;
     }
+
+    // Pirate should face player
+    var pirates = level.getElementsByClassName('Pirate');
+    for (var i = 0; i < pirates.length; i++) {
+      var pirate = pirates[i];
+      if (pirate.img.indexOf("asteroid") != -1) {
+        // Use their initial rotation
+        continue;
+      }
+      var playerEntity = document.getPlayer();
+      if (playerEntity) { 
+        pirate.rotation = pirate.faceAngle(playerEntity.centerX(), playerEntity.centerY());
+      }
+    }
   };
 
   document.getLevel = function getLevel() {
@@ -428,9 +442,11 @@
       }
 
       // Collisions
-      window.inDistance(400, playerEntity, "Entity", function(player, entity) {
-        entity.scouted = true;
-      });
+      if (playerEntity) {
+        window.inDistance(300000, playerEntity, "Entity", function(player, entity) {
+          entity.scouted = true;
+        });
+      }
 
       window.collisionDetection("Damagable", "Bullet", function(target, bullet) {
         // Don't let the player hit himself
@@ -457,28 +473,31 @@
         }
       });
 
-      window.noCollisionDetection(playerEntity, "Bounds", function() {
-        var bounds = document.getElementsByClassName("Bounds")[0];
-        // Outside the level
-        if (playerEntity.x < bounds.x) {
-          playerEntity.x += bounds.width;
-          window.bgOffsetX += bounds.width;
-        }
-        if (playerEntity.y < bounds.y) {
-          playerEntity.y += bounds.height;
-          window.bgOffsetY += bounds.height;
-        }
-        if (playerEntity.x > bounds.x + bounds.width/2) {
-          playerEntity.x -= bounds.width;
-          window.bgOffsetX -= bounds.width;
-        }
-        if (playerEntity.y > bounds.y + bounds.height/2) {
-          playerEntity.y -= bounds.height;
-          window.bgOffsetY -= bounds.height;
-        }
-      });
+      if (playerEntity) {
+        window.noCollisionDetection(playerEntity, "Bounds", function() {
+          var bounds = document.getElementsByClassName("Bounds")[0];
+          // Outside the level
+          if (playerEntity.x < bounds.x) {
+            playerEntity.x += bounds.width;
+            window.bgOffsetX += bounds.width;
+          }
+          if (playerEntity.y < bounds.y) {
+            playerEntity.y += bounds.height;
+            window.bgOffsetY += bounds.height;
+          }
+          if (playerEntity.x > bounds.x + bounds.width/2) {
+            playerEntity.x -= bounds.width;
+            window.bgOffsetX -= bounds.width;
+          }
+          if (playerEntity.y > bounds.y + bounds.height/2) {
+            playerEntity.y -= bounds.height;
+            window.bgOffsetY -= bounds.height;
+          }
+        });
 
-      bossOs.update(playerEntity);
+        bossOs.update(playerEntity);
+      }
+
 
       while (entityKillList.length > 0) {
         var entity = entityKillList.pop();

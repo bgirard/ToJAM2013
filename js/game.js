@@ -62,6 +62,7 @@
     }
 
     div.options = options;
+    div.img = img;
     div.classList.add('Entity');
     extraClasses.forEach(function(className) {
       div.classList.add(className);
@@ -130,8 +131,9 @@
     div.hitType = options['hitType'] || "laserHit";
     div.weaponReloadTime = {
       "Missile": 150,
-      "Laser": 300,
-      "Bullet": 150,
+      "Laser": 500,
+      "Bullet": 400,
+      "BulletStrong": 200,
     };
     div.weaponCooldown = {};
     div.ttl = options['ttl'] || null;
@@ -230,6 +232,34 @@
           }
         });
       },
+      "BulletStrong": function() {
+        Sound.play('laser');
+        var rot = degToRad * this.rotation;
+        var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
+        var vDirX = Math.sin(rot);
+        var vDirY = -Math.cos(rot);
+        return new Game.Entity({
+          classes: ['Bullet'],
+          x: (-Math.sin(rot) * -this.height/2) + this.x,
+          y: (Math.cos(rot) * -this.height/2) + this.y,
+          velX: 2 * this.velMax * vDirX,
+          velY: 2 * this.velMax * vDirY,
+          img: "images/bullet2.png",
+          width: 16,
+          height: 16,
+          ttl: 1500,
+          damage: 20,
+          owner: this,
+          update: function(dt) {
+            this.ttl = Math.max(0, this.ttl - dt);
+            if(!this.ttl) {
+              this.kill();
+              return;
+            }
+            logic.motion.call(this, dt);
+          }
+        });
+      },
       "Laser": function() {
         var LaserColors = ["Blue", "Green", "Red", "Purple", "Yellow"];
         Sound.play('laser');
@@ -245,10 +275,10 @@
           velX: 2 * this.velMax * vDirX,
           velY: 2 * this.velMax * vDirY,
           img: "images/projectiles/laser" + laserColor + ".png",
-          width: 3,
-          height: 31,
+          width: 4,
+          height: 62,
           ttl: 1500,
-          damage: 10,
+          damage: 30,
           owner: this,
           faceVelocityDirection: true,
           update: function(dt) {
@@ -267,7 +297,7 @@
         var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
         var vDirX = Math.sin(rot);
         var vDirY = -Math.cos(rot);
-        var seekRange = 600;
+        var seekRange = 900;
         return new Game.Entity({
           classes: ['Bullet'],
           x: (-Math.sin(rot) * -this.height/2) + this.x,
@@ -277,7 +307,7 @@
           faceVelocityDirection: true,
           img: "images/projectiles/missile.png",
           width: 9,
-          height: 16,
+          height: 24,
           ttl: 1500,
           damage: 10,
           owner: this,
@@ -457,7 +487,7 @@
     ai: function(dt) {
       // Seek player
       var player = document.getElementById("player"); 
-      if (this.distanceTo(player.centerX(), player.centerY()) < 500) {
+      if (player && this.distanceTo(player.centerX(), player.centerY()) < 500) {
         this.seekX = player.centerX();
         this.seekY = player.centerY();
       }
@@ -488,7 +518,9 @@
           idle = false;
           this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), -1);
         }
-        logic.weapon.call(this, dt);
+        if (player && this.distanceTo(player.centerX(), player.centerY()) < 700) {
+          logic.weapon.call(this, dt);
+        }
       }
 
       if (idle) {
@@ -533,6 +565,9 @@
     Camera: {
       // Fix to the player
       x: function() {
+        if (document.getPlayer() == null) {
+          return Game.Camera.cameraOldX;
+        }
         var offset = document.getLevel().offsetWidth;
         var cameraNewX = document.getPlayer().x - offset / 2;
         if (Game.Camera.cameraOldX != null && Math.abs(Game.Camera.cameraOldX - cameraNewX) > 50) {
@@ -542,6 +577,9 @@
         return cameraNewX;
       },
       y: function() {
+        if (document.getPlayer() == null) {
+          return Game.Camera.cameraOldY;
+        }
         var offset = document.getLevel().offsetHeight;
         var cameraNewY = document.getPlayer().y - offset / 2;
         if (Game.Camera.cameraOldY != null && Math.abs(Game.Camera.cameraOldY - cameraNewY) > 50) {
