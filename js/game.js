@@ -120,6 +120,7 @@
     div.frameTimeRemaining = div.spriteFrameTime;
 
     // Weapon properties
+    div.bulletType = options['bulletType'] || "Bullet";
     div.weaponReloadTime = 150;
     div.weaponCooldown = 0;
     div.ttl = options['ttl'] || null;
@@ -325,11 +326,11 @@
         }
       });
     },
-    weapon_bullet: function(dt) {
+    weapon: function(dt) {
       this.weaponCooldown = Math.max(0, this.weaponCooldown - dt);
-      if(Game.playerKeyStates.fire && !this.weaponCooldown) {
+      if(!this.weaponCooldown) {
         this.weaponCooldown = this.weaponReloadTime;
-        this.fire("Bullet");
+        this.fire(this.bulletType);
       }
     },
     idle: function(dt) {
@@ -369,6 +370,7 @@
           idle = false;
           this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), -1);
         }
+        logic.weapon.call(this, dt);
       }
 
       if (idle) {
@@ -394,7 +396,10 @@
     },
     player: function(dt) {
       logic.motion.call(this, dt);
-      logic.weapon_bullet.call(this, dt);
+      if(Game.playerKeyStates.fire) {
+        // This will check cooldown
+        logic.weapon.call(this, dt);
+      }
     }
   };
 
