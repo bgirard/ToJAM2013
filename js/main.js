@@ -207,6 +207,8 @@
     entity.parentNode.removeChild(entity);
   };
 
+  window.preloadSound('audio/07 Seven.mp3');
+
   window.onload = function (e) {
     window.bgOffsetX = 0;
     window.bgOffsetY = 0;
@@ -220,6 +222,8 @@
     document.addEventListener('keyup', handleKeyEvent.bind(undefined, false, bossOs.playerKeyStateChange));
 
     document.setLevel(Game.levels['level1']());
+
+    window.playSound('audio/07 Seven.mp3');
 
     var frame = 0;
     var cachedTime = Date.now();
