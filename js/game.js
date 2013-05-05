@@ -236,7 +236,6 @@
           document.getElementById("minimap").appendChild(div.minimap);
         }
         var bounds = document.getElementsByClassName("Bounds")[0];
-        document.title = (div.topLeftX());
         div.minimap.style.left = (div.topLeftX() - bounds.topLeftX()) * 100 / bounds.width + "%";
         div.minimap.style.top = (div.topLeftY() - bounds.topLeftY()) * 100 / bounds.height + "%";
       }
