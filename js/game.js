@@ -130,8 +130,9 @@
     div.hitType = options['hitType'] || "laserHit";
     div.weaponReloadTime = {
       "Missile": 150,
-      "Laser": 300,
+      "Laser": 500,
       "Bullet": 150,
+      "BulletStrong": 200,
     };
     div.weaponCooldown = {};
     div.ttl = options['ttl'] || null;
@@ -230,6 +231,34 @@
           }
         });
       },
+      "BulletStrong": function() {
+        Sound.play('laser');
+        var rot = degToRad * this.rotation;
+        var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
+        var vDirX = Math.sin(rot);
+        var vDirY = -Math.cos(rot);
+        return new Game.Entity({
+          classes: ['Bullet'],
+          x: (-Math.sin(rot) * -this.height/2) + this.x,
+          y: (Math.cos(rot) * -this.height/2) + this.y,
+          velX: 2 * this.velMax * vDirX,
+          velY: 2 * this.velMax * vDirY,
+          img: "images/bullet2.png",
+          width: 16,
+          height: 16,
+          ttl: 1500,
+          damage: 20,
+          owner: this,
+          update: function(dt) {
+            this.ttl = Math.max(0, this.ttl - dt);
+            if(!this.ttl) {
+              this.kill();
+              return;
+            }
+            logic.motion.call(this, dt);
+          }
+        });
+      },
       "Laser": function() {
         var LaserColors = ["Blue", "Green", "Red", "Purple", "Yellow"];
         Sound.play('laser');
@@ -248,7 +277,7 @@
           width: 3,
           height: 31,
           ttl: 1500,
-          damage: 10,
+          damage: 30,
           owner: this,
           faceVelocityDirection: true,
           update: function(dt) {
@@ -267,7 +296,7 @@
         var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
         var vDirX = Math.sin(rot);
         var vDirY = -Math.cos(rot);
-        var seekRange = 600;
+        var seekRange = 900;
         return new Game.Entity({
           classes: ['Bullet'],
           x: (-Math.sin(rot) * -this.height/2) + this.x,

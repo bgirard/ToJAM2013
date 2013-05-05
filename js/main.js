@@ -260,6 +260,14 @@
       }));
       //buoyOrEnergy = !buoyOrEnergy;
     }
+
+    // Pirate should face player
+    var pirates = level.getElementsByClassName('Pirate');
+    for (var i = 0; i < pirates.length; i++) {
+      var pirate = pirates[i];
+      var playerEntity = document.getPlayer();
+      pirate.rotation = pirate.faceAngle(playerEntity.centerX(), playerEntity.centerY());
+    }
   };
 
   document.getLevel = function getLevel() {
@@ -429,7 +437,7 @@
       }
 
       // Collisions
-      window.inDistance(400, playerEntity, "Entity", function(player, entity) {
+      window.inDistance(300000, playerEntity, "Entity", function(player, entity) {
         entity.scouted = true;
       });
 
