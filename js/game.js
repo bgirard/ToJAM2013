@@ -176,7 +176,7 @@
         this.lifeBar.parentNode.removeChild(this.lifeBar);
       }
       if (this.minimap) {
-        this.minima.parentNode.removeChild(this.minimap);
+        this.minimap.parentNode.removeChild(this.minimap);
       }
     };
 
