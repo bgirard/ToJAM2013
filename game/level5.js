@@ -1,10 +1,17 @@
 (function() {
 
+function drop_special() {
+
+}
+
 function spawnWave(div, dt) {
   div.currentWave++;
   var killedWave = document.getElementsByClassName("Wave").length == 0;
   if (killedWave) {
     div.timeUntilNextWave -= dt;
+  }
+  if (div.currentWave == 5) {
+    drop_special();
   }
   if (killedWave && div.timeUntilNextWave < 0) {
     div.timeUntilNextWave = 5000;
