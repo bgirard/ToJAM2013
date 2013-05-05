@@ -107,6 +107,17 @@
     }
   };
 
+  window.inDistance = function(distance, entity1, classTwo, callback) {
+    var level = document.getLevel();
+    var entities2 = level.getElementsByClassName(classTwo);
+    for(var j = 0; j < entities2.length; ++j) {
+      var entity2 = entities2[j];
+      if (entity1.distanceTo(entity2.centerX(), entity2.centerY()) < distance) {
+        callback(entity1, entity2);
+      }
+    }
+  }
+
   /**
    * Run collision detection between two CSS classes such as 'entity', 'mines',
    * invoking the callback with each collision
@@ -188,7 +199,7 @@
     if(currentLevel)
       currentLevel.parentNode.removeChild(currentLevel);
     document.getElementById('gameboard').appendChild(level);
-    document.title = "current level: " + level.id;
+    document.getElementById('minimap').innerHTML = "";
   };
 
   document.getLevel = function getLevel() {
@@ -207,7 +218,41 @@
     entity.parentNode.removeChild(entity);
   };
 
+
   window.onload = function (e) {
+    var loadingBar = document.querySelector('hr');
+    var loadingScreen = document.querySelector('.loading-screen');
+
+    Sound.loadAudioNodes(function (progress) {
+        loadingBar.style.width = progress * 25 + '%';
+      },
+      function(){
+        var images = Array.prototype.slice.call(document.querySelectorAll('img'));
+
+        function check () {
+          var loaded = 0;
+
+          images.forEach(function(image){
+            if (image.complete > 2) {
+              loaded++;
+            }
+          });
+
+          if (loaded < images.length) {
+            loadingBar.style.width = 25 + (loaded / images.length) * 25 + '%';
+            setTimeout(check, 20);
+          }
+          else {
+            loadingScreen.classList.add('off');
+            setTimeout(start, 1000);
+          }
+        }
+
+        check();      
+      });
+  };
+
+  function start () {
     window.bgOffsetX = 0;
     window.bgOffsetY = 0;
     var bossOs = new BossOs({
@@ -221,13 +266,17 @@
 
     document.setLevel(Game.levels['level1']());
 
-    window.playSound('level1-sound');
+    Sound.play('level-music');
 
     var frame = 0;
     var cachedTime = Date.now();
     var changeLevelOnNextFrame = null;
     var degToRad = 0.0174532925;
     function sign(x) { return x ? x < 0 ? -1 : 1 : 0; }
+
+    window.changeLevelOnNextFrame = function(level) {
+      changeLevelOnNextFrame = level;
+    }
 
     document.getPlayer().childSprites.rocket1.reverseSpriteToStart();
     document.getPlayer().childSprites.rocket2.reverseSpriteToStart();
@@ -314,30 +363,32 @@
       }
 
       // Collisions
-      window.collisionDetection("Player", "Wormhole", function() {
-        var nextLevel = document.getLevel().nextId;
-        changeLevelOnNextFrame = Game.levels[nextLevel]();
-        window.playSound('audio/wormhole.wav');
+      window.inDistance(400, playerEntity, "Entity", function(player, entity) {
+        entity.scouted = true;
       });
 
-      window.collisionDetection("Pirate", "Bullet", function(pirate, bullet) {
+      window.collisionDetection("Damagable", "Bullet", function(target, bullet) {
+        // Don't let the player hit himself
+        if (bullet.owner == target) return;
+
         entityKillList.push(bullet);
         document.spawn(new Game.Entity({
           type: 'laserHit',
           x: bullet.x,
           y: bullet.y,
         }));
-        window.playSound('audio/laserHit.wav');
+        Sound.play('laserHit');
 
-        pirate.life -= bullet.damage;
-        if(pirate.life <= 0) {
+        target.life -= bullet.damage;
+        target.thrust(target, 10, target.faceAngle(bullet.lastX || bullet.x, bullet.lastY || bullet.y), 1);
+        if(target.life <= 0) {
           document.spawn(new Game.Entity({
             type: 'explosion',
             x: bullet.x,
             y: bullet.y,
           }));
-          window.playSound('audio/explosion.wav');
-          entityKillList.push(pirate);
+          Sound.play('explosion');
+          entityKillList.push(target);
         }
       });
 

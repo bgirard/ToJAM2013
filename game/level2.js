@@ -14,14 +14,17 @@ function level() {
       classes: ['Wormhole'],
       x: 200,
       y: -200,
-      update: Game.logic.default
+      showOnMinimap: true,
+      minimapColor: "black",      
+      update: Game.logic.wormhole
     })
   , new Game.Entity({
       type: 'player',
       classes: ['Player'],
       id: 'player',
-      x: 300,
-      y: 300,
+      x: 100,
+      y: 100,
+      life: 1000,
       update: Game.logic.player
     })
   , new Game.Entity({
@@ -30,7 +33,7 @@ function level() {
       y: 200,
       width: 288 / 4,
       height: 72,
-      life: 300,
+      life: 150,
       img: "images/ship1.png",
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
@@ -44,7 +47,7 @@ function level() {
       y: 210,
       width: 288 / 4,
       height: 72,
-      life: 300,
+      life: 150,
       img: "images/ship1.png",
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,
@@ -58,7 +61,7 @@ function level() {
       y: 211,
       width: 288 / 4,
       height: 72,
-      life: 300,
+      life: 150,
       img: "images/ship1.png",
       spriteFrameTime: 100, //ms
       spriteFrameX: 0,

@@ -70,6 +70,11 @@
     div.width = width;
     div.height = height;
 
+    if (div.className.indexOf("Pirate") != -1 ||
+        div.className.indexOf("Player") != -1) {
+      div.classList.add("Damagable");
+    }
+
     div.style.width = width + 'px';
     div.style.height = height.toFixed(1) + 'px';
 
@@ -85,7 +90,7 @@
     }
     div.drag = 0.000;
     div.accel = 0.01;
-    div.rotation = 0;
+    div.rotation = options['rotation'] || 0;
     div.rotationVel = options['rotationVel'] || 0;
     div.rotationAccel = options['rotationAccel'] || 0.002;
     div.rotationDrag = 0.15;
@@ -102,6 +107,16 @@
     div.damage = options.damage;
     div.life = options.life;
     div.lifeMax = options.life;
+    div.showOnMinimap = options['showOnMinimap'] || false;
+    div.minimapColor = options['minimapColor'] || "red";
+    div.scouted = false;
+    if (div.className.indexOf("Pirate") != -1) {
+      div.showOnMinimap = true;
+    }
+    if (div.className.indexOf("Player") != -1) {
+      div.showOnMinimap = true;
+      div.minimapColor = "green";
+    }
 
     // Sprite properties
     div.spriteFrameX = options.spriteFrameX;
@@ -110,9 +125,19 @@
     div.frameTimeRemaining = div.spriteFrameTime;
 
     // Weapon properties
+    div.bulletType = options['bulletType'] || "Bullet";
     div.weaponReloadTime = 150;
     div.weaponCooldown = 0;
     div.ttl = options['ttl'] || null;
+    div.owner = options['owner'] || null;
+
+    div.topLeftX = function() {
+      return this.x - this.width/2;
+    }
+
+    div.topLeftY = function() {
+      return this.y - this.height/2;
+    }
 
     div.centerX = function() {
       return this.x;
@@ -157,7 +182,44 @@
       if (this.lifeBar) {
         this.lifeBar.parentNode.removeChild(this.lifeBar);
       }
+      if (this.minimap) {
+        this.minimap.parentNode.removeChild(this.minimap);
+      }
     };
+
+    var BulletList = {
+      "Bullet": function() {
+        Sound.play('laser');
+        var rot = degToRad * this.rotation;
+        var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
+        var vDirX = Math.sin(rot);
+        var vDirY = -Math.cos(rot);
+        return new Game.Entity({
+          classes: ['Bullet'],
+          x: (-Math.sin(rot) * -this.height/2) + this.x,
+          y: (Math.cos(rot) * -this.height/2) + this.y,
+          velX: 2 * this.velMax * vDirX,
+          velY: 2 * this.velMax * vDirY,
+          img: "images/bullet1.png",
+          width: 16,
+          height: 16,
+          ttl: 1500,
+          damage: 10,
+          owner: this,
+          update: function(dt) {
+            this.ttl = Math.max(0, this.ttl - dt);
+            if(!this.ttl) {
+              this.kill();
+              return;
+            }
+            logic.motion.call(this, dt);
+          }
+        });
+      },
+    };
+    div.fire = function(bulletName) {
+      document.spawn(BulletList[bulletName].bind(this)());
+    }
 
     div.style.marginLeft = -div.width/2 + 'px';
     div.style.marginTop = -div.height/2 + 'px';
@@ -206,6 +268,18 @@
         div.lifeBar.style.width = ((div.life/div.lifeMax) * div.width) + "px";
         div.lifeBar.style.backgroundColor = "hsl(" + ((div.life/div.lifeMax)*100) + ",100%,50%)";
       }
+
+      if (div.showOnMinimap && div.scouted == true) {
+        if (div.minimap == null) {
+          div.minimap = document.createElement("div");
+          div.minimap.className = "minimapEntity";
+          document.getElementById("minimap").appendChild(div.minimap);
+        }
+        var bounds = document.getElementsByClassName("Bounds")[0];
+        div.minimap.style.left = (div.topLeftX() - bounds.topLeftX()) * 100 / bounds.width + "%";
+        div.minimap.style.top = (div.topLeftY() - bounds.topLeftY()) * 100 / bounds.height + "%";
+        div.minimap.style.backgroundColor = div.minimapColor;
+      }
     };
 
     if (options.create) {
@@ -231,6 +305,8 @@
         this.velY = Math.min(0, this.velY + Math.max(0, dt * this.drag * Math.cos(this.rotation * degToRad)));
       }
 
+      this.lastX = this.x;
+      this.lastY = this.y;
       this.x += dt * this.velX;
       this.y += dt * this.velY;
 
@@ -247,36 +323,28 @@
         this.frameTimeRemaining = this.spriteFrameTime;
       }
     },
+    wormhole: function(dt) {
+      var killedAllPirate = document.getElementsByClassName("Pirate").length == 0;
+      if (killedAllPirate) {
+        this.minimapColor = "rgb(" + (128 + 128*Math.sin(Date.now() / 180)).toFixed(0) + ",0,0)"  
+      }
+      window.collisionDetection("Player", "Wormhole", function() {
+        if (killedAllPirate) {
+          var nextLevel = document.getLevel().nextId;
+          window.changeLevelOnNextFrame(Game.levels[nextLevel]());
+          Sound.play('wormhole');
+        }
+      });
+    },
     weapon: function(dt) {
       this.weaponCooldown = Math.max(0, this.weaponCooldown - dt);
-      if(Game.playerKeyStates.fire && !this.weaponCooldown) {
+      if(!this.weaponCooldown) {
         this.weaponCooldown = this.weaponReloadTime;
-        var rot = degToRad * this.rotation;
-        var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
-        var vDirX = Math.sin(rot);
-        var vDirY = -Math.cos(rot);
-        document.spawn(new Game.Entity({
-          classes: ['Bullet'],
-          x: (-Math.sin(rot) * -this.height/2) + this.x,
-          y: (Math.cos(rot) * -this.height/2) + this.y,
-          velX: 2 * this.velMax * vDirX,
-          velY: 2 * this.velMax * vDirY,
-          img: "images/bullet1.png",
-          width: 16,
-          height: 16,
-          ttl: 2000,
-          damage: 10,
-          update: function(dt) {
-            this.ttl = Math.max(0, this.ttl - dt);
-            if(!this.ttl) {
-              this.kill();
-              return;
-            }
-            logic.motion.call(this, dt);
-          }
-        }));
-        window.playSound('audio/laser.wav');
+        this.fire(this.bulletType);
       }
+    },
+    idle: function(dt) {
+      this.thrust(this, dt, this.faceAngle(this.x, this.y), 0);
     },
     ai: function(dt) {
       // Seek player
@@ -312,6 +380,7 @@
           idle = false;
           this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), -1);
         }
+        logic.weapon.call(this, dt);
       }
 
       if (idle) {
@@ -337,7 +406,10 @@
     },
     player: function(dt) {
       logic.motion.call(this, dt);
-      logic.weapon.call(this, dt);
+      if(Game.playerKeyStates.fire) {
+        // This will check cooldown
+        logic.weapon.call(this, dt);
+      }
     }
   };
 

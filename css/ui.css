@@ -84,6 +84,21 @@ html, body {
   visibility: visible;
 }
 
+.minimapEntity {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+}
+
+#minimap {
+  background-color: rgba(0, 100, 0, 0.8);
+  top: 80%;
+  height: 17%;
+  left: 7%;
+  width: 20%;
+}
+
 .hud-element.button {
   text-align: center;
   font-family: 'VT323', cursive;
@@ -358,4 +373,48 @@ html, body {
   font-family: courier;
   font-size: 8pt;
   border: 1px solid #bbb;
+}
+
+.loading-screen {
+  font-family: 'Squada One', cursive;
+  font-size: 3em;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  -webkit-transition: 2s opacity, 2s visibility;
+     -moz-transition: 2s opacity, 2s visibility;
+      -ms-transition: 2s opacity, 2s visibility;
+       -o-transition: 2s opacity, 2s visibility;
+          transition: 2s opacity, 2s visibility;
+  background: #000;
+  z-index: 1000;
+}
+
+.loading-screen.off {
+  opacity: 0;
+  visibility: hidden;  
+}
+
+.vertical-center-container {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+
+.vertical-center-item {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+hr {
+  width: 0;
+  background-color: #fff;
+  height: 3px;
+  border: 0;
+  -webkit-transition: .5s width;
+     -moz-transition: .5s width;
+      -ms-transition: .5s width;
+       -o-transition: .5s width;
+          transition: .5s width;
 }
