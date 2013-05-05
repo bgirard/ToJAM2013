@@ -16,7 +16,7 @@ function level() {
       y: -200,
       showOnMinimap: true,
       minimapColor: "black",      
-      update: Game.logic.default
+      update: Game.logic.wormhole
     })
   , new Game.Entity({
       type: 'player',

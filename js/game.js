@@ -281,6 +281,13 @@
         this.frameTimeRemaining = this.spriteFrameTime;
       }
     },
+    wormhole: function(dt) {
+      window.collisionDetection("Player", "Wormhole", function() {
+        var nextLevel = document.getLevel().nextId;
+        window.changeLevelOnNextFrame(Game.levels[nextLevel]());
+        window.playSound('audio/wormhole.wav');
+      });
+    },
     weapon: function(dt) {
       this.weaponCooldown = Math.max(0, this.weaponCooldown - dt);
       if(Game.playerKeyStates.fire && !this.weaponCooldown) {
