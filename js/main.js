@@ -265,7 +265,6 @@
         changeLevelOnNextFrame = Game.levels[nextLevel]();
       });
       window.noCollisionDetection(player, "Bounds", function() {
-        document.title = "Col";
         var bounds = document.getElementsByClassName("Bounds")[0];
         // Outside the level
         if (playerEntity.x < bounds.x) {
