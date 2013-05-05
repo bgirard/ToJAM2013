@@ -134,8 +134,14 @@
       "Laser": 500,
       "Bullet": 400,
       "BulletStrong": 200,
+      "EndGameBullet": 200,
     };
-    div.weaponCooldown = {};
+    div.weaponCooldown = {
+      "Missile": 0,
+      "Laser": 0,
+      "Bullet": 0,
+      "BulletStrong": 0,
+    };
     div.ttl = options['ttl'] || null;
     div.owner = options['owner'] || null;
 
@@ -296,7 +302,10 @@
           }
         });
       },
-      "Missile": function() {
+      "EndGameBullet": function() {
+        return BulletList["Missile"].bind(this)(2, 20000);
+      },
+      "Missile": function(scaling, damage) {
         Sound.play('missile');
         var rot = degToRad * this.rotation;
         var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
@@ -315,9 +324,10 @@
           width: 9,
           height: 24,
           ttl: 1500,
-          damage: 10,
+          damage: damage || 10,
           owner: this,
-          hitType: "missileHit",
+          scaling: scaling,
+          hitType: "explosion",
           update: function(dt) {
             this.ttl = Math.max(0, this.ttl - dt);
             if (this.missileLockOnTarget == null ||
@@ -484,8 +494,7 @@
     },
     weapon: function(dt, bulletType) {
       bulletType = bulletType || this.bulletType
-      this.weaponCooldown[bulletType] = Math.max(0, this.weaponCooldown[bulletType] - dt);
-      if(!this.weaponCooldown[bulletType]) {
+      if(0 == this.weaponCooldown[bulletType]) {
         this.weaponCooldown[bulletType] = this.weaponReloadTime[bulletType];
         this.fire(bulletType);
       }
@@ -557,16 +566,33 @@
     },
     player: function(dt) {
       logic.motion.call(this, dt);
+      this.weaponCooldown["Laser"] = Math.max(0, this.weaponCooldown["Laser"] - dt);
+      this.weaponCooldown["Missile"] = Math.max(0, this.weaponCooldown["Missile"] - dt);
+      this.weaponCooldown["Bullet"] = Math.max(0, this.weaponCooldown["Bullet"] - dt);
+      this.weaponCooldown["BulletStrong"] = Math.max(0, this.weaponCooldown["BulletStrong"] - dt);
+
       if(Game.playerKeyStates.fire) {
         // This will check cooldown
-        logic.weapon.call(this, dt, "Missile");
+        if (true || player.hasEndGameBullets) {
+          logic.weapon.call(this, dt, "EndGameBullet");
+        } else {
+          logic.weapon.call(this, dt, "Missile");
+        }
       }
       if(Game.playerKeyStates.laser) {
         // This will check cooldown
-        logic.weapon.call(this, dt, "Laser");
+        if (player.hasEndGameBullets) {
+          logic.weapon.call(this, dt, "EndGameBullet");
+        } else {
+          logic.weapon.call(this, dt, "Laser");
+        }
       }
       if(Game.playerKeyStates.missile) {
-        logic.weapon.call(this, dt, "Missile");
+        if (true || player.hasEndGameBullets) {
+          logic.weapon.call(this, dt, "EndGameBullet");
+        } else {
+          logic.weapon.call(this, dt, "Missile");
+        }
       }
     }
   };
