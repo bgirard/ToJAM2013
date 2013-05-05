@@ -160,3 +160,32 @@ section img {
 .skip-notification.on {
   opacity: 1;
 }
+
+@-webkit-keyframes explosion-animation {
+  0%   { background-position: 0 0; }
+  100% { background-position: -1664px 0; }
+}
+@-moz-keyframes explosion-animation {
+  0%   { background-position: 0 0; }
+  100% { background-position: -1664px 0; }
+}
+@-o-keyframes explosion-animation {
+  0%   { background-position: 0 0; }
+  100% { background-position: -1664px 0; }
+}
+@keyframes explosion-animation {
+  0%   { background-position: 0 0; }
+  100% { background-position: -1664px 0; }
+}
+
+.explosion {
+  width: 128px;
+  height: 128px;
+  background-image: url('../images/explosions/explosion.png');
+  background-position: 0 0;
+  background-size: 1664px 128px;
+  -webkit-animation: explosion-animation 1s steps(13, start) infinite;
+  -moz-animation:    explosion-animation 1s steps(13, start) infinite;
+  -o-animation:      explosion-animation 1s steps(13, start) infinite;
+  animation:         explosion-animation 1s steps(13, start) infinite;
+}
