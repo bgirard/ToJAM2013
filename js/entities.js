@@ -3,6 +3,7 @@
     'wormhole': {
       width: 280,
       height: 280,
+      hitBox: [60, 60],
       classes: ['Wormhole'],
       spriteLayout: {
         definition: 'wormhole'
@@ -12,6 +13,7 @@
       classes: ['Player'],
       width: 70,
       height: 60,
+      hitBox: [50, 50],
       update: Game.logic.player,
       spriteLayout: {
         definition: 'ship',

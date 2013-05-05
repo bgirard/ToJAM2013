@@ -122,10 +122,10 @@
       var entity2 = entities2[j];
 
       // for center alignment, i.e. marginLeft, marginTop
-      w1 = entity1.width;
-      w2 = entity2.width;
-      h1 = entity1.height;
-      h2 = entity2.height;
+      w1 = entity1.hitBox[0];
+      w2 = entity2.hitBox[0];
+      h1 = entity1.hitBox[1];
+      h2 = entity2.hitBox[1];
       hw1 = w1/2;
       hw2 = w2/2;
       hh1 = h1/2;
@@ -158,10 +158,10 @@
         if(!entity2) continue;
 
         // for center alignment, i.e. marginLeft, marginTop
-        w1 = entity1.width;
-        w2 = entity2.width;
-        h1 = entity1.height;
-        h2 = entity2.height;
+        w1 = entity1.hitBox[0];
+        w2 = entity2.hitBox[0];
+        h1 = entity1.hitBox[1];
+        h2 = entity2.hitBox[1];
         hw1 = w1/2;
         hw2 = w2/2;
         hh1 = h1/2;

@@ -69,6 +69,8 @@
     div.style.width = width + 'px';
     div.style.height = height.toFixed(1) + 'px';
 
+    div.hitBox = entityDefinition.hitBox || [width*.8, height*.8];
+
     div.x = options['x'] || 0;
     div.y = options['y'] || 0;
     div.velX = options['velX'] || 0.0;
@@ -138,6 +140,16 @@
 
     div.style.marginLeft = -div.width/2 + 'px';
     div.style.marginTop = -div.height/2 + 'px';
+
+    if (window.location.search.indexOf('hitbox') > -1) {
+      var hitBoxElement = document.createElement('div');
+      hitBoxElement.className = 'hitbox';
+      hitBoxElement.style.top = (div.height - div.hitBox[1])/2 + 'px';
+      hitBoxElement.style.bottom = (div.height - div.hitBox[1])/2 + 'px';
+      hitBoxElement.style.left = (div.width - div.hitBox[0])/2 + 'px';
+      hitBoxElement.style.right = (div.width - div.hitBox[0])/2 + 'px';
+      div.appendChild(hitBoxElement);
+    }
 
     div.render = function render() {
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
