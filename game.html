@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ToJAM2013</title>
+    <meta charset="utf-8">
+    <link href="http://fonts.googleapis.com/css?family=VT323" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Squada+One" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="css/ui.css">
+    <script>
+      window.requestAnimFrame = (function(){
+        return  window.requestAnimationFrame       ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame    ||
+                function( callback ){
+                  window.setTimeout(callback, 1000 / 60);
+                };
+      })();
+    </script>
+    <script src="js/audio.js"></script>
+    <script src="js/bossos.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/sprites.js"></script>
+    <script src="js/entities.js"></script>
+
+    <script src="game/level1.js"></script>
+    <script src="game/level2.js"></script>
+    <script src="game/level3.js"></script>
+    <script src="game/level4.js"></script>
+    <script src="game/level5.js"></script>
+    <style>
+      /* THIS MUST STAY HERE */
+      .hud-element.console {
+        -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), color-stop(0.3, rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+        mask: url(#fade_right_svg_mask);
+      }
+    </style>
+  </head>
+  <body>
+    <audio preload="metadata" data-type="music" data-name="level-music">
+      <source src="audio/07 Seven.mp3" type="audio/mp3"></source>
+      <source src="audio/07 Seven.ogg" type="audio/ogg"></source>
+    </audio>
+    <audio preload="metadata" data-name="missile"><source src="audio/missile.wav"></source></audio>
+    <audio preload="metadata" data-name="wormhole"><source src="audio/wormhole.wav"></source></audio>
+    <audio preload="metadata" data-name="laser"><source src="audio/laser.wav"></source></audio>
+    <audio preload="metadata" data-name="laserHit"><source src="audio/laserHit.wav"></source></audio>
+    <audio preload="metadata" data-name="explosion"><source src="audio/explosion.wav"></source></audio>
+    <audio preload="metadata" data-name="thrust"><source src="audio/thrust.wav"></source></audio>
+    <audio preload="metadata" data-name="rockets"><source src="audio/rockets.wav"></source></audio>
+
+    <div class="loading-screen">
+      <div class="vertical-center-container">
+        <h1 class="vertical-center-item">Preparing Your Funs...<br><hr></h1>
+      </div>
+    </div>
+
+    <div id="gameboard">
+      <div id="background">
+        <div id="bg1">
+        </div>
+        <div id="bg2">
+        </div>
+        <div id="bg3">
+        </div>
+        <div id="bgShip">
+        </div>
+      </div>
+      <div id="hud" class="on">
+        <div class="hud-element thruster left">
+          <div class="front"></div>
+          <div class="back"></div>
+          <div class="buttons">
+            <div class="button"></div>
+          </div>
+        </div>
+        <div class="hud-element thruster right">
+          <div class="front"></div>
+          <div class="back"></div>
+          <div class="buttons">
+            <div class="button"></div>
+          </div>
+        </div>
+        <div class="hud-element speed">
+          <div class="meter-container">
+            <div class="front"></div>
+            <div class="back"></div>
+          </div>
+          <div class="buttons">
+            <div class="button"></div>
+            <div class="button"></div>
+          </div>          
+        </div>
+        <div class="hud-element weapon-1">
+          <div class="front"></div>
+          <div class="back"></div>
+          <div class="buttons">
+            <div class="button"></div>
+          </div>
+        </div>
+        <div class="hud-element weapon-2">
+          <div class="front"></div>
+          <div class="back"></div>
+          <div class="buttons">
+            <div class="button"></div>
+          </div>
+        </div>
+        <div class="hud-element minimap" id="minimap">
+        </div>
+        <div id="mask_demo" class="hud-element console fade-right">
+          <div class="textarea"></textarea>
+        </div>
+        <svg height="0">
+          <mask id="fade_right_svg_mask" maskUnits="objectBoundingBox" maskContentUnits="objectBoundingBox">
+            <linearGradient id="fade_right_svg_gradient" gradientUnits="objectBoundingBox" x2="0" y2="1">
+              <stop stop-color="white" stop-opacity="1" offset="0.3"></stop>
+              <stop stop-color="white" stop-opacity="0" offset="1"></stop>
+            </linearGradient>
+            <rect x="0" y="0" width="1" height="1" fill="url(#fade_right_svg_gradient)"></rect>
+          </mask>
+        </svg>
+      </div>
+    </div>
+  </body>
+</html>
+
