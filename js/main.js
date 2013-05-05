@@ -111,7 +111,25 @@
    * Run collision detection between two CSS classes such as 'entity', 'mines',
    * invoking the callback with each collision
    */
-  function collisionDetection(classOne, classTwo, callback) {
+  window.noCollisionDetection = function noCollisionDetection(entity1, classTwo, callback) {
+    var level = document.getLevel();
+    var entities2 = level.getElementsByClassName(classTwo);
+    var hasCol = false;
+    for(var j = 0; j < entities2.length; ++j) {
+      var entity2 = entities2[j];
+      if (entity1.x < entity2.x + entity2.width &&
+          entity2.x < entity1.x + entity1.width &&
+          entity1.y < entity2.y + entity2.height &&
+          entity2.y < entity1.y + entity1.height) {
+
+          hasCol = true;
+      }
+    }
+    if (hasCol == false) {
+      callback(entity1);
+    }
+  }
+  window.collisionDetection = function collisionDetection(classOne, classTwo, callback) {
     var level = document.getLevel();
     var entities1 = level.getElementsByClassName(classOne);
     var entities2 = level.getElementsByClassName(classTwo);
@@ -119,7 +137,7 @@
       var entity1 = entities1[i];
       if(!entity1) continue;
       for(var j = 0; j < entities2.length; ++j) {
-        var entity2 = entities2[i];
+        var entity2 = entities2[j];
         if(!entity2) continue;
         if (entity1.x < entity2.x + entity2.width &&
             entity2.x < entity1.x + entity1.width &&
@@ -242,15 +260,12 @@
       }
 
       // Collisions
-      collisionDetection("Player", "Wormhole", function() {
+      window.collisionDetection("Player", "Wormhole", function() {
         var nextLevel = document.getLevel().nextId;
         changeLevelOnNextFrame = Game.levels[nextLevel]();
       });
-      var hasCol = false;
-      collisionDetection("Player", "Bounds", function() {
-        hasCol = true;
-      });
-      if (!hasCol) {
+      window.noCollisionDetection(player, "Bounds", function() {
+        document.title = "Col";
         var bounds = document.getElementsByClassName("Bounds")[0];
         // Outside the level
         if (playerEntity.x < bounds.x) {
@@ -269,7 +284,7 @@
           playerEntity.y -= bounds.height;
           window.bgOffsetY -= bounds.height;
         }
-      }
+      });
 
       bossOs.update(playerEntity);
 
