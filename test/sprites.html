@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>sprite test</title>
+    <style>
+      html {
+        background: #000;
+      }
+    </style>
+    <link rel="stylesheet" href="../css/sprites.css">
+    <script src="../js/game.js"></script>
+    <script src="../js/sprites.js"></script>
+  </head>
+  <body>
+    <div id="test-object-1"></div>
+    <div id="test-object-2"></div>
+    <div id="test-object-3"></div>
+    <script>
+      Game.Sprite.urlPrefix = '../';
+
+      ['explosion', 'missile', 'laser', 'fireBigBlue', 'ship'].forEach(function(item){
+        var s = new Game.Sprite(Game.spriteDefinitions[item]);
+        document.body.appendChild(s);
+      });
+
+      setInterval(function(){
+        Array.prototype.forEach.call(document.querySelectorAll('.sprite'), function(item){
+          item.updateSprite();
+        });
+      }, 50);
+    </script>
+  </body>
+</html>

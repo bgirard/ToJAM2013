@@ -1,5 +1,4 @@
 (function(){
-
   var degToRad = 0.0174532925;
 
   function clamp(number, min, max) {
@@ -36,13 +35,25 @@
   function Entity(options) {
     options = options || {};
 
+    var entityDefinition = {};
+    if (options.type) {
+      entityDefinition = Game.entityDefinitions[options.type];
+    }
+
     var id = options['id'] || 'Entity' + nextEntityId++;
     var img = options['img'];
-    var width = options['width'] || 10;
-    var height = options['height'] || 10;
+    var width = entityDefinition.width || options['width'] || 10;
+    var height = entityDefinition.height || options['height'] || 10;
     var extraClasses = options['classes'] || [];
 
-    var div = document.createElement('div');
+    var div;
+
+    if (entityDefinition.spriteLayout && entityDefinition.spriteLayout.root) {
+      console.log(entityDefinition.spriteLayout.root, Game.Sprite);
+    }
+
+    div = div || document.createElement('div');
+
     div.options = options;
     div.classList.add('Entity');
     extraClasses.forEach(function(className) {
@@ -84,8 +95,9 @@
     div.frameTimeRemaining = div.spriteFrameTime;
 
     // Weapon properties
-    div.weaponReloadTime = 1000;
+    div.weaponReloadTime = 0;
     div.weaponCooldown = 0;
+    div.ttl = options['ttl'] || null;
 
     div.centerX = function() {
       return this.x+this.width/2;
@@ -95,12 +107,12 @@
       return this.y+this.height/2;
     }
 
-    div.faceAngle = function (player) {
-      return Math.atan2(player.y - this.y, player.x - this.x)/degToRad + 90;
+    div.faceAngle = function (x, y) {
+      return Math.atan2(y - this.y, x - this.x)/degToRad + 90;
     }
 
-    div.distanceTo = function distanceTo(player) {
-      return Math.sqrt((this.centerX() - player.centerX())*(this.centerX() - player.centerX()) + (this.centerY() - player.centerY())*(this.centerY() - player.centerY()));
+    div.distanceTo = function distanceTo(x, y) {
+      return Math.sqrt((this.centerX() - x)*(this.centerX() - x) + (this.centerY() - y)*(this.centerY() - y));
     }
 
     div.thrust = function thrust(div, dt, dirAngle, thrustDirSign) {
@@ -117,7 +129,6 @@
       var velMag = Math.sqrt(newVelX*newVelX + newVelY*newVelY);
 
       if (velMag != 0) {
-        //console.log("1: " + (newVelX/velMag));
         var dampVelX = window.clamp(velMag * Math.pow(div.velDamp, dt/1000), -div.velMax, div.velMax) * (newVelX/velMag);
         var dampVelY = window.clamp(velMag * Math.pow(div.velDamp, dt/1000), -div.velMax, div.velMax) * (newVelY/velMag);
 
@@ -127,6 +138,8 @@
     }
 
     div.render = function render() {
+      div.style.marginLeft = -div.width/2 + 'px';
+      div.style.marginTop = -div.height/2 + 'px';
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
       div.style.top = (div.y - window.Game.Camera.y()) + 'px';
       var transformStr = "";
@@ -145,6 +158,10 @@
         setTransform(div, transformStr);
       }
     };
+
+    if (options.create) {
+      options.create.call(div);
+    }
 
     return div;
   };
@@ -185,19 +202,26 @@
       this.weaponCooldown = Math.max(0, this.weaponCooldown - dt);
       if(Game.playerKeyStates.fire && !this.weaponCooldown) {
         this.weaponCooldown = this.weaponReloadTime;
+        var rot = degToRad * this.rotation;
         var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
-        var vDirX = Math.sin(degToRad * this.rotation);
-        var vDirY = -Math.cos(degToRad * this.rotation);
+        var vDirX = Math.sin(rot);
+        var vDirY = -Math.cos(rot);
         document.spawn(new Game.Entity({
           classes: ['Bullet'],
-          x: this.x + this.width/2 - 8,
-          y: this.y - 16,
+          x: (-Math.sin(rot) * -this.height/2) + this.x,
+          y: (Math.cos(rot) * -this.height/2) + this.y,
           velX: 2 * this.velMax * vDirX,
           velY: 2 * this.velMax * vDirY,
           img: "images/bullet1.png",
           width: 16,
           height: 16,
+          ttl: 2000,
           update: function(dt) {
+            this.ttl = Math.max(0, this.ttl - dt);
+            if(!this.ttl) {
+              document.kill(this);
+              return;
+            }
             logic.motion.call(this, dt);
           }
         }));
@@ -206,29 +230,39 @@
     ai: function(dt) {
       // Seek player
       var player = document.getElementById("player"); 
-      if (this.distanceTo(player) < 500) {
+      if (this.distanceTo(player.centerX(), player.centerY()) < 300) {
+        this.seekX = player.centerX();
+        this.seekY = player.centerY();
+      }
+
+      window.noCollisionDetection(this, "Bounds", function(pirate) {
+        var bounds = document.getElementsByClassName("Bounds")[0];
+        this.seekX = bounds.centerX();
+        this.seekY = bounds.centerY();
+      });
+
+      if (this.seekX != null && this.seekY != null) {
         // Aquire player
-        var changeToAngle = this.rotation - this.faceAngle(player);
+        var changeToAngle = this.rotation - this.faceAngle(this.seekX, this.seekY);
         if (changeToAngle > 180) {
           changeToAngle = 360 - changeToAngle;
         }
         if (changeToAngle < -180) {
           changeToAngle = changeToAngle + 360;
         }
-        document.title = "Aquire: " + changeToAngle;
         if (Math.abs(changeToAngle) > 0.1 * dt) {
           changeToAngle = sign(changeToAngle) * 0.1 * dt;
         }
         this.rotation -= changeToAngle % 360;
+
+        if (this.distanceTo(this.seekX, this.seekY) > 100) {
+          this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), -1);
+        } else {
+          this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), 0);
+        }
       } else {
-        document.title = "not Aquire";
+        this.thrust(this, dt, this.faceAngle(this.seekX, this.seekY), 0);
       }
-      return;
-      if (this.shift == null) {
-        this.shift = Math.random() * 5;
-      }
-      this.rotation = 90 * Math.sin(this.shift + Date.now()/100);
-      this.thrust(this, dt, this.rotation, 1);
     },
     default: function(dt) {
       logic.motion.call(this, dt);
