@@ -103,7 +103,7 @@
     div.life = options.life;
     div.lifeMax = options.life;
     div.showOnMinimap = options['showOnMinimap'] || false;
-    div.minimapColor = "red";
+    div.minimapColor = options['minimapColor'] || "red";
     div.scouted = false;
     if (div.className.indexOf("Pirate") != -1) {
       div.showOnMinimap = true;
