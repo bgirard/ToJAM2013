@@ -11,6 +11,50 @@
         return clone;
       }      
     },
+    createLoop: function (name) {
+      var original = soundCache[name];
+
+      var stopFlag = false;
+      var currentClone;
+      var clone1, clone2;
+
+      function loop () {
+        if (!stopFlag) {
+          if (currentClone) {
+            if (currentClone.currentTime > currentClone.duration - .1) {
+              currentClone.pause();
+              currentClone = currentClone === clone1 ? clone2 : clone1;
+              currentClone.currentTime = 0;
+              currentClone.play();
+            }
+          }
+          window.requestAnimFrame(loop);
+        }
+      }
+
+      if (original) {
+        clone1 = original.cloneNode(true);
+        clone2 = original.cloneNode(true);
+        currentClone = clone1;
+      }
+
+      return {
+        play: function() {
+          if (currentClone) {
+            currentClone.play();
+            stopFlag = false;
+            window.requestAnimFrame(loop);
+          }
+        },
+        pause: function() {
+          if (currentClone) {
+            stopFlag = true;
+            clone1.pause();
+            clone2.pause();
+          }
+        }
+      };
+    },
     loadAudioNodes: function (progressCallback, loadedCallback) {
       Sound.gatherAudioNodes();
 
