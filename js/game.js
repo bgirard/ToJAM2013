@@ -504,6 +504,12 @@
       this.thrust(this, dt, this.faceAngle(this.x, this.y), 0);
     },
     ai: function(dt) {
+
+      var bulletTypes = Object.keys(this.weaponCooldown);
+      bulletTypes.forEach(function(bulletType) {
+        this.weaponCooldown[bulletType] = Math.max(0, this.weaponCooldown[bulletType] - dt);
+      }.bind(this));
+
       // Seek player
       var player = document.getElementById("player");
       if (player && this.distanceTo(player.centerX(), player.centerY()) < 500) {

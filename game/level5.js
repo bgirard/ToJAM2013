@@ -11,7 +11,6 @@ function drop_special() {
 }
 
 function spawnWave(div, dt) {
-  div.currentWave++;
   var killedWave = document.getElementsByClassName("Wave").length == 0;
   if (killedWave) {
     div.timeUntilNextWave -= dt;
@@ -20,6 +19,7 @@ function spawnWave(div, dt) {
     drop_special();
   }
   if (killedWave && div.timeUntilNextWave < 0) {
+    div.currentWave++;
     div.timeUntilNextWave = 5000;
     [
       new Game.Entity({
