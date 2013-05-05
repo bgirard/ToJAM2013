@@ -1,11 +1,16 @@
 (function() {
 
-function spawnWave(div) {
+function spawnWave(div, dt) {
   div.currentWave++;
-  if (true || div.currentWave == 1) {
+  var killedWave = document.getElementsByClassName("Wave").length == 0;
+  if (killedWave) {
+    div.timeUntilNextWave -= dt;
+  }
+  if (killedWave && div.timeUntilNextWave < 0) {
+    div.timeUntilNextWave = 5000;
     [
       new Game.Entity({
-        classes: ['Pirate'],
+        classes: ['Pirate', 'Wave'],
         x: 1750,
         y: 700,
         width: 80,
@@ -19,7 +24,7 @@ function spawnWave(div) {
         ai: Game.logic.ai,
       })
     , new Game.Entity({
-        classes: ['Pirate'],
+        classes: ['Pirate', 'Wave'],
         x: 2000,
         y: 650,
         width: 80,
@@ -35,7 +40,7 @@ function spawnWave(div) {
         ai: Game.logic.ai,
       })
     , new Game.Entity({
-        classes: ['Pirate'],
+        classes: ['Pirate', 'Wave'],
         x: 2250,
         y: 700,
         width: 80,
@@ -64,15 +69,11 @@ function level() {
   div.nextId = 'level1';
   div.currentWave = 0;
 
-  var timeInLevel = 0;
-  var timeUntilNextWave = 1000;
+  div.timeInLevel = 0;
+  div.timeUntilNextWave = 5000;
   div.update = function(dt) {
-    timeInLevel += dt;
-    timeUntilNextWave -= dt;
-    if (timeUntilNextWave < 0) {
-      spawnWave(div);
-      timeUntilNextWave = 30000;
-    }
+    div.timeInLevel += dt;
+    spawnWave(div, dt);
   };
 
   [
