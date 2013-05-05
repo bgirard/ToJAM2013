@@ -5,7 +5,6 @@
   window.preloadSound = function(sfx) {
     if (SoundCache[sfx] == null) {
       SoundCache[sfx] = document.createElement('audio');
-      document.body.appendChild(SoundCache[sfx]);
       SoundCache[sfx].autobuffer = true;
       SoundCache[sfx].preload = "auto";
       SoundCache[sfx].src = sfx;
@@ -13,18 +12,21 @@
   };
 
   window.playSound = function(sfx) {
-    window.preloadSound(sfx);
-    var clone = SoundCache[sfx].cloneNode(true);
-    clone.play();
-    document.body.appendChild(clone);
-    clone.onended = function () {
-      document.body.removeChild(clone);
-      console.log(1);
-    };
-    return clone;
+    var original = SoundCache[sfx];
+    if (original) {
+      var clone = original.cloneNode(true);
+      clone.play();
+      return clone;
+    }
   };
 }());
 
-// Preload sound here if youw ant
-window.preloadSound("audio/death.ogg");
+// Preload sound here if you want
+
+if (window.location.search.indexOf('nosound') === -1) {
+  //window.preloadSound('audio/07 Seven.mp3');
+  window.preloadSound('audio/laserHit.wav');
+  window.preloadSound('audio/explosion.wav');
+  window.preloadSound("audio/death.ogg");
+}
 

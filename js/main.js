@@ -207,10 +207,6 @@
     entity.parentNode.removeChild(entity);
   };
 
-  if (window.location.search.indexOf('nosound') === -1) {
-    window.preloadSound('audio/07 Seven.mp3');
-  }
-
   window.onload = function (e) {
     window.bgOffsetX = 0;
     window.bgOffsetY = 0;
@@ -332,6 +328,7 @@
           x: bullet.x,
           y: bullet.y,
         }));
+        window.playSound('audio/laserHit.wav');
 
         pirate.life -= bullet.damage;
         if(pirate.life <= 0) {
@@ -340,6 +337,7 @@
             x: bullet.x,
             y: bullet.y,
           }));
+          window.playSound('audio/explosion.wav');
           entityKillList.push(pirate);
         }
       });
