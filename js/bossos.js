@@ -23,8 +23,6 @@
       'right': rightThruster.querySelector('.button:nth-child(1)'),
       'up': speedThruster.querySelector('.button:nth-child(1)'),
       'down': speedThruster.querySelector('.button:nth-child(2)'),
-      // 'power': hudContainer.querySelector('.power'),
-      // 'shield': hudContainer.querySelector('.shield'),
       'laser': hudContainer.querySelector('.weapon-2 .button'),
       'missile': hudContainer.querySelector('.weapon-1 .button')
     };
