@@ -325,11 +325,11 @@
           playerEntity.y += bounds.height;
           window.bgOffsetY += bounds.height;
         }
-        if (playerEntity.x > bounds.x + bounds.width) {
+        if (playerEntity.x > bounds.x + bounds.width/2) {
           playerEntity.x -= bounds.width;
           window.bgOffsetX -= bounds.width;
         }
-        if (playerEntity.y > bounds.y + bounds.height) {
+        if (playerEntity.y > bounds.y + bounds.height/2) {
           playerEntity.y -= bounds.height;
           window.bgOffsetY -= bounds.height;
         }
