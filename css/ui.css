@@ -24,6 +24,10 @@ html, body {
 .Bounds {
 }
 
+.lifeBar {
+  position: absolute;
+}
+
 #bg1 {
   position: absolute;
   width: 10000px;
