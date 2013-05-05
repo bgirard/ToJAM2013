@@ -1,5 +1,4 @@
 (function(){
-
   var degToRad = 0.0174532925;
 
   function clamp(number, min, max) {
@@ -36,13 +35,25 @@
   function Entity(options) {
     options = options || {};
 
+    var entityDefinition = {};
+    if (options.type) {
+      entityDefinition = Game.entityDefinitions[options.type];
+    }
+
     var id = options['id'] || 'Entity' + nextEntityId++;
     var img = options['img'];
-    var width = options['width'] || 10;
-    var height = options['height'] || 10;
+    var width = entityDefinition.width || options['width'] || 10;
+    var height = entityDefinition.height || options['height'] || 10;
     var extraClasses = options['classes'] || [];
 
-    var div = document.createElement('div');
+    var div;
+
+    if (entityDefinition.spriteLayout && entityDefinition.spriteLayout.root) {
+      console.log(entityDefinition.spriteLayout.root, Game.Sprite);
+    }
+
+    div = div || document.createElement('div');
+
     div.options = options;
     div.classList.add('Entity');
     extraClasses.forEach(function(className) {
@@ -87,6 +98,22 @@
     div.weaponReloadTime = 1000;
     div.weaponCooldown = 0;
 
+    div.centerX = function() {
+      return this.x+this.width/2;
+    }
+
+    div.centerY = function() {
+      return this.y+this.height/2;
+    }
+
+    div.faceAngle = function (player) {
+      return Math.atan2(player.y - this.y, player.x - this.x)/degToRad + 90;
+    }
+
+    div.distanceTo = function distanceTo(player) {
+      return Math.sqrt((this.centerX() - player.centerX())*(this.centerX() - player.centerX()) + (this.centerY() - player.centerY())*(this.centerY() - player.centerY()));
+    }
+
     div.thrust = function thrust(div, dt, dirAngle, thrustDirSign) {
       // Thrust
       var newVelX = div.velX;
@@ -101,7 +128,6 @@
       var velMag = Math.sqrt(newVelX*newVelX + newVelY*newVelY);
 
       if (velMag != 0) {
-        //console.log("1: " + (newVelX/velMag));
         var dampVelX = window.clamp(velMag * Math.pow(div.velDamp, dt/1000), -div.velMax, div.velMax) * (newVelX/velMag);
         var dampVelY = window.clamp(velMag * Math.pow(div.velDamp, dt/1000), -div.velMax, div.velMax) * (newVelY/velMag);
 
@@ -111,6 +137,8 @@
     }
 
     div.render = function render() {
+      div.style.marginLeft = -div.clientHeight/2 + 'px';
+      div.style.marginTop = -div.clientTop/2 + 'px';
       div.style.left = (div.x - window.Game.Camera.x()) + 'px';
       div.style.top = (div.y - window.Game.Camera.y()) + 'px';
       var transformStr = "";
@@ -129,6 +157,10 @@
         setTransform(div, transformStr);
       }
     };
+
+    if (options.create) {
+      options.create.call(div);
+    }
 
     return div;
   };
@@ -189,10 +221,26 @@
       }
     },
     ai: function(dt) {
-      if (this.shift == null) {
-        this.shift = Math.random() * 5;
+      // Seek player
+      var player = document.getElementById("player"); 
+      if (this.distanceTo(player) < 500) {
+        // Aquire player
+        var changeToAngle = this.rotation - this.faceAngle(player);
+        if (changeToAngle > 180) {
+          changeToAngle = 360 - changeToAngle;
+        }
+        if (changeToAngle < -180) {
+          changeToAngle = changeToAngle + 360;
+        }
+        if (Math.abs(changeToAngle) > 0.1 * dt) {
+          changeToAngle = sign(changeToAngle) * 0.1 * dt;
+        }
+        this.rotation -= changeToAngle % 360;
+
+        if (this.distanceTo(player) > 100) {
+          this.thrust(this, dt/10, this.faceAngle(player), -1);
+        }
       }
-      this.rotation = 90 * Math.sin(this.shift + Date.now()/1000);
     },
     default: function(dt) {
       logic.motion.call(this, dt);
