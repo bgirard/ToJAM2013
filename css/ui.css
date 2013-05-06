@@ -6,10 +6,6 @@
 
 * {
   // Force gecko active layers
-  perspective: 15px;
-  -moz-perspective: 15px;
-  // Force webkit active layers
-  -webkit-backface-visibility: hidden;
 }
 
 html, body {

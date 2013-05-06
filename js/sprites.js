@@ -139,8 +139,8 @@
     },
     'spaceBuoy': {
       image: 'images/environment/spaceBuoy.png',
-      numFrames: 15,
-      width: 1290,
+      numFrames: 1,
+      width: 1290/15,
       height: 84
     },
     'spaceBuoyEnergy': {
