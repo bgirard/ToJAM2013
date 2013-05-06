@@ -15,10 +15,10 @@ function spawnWave(div, dt) {
   if (killedWave) {
     div.timeUntilNextWave -= dt;
   }
-  if (div.currentWave == 5) {
-    drop_special();
-  }
   if (killedWave && div.timeUntilNextWave < 0) {
+    if (div.currentWave == 5) {
+      drop_special();
+    }
     div.currentWave++;
     div.timeUntilNextWave = 5000;
     [
