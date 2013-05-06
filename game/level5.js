@@ -1,11 +1,16 @@
 (function() {
 
 function drop_special() {
-
+  document.spawn(new Game.Entity({
+    x: 2000,
+    y: 650,
+    type: 'powerup',
+    spriteFrameTime: 100, //ms
+    img: "images/environment/powerup.png",
+  }));
 }
 
 function spawnWave(div, dt) {
-  div.currentWave++;
   var killedWave = document.getElementsByClassName("Wave").length == 0;
   if (killedWave) {
     div.timeUntilNextWave -= dt;
@@ -14,6 +19,7 @@ function spawnWave(div, dt) {
     drop_special();
   }
   if (killedWave && div.timeUntilNextWave < 0) {
+    div.currentWave++;
     div.timeUntilNextWave = 5000;
     [
       new Game.Entity({
@@ -91,7 +97,7 @@ function level() {
       x: 7000,
       y: 1000,
       showOnMinimap: true,
-      minimapColor: "black",      
+      minimapColor: "black",
       update: Game.logic.wormhole
     })
   , new Game.Entity({

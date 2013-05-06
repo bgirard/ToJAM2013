@@ -7,7 +7,7 @@
       classes: ['Wormhole'],
       spriteLayout: {
         definition: 'wormhole'
-      }      
+      }
     },
     'spaceBuoy': {
       width: 84,
@@ -16,7 +16,16 @@
       classes: ['spaceBuoy'],
       spriteLayout: {
         definition: 'spaceBuoy'
-      }      
+      }
+    },
+    'powerup': {
+      width: 1080/12,
+      height: 84,
+      hitBox: [60, 60],
+      classes: ['Powerup'],
+      spriteLayout: {
+        definition: 'powerup'
+      }
     },
     'spaceBuoyEnergy': {
       width: 720/12,
@@ -25,7 +34,7 @@
       classes: ['spaceBuoyEnergy'],
       spriteLayout: {
         definition: 'spaceBuoyEnergy'
-      }      
+      }
     },
     'laserHit': {
       classes: ['LaserHit'],
