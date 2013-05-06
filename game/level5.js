@@ -72,7 +72,7 @@ function spawnWave(div, dt) {
   }
 }
 
-var id = 'level1';
+var id = 'level5';
 
 function level() {
 
