@@ -7,7 +7,7 @@ function level() {
   div.classList.add('Level');
   div.id = id;
   div.levelNo = 4;
-  div.nextId = 'level1';
+  div.nextId = 'level5';
 
   [
     new Game.Entity({

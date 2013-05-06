@@ -304,9 +304,9 @@
         });
       },
       "EndGameBullet": function() {
-        return BulletList["Missile"].bind(this)(1, 20000, 27, 72, "images/projectiles/missileBig.png");
+        return BulletList["Missile"].bind(this)(1, 20000, 27, 72, "images/projectiles/missileBig.png", "explosion);
       },
-      "Missile": function(scaling, damage, w, h, img) {
+      "Missile": function(scaling, damage, w, h, img, hitType) {
         Sound.play('missile');
         var rot = degToRad * this.rotation;
         var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
@@ -328,7 +328,7 @@
           damage: damage || 10,
           owner: this,
           scaling: scaling,
-          hitType: "explosion",
+          hitType: explosion || "missileHit",
           update: function(dt) {
             this.ttl = Math.max(0, this.ttl - dt);
             if (this.missileLockOnTarget == null ||
