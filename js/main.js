@@ -212,7 +212,7 @@
         type: buoyOrEnergy ? 'spaceBuoy' : 'spaceBuoyEnergy',
         spriteFrameTime: 100, //ms
         width: buoyOrEnergy ? 84 : 720/12,
-        height: buoyOrEnergy ? 84 : 230, 
+        height: buoyOrEnergy ? 84 : 230,
         img: "images/environment/spaceBuoy.png",
       }));
       //buoyOrEnergy = !buoyOrEnergy;
@@ -226,12 +226,12 @@
         type: buoyOrEnergy ? 'spaceBuoy' : 'spaceBuoyEnergy',
         spriteFrameTime: 100, //ms
         width: buoyOrEnergy ? 84 : 720/12,
-        height: buoyOrEnergy ? 84 : 230, 
+        height: buoyOrEnergy ? 84 : 230,
         img: "images/environment/spaceBuoy.png",
       }));
       //buoyOrEnergy = !buoyOrEnergy;
     }
-    // Left 
+    // Left
     buoyOrEnergy = true;
     for (var y = bounds.topLeftY() + 300; y < bounds.bottomRightY() - 300 - 100; y+=300) {
       document.spawn(new Game.Entity({
@@ -240,7 +240,7 @@
         type: buoyOrEnergy ? 'spaceBuoy' : 'spaceBuoyEnergy',
         spriteFrameTime: 100, //ms
         width: buoyOrEnergy ? 84 : 720/12,
-        height: buoyOrEnergy ? 84 : 230, 
+        height: buoyOrEnergy ? 84 : 230,
         img: "images/environment/spaceBuoy.png",
       }));
       //buoyOrEnergy = !buoyOrEnergy;
@@ -254,7 +254,7 @@
         type: buoyOrEnergy ? 'spaceBuoy' : 'spaceBuoyEnergy',
         spriteFrameTime: 100, //ms
         width: buoyOrEnergy ? 84 : 720/12,
-        height: buoyOrEnergy ? 84 : 230, 
+        height: buoyOrEnergy ? 84 : 230,
         img: "images/environment/spaceBuoy.png",
       }));
       //buoyOrEnergy = !buoyOrEnergy;
@@ -269,7 +269,7 @@
         continue;
       }
       var playerEntity = document.getPlayer();
-      if (playerEntity) { 
+      if (playerEntity) {
         pirate.rotation = pirate.faceAngle(playerEntity.centerX(), playerEntity.centerY());
       }
     }
@@ -321,7 +321,7 @@
           }
         }
 
-        check();      
+        check();
       });
   };
 
@@ -513,6 +513,11 @@
             entityKillList.push(target);
           }
         }
+      });
+
+      window.collisionDetection("Player", "Powerup", function(player, powerup) {
+        player.hasEndGameBullets = true;
+        entityKillList.push(powerup);
       });
 
       if (playerEntity) {
