@@ -62,8 +62,7 @@
       'missile': missile.querySelector('.button')
     };
 
-    var keys = Object.keys(playerKeyMap);
-    keys.forEach(function(key){
+    Object.keys(playerKeyMap).forEach(function(key){
       var action = playerKeyMap[key];
       if(buttonMap[action])
         buttonMap[action].innerHTML = key;
@@ -122,16 +121,17 @@
     var currentSwitchMap = {};
 
     function switchButtons () {
+      var mappedKeys = Object.keys(playerKeyMap);
       var actions = Object.keys(buttonMap);
       var keyMapKeys = Object.keys(KEY_MAP);
       var randomAction = actions[Math.floor(Math.random() * actions.length)];
       var actionKey;
 
       if (currentSwitchMap[randomAction]) {
-        return;
+        // return;
       }
 
-      keys.forEach(function(key){
+      mappedKeys.forEach(function(key){
         var action = playerKeyMap[key];
         if (action === randomAction) {
           actionKey = key;
@@ -139,9 +139,11 @@
       });
 
       var randomKey = actionKey;
-      while (keys.indexOf(randomKey) > -1) {
+      while (mappedKeys.indexOf(randomKey) > -1) {
         randomKey = keyMapKeys[Math.floor(Math.random() * keyMapKeys.length)];
       }
+
+console.log(mappedKeys, randomKey);
 
       playerKeyStates[randomAction] = false;
       delete playerKeyMap[actionKey];
@@ -151,17 +153,17 @@
       buttonMap[randomAction].classList.remove('on');
       buttonMap[randomAction].classList.add('blink');
 
-      setTimeout(function(){
-        buttonMap[randomAction].classList.remove('blink');
-        buttonMap[randomAction].classList.remove('on');
-        delete playerKeyMap[randomKey];
-        playerKeyMap[actionKey] = randomAction;
-        buttonMap[randomAction].innerHTML = actionKey;
-        delete currentSwitchMap[randomAction];
-        playerKeyStates[randomAction] = false;
-      }, Math.round(2000 + Math.random()*5000));
+      // setTimeout(function(){
+      //   buttonMap[randomAction].classList.remove('blink');
+      //   buttonMap[randomAction].classList.remove('on');
+      //   delete playerKeyMap[randomKey];
+      //   playerKeyMap[actionKey] = randomAction;
+      //   buttonMap[randomAction].innerHTML = actionKey;
+      //   delete currentSwitchMap[randomAction];
+      //   playerKeyStates[randomAction] = false;
+      // }, Math.round(2000 + Math.random()*5000));
     }
-
+startDecisions();
     function runAI () {
       var currentTime = Date.now();
 
