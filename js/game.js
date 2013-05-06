@@ -117,7 +117,7 @@
     }
     if (div.className.indexOf("Player") != -1) {
       div.showOnMinimap = true;
-      div.minimapColor = "green";
+      div.minimapColor = "blue";
     }
 
     // Sprite properties
@@ -304,9 +304,9 @@
         });
       },
       "EndGameBullet": function() {
-        return BulletList["Missile"].bind(this)(1, 20000, 27, 72, "images/projectiles/missileBig.png");
+        return BulletList["Missile"].bind(this)(1, 20000, 27, 72, "images/projectiles/missileBig.png", "explosion");
       },
-      "Missile": function(scaling, damage, w, h, img) {
+      "Missile": function(scaling, damage, w, h, img, hitType, explosion) {
         Sound.play('missile');
         var rot = degToRad * this.rotation;
         var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
@@ -328,7 +328,7 @@
           damage: damage || 10,
           owner: this,
           scaling: scaling,
-          hitType: "explosion",
+          hitType: explosion || "missileHit",
           update: function(dt) {
             this.ttl = Math.max(0, this.ttl - dt);
             if (this.missileLockOnTarget == null ||
@@ -429,8 +429,8 @@
         var bounds = document.getElementsByClassName("Bounds")[0];
         div.minimap.style.left = (div.topLeftX() - bounds.topLeftX()) * 100 / bounds.width + "%";
         div.minimap.style.top = (div.topLeftY() - bounds.topLeftY()) * 100 / bounds.height + "%";
-        div.minimap.style.width = Math.floor(div.width/bounds.width*100) + "%";
-        div.minimap.style.height = Math.floor(div.height/bounds.height*100) + "%";
+        div.minimap.style.width = Math.max(2, Math.floor(div.width/bounds.width*100)) + "%";
+        div.minimap.style.height = Math.max(2, Math.floor(div.height/bounds.height*100)) + "%";
         div.minimap.style.backgroundColor = div.minimapColor;
       }
     };
