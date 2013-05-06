@@ -516,7 +516,7 @@
       });
 
       window.collisionDetection("Player", "Powerup", function(player, powerup) {
-        player.hasEndGameBullets = true;
+        playerEntity.hasEndGameBullets = true;
         entityKillList.push(powerup);
       });
 
