@@ -306,7 +306,7 @@
       "EndGameBullet": function() {
         return BulletList["Missile"].bind(this)(1, 20000, 27, 72, "images/projectiles/missileBig.png", "explosion");
       },
-      "Missile": function(scaling, damage, w, h, img, hitType) {
+      "Missile": function(scaling, damage, w, h, img, hitType, explosion) {
         Sound.play('missile');
         var rot = degToRad * this.rotation;
         var vMag = Math.sqrt(this.velX*this.velX + this.velY*this.velY);
